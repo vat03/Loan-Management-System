@@ -1,11 +1,10 @@
 package com.aurionpro.lms.repository;
 
-import java.util.Optional;
-
+import com.aurionpro.lms.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.aurionpro.lms.entity.Role;
+import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-    Optional<Role> findByName(String name);
+	Optional<Role> findByRoleName(String roleName);
 }

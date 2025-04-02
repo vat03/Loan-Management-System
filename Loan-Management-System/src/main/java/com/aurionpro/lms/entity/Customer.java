@@ -2,14 +2,14 @@ package com.aurionpro.lms.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "customer")
 public class Customer extends UserType {
 	@ManyToOne
-	@JoinColumn(name = "loan_officer_id", nullable = false) // Customer is assigned to a Loan Officer
+	@JoinColumn(name = "loan_officer_id", nullable = false)
 	private LoanOfficer loanOfficer;
 }

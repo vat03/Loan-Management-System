@@ -1,19 +1,12 @@
 package com.aurionpro.lms.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "loans")
@@ -21,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Loan {
-
 	@Id
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int loanId;
 
@@ -34,14 +27,12 @@ public class Loan {
 	@JoinColumn(name = "loan_officer_id", nullable = false)
 	private LoanOfficer loanOfficer;
 
+	@ManyToOne
+	@JoinColumn(name = "loan_scheme_id", nullable = false)
+	private LoanScheme loanScheme;
+
 	@Column(nullable = false)
 	private BigDecimal amount;
-
-	@Column(nullable = false)
-	private Double interestRate;
-
-	@Column(nullable = false)
-	private Integer tenureMonths;
 
 	@Column(nullable = false)
 	private LocalDate applicationDate;

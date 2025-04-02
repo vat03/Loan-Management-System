@@ -6,27 +6,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "documents")
+@Table(name = "loan_schemes")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Document {
+public class LoanScheme {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int documentId;
+	private int id;
 
 	@Column(nullable = false)
-	private String documentName;
+	private String schemeName;
 
 	@Column(nullable = false)
-	private String documentUrl; // Cloudinary URL
+	private Double interestRate;
+
+	@Column(nullable = false)
+	private Integer tenureMonths;
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id", nullable = false)
-	private Customer customer;
-
-	@ManyToOne
-	@JoinColumn(name = "document_type_id", nullable = false)
-	private DocumentType documentType;
+	@JoinColumn(name = "admin_id", nullable = false)
+	private Admin admin;
 }

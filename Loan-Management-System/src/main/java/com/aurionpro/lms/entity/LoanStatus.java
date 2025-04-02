@@ -1,18 +1,15 @@
 package com.aurionpro.lms.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "loan_statuses")
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class LoanStatus {
 	@Id
 	@Column
@@ -20,5 +17,5 @@ public class LoanStatus {
 	private int id;
 
 	@Column(unique = true)
-	private String statusName; //"PENDING", "APPROVED", "REJECTED", "COMPLETED"
+	private String statusName; // "PENDING", "APPROVED", "REJECTED", "COMPLETED"
 }
