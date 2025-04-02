@@ -1,19 +1,10 @@
 package com.aurionpro.lms.service;
 
-import com.aurionpro.lms.entity.User;
-import java.util.List;
-import java.util.Optional;
+import com.aurionpro.lms.dto.UserRequestDTO;
+import com.aurionpro.lms.dto.UserResponseDTO;
 
 public interface UserService {
-	User saveUser(User user);
+	UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName);
 
-	Optional<User> getUserById(int id);
-
-	Optional<User> getUserByEmail(String email);
-
-	List<User> getAllUsers();
-
-	User updateUser(User user);
-
-	void deleteUser(int id);
+	UserResponseDTO getUserById(int id);
 }

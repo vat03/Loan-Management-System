@@ -1,17 +1,13 @@
 package com.aurionpro.lms.service;
 
-import com.aurionpro.lms.entity.Customer;
+import com.aurionpro.lms.dto.CustomerResponseDTO;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface CustomerService {
-	Customer saveCustomer(Customer customer);
+	CustomerResponseDTO getCustomerById(int id);
 
-	Optional<Customer> getCustomerById(int id);
+	List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId);
 
-	List<Customer> getAllCustomers();
-
-	Customer updateCustomer(Customer customer);
-
-	void deleteCustomer(int id);
+	void assignLoanOfficer(int customerId, int loanOfficerId);
 }
