@@ -22,8 +22,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+
+	private UserServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
@@ -33,7 +36,7 @@ public class UserServiceImpl implements UserService {
 		}
 		Role role = roleOpt.get();
 
-		User user = modelMapper.map(userRequestDTO, User.class);
+		User user = mapper.map(userRequestDTO, User.class);
 		user.setRole(role);
 
 		UserType userType;
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
 		user = userRepository.save(user);
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, UserResponseDTO.class).addMapping(src -> src.getRole().getRoleName(),
 				UserResponseDTO::setRoleName);
 		return mapper.map(user, UserResponseDTO.class);
@@ -68,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		}
 		User user = userOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, UserResponseDTO.class).addMapping(src -> src.getRole().getRoleName(),
 				UserResponseDTO::setRoleName);
 		return mapper.map(user, UserResponseDTO.class);

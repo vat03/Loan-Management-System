@@ -30,8 +30,11 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 	@Autowired
 	private AdminRepository adminRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+
+	private LoanOfficerServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
@@ -50,13 +53,13 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		LoanOfficer loanOfficer = new LoanOfficer();
 		loanOfficer.setAdmin(admin);
 
-		User user = modelMapper.map(requestDTO, User.class);
+		User user = mapper.map(requestDTO, User.class);
 		user.setRole(role);
 		user.setUserType(loanOfficer);
 
 		user = userRepository.save(user);
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
 				.addMapping(src -> ((LoanOfficer) src.getUserType()).getAdmin().getId(),
 						LoanOfficerResponseDTO::setAdminId)
@@ -73,7 +76,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		}
 		User user = userOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
 				.addMapping(src -> ((LoanOfficer) src.getUserType()).getAdmin().getId(),
 						LoanOfficerResponseDTO::setAdminId)
@@ -95,7 +98,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 																								// equals()
 				.collect(Collectors.toList());
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
 				.addMapping(src -> ((LoanOfficer) src.getUserType()).getAdmin().getId(),
 						LoanOfficerResponseDTO::setAdminId)

@@ -28,8 +28,11 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	@Autowired
 	private AdminRepository adminRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+	
+	private LoanSchemeServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public LoanSchemeResponseDTO createLoanScheme(int adminId, LoanSchemeRequestDTO requestDTO) {
@@ -39,12 +42,12 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		}
 		Admin admin = (Admin) adminOpt.get().getUserType();
 
-		LoanScheme loanScheme = modelMapper.map(requestDTO, LoanScheme.class);
+		LoanScheme loanScheme = mapper.map(requestDTO, LoanScheme.class);
 		loanScheme.setAdmin(admin);
 
 		loanScheme = loanSchemeRepository.save(loanScheme);
 
-		ModelMapper mapper = new ModelMapper();
+//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return mapper.map(loanScheme, LoanSchemeResponseDTO.class);
@@ -58,7 +61,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		}
 		LoanScheme loanScheme = schemeOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return mapper.map(loanScheme, LoanSchemeResponseDTO.class);
@@ -67,7 +70,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	@Override
 	public List<LoanSchemeResponseDTO> getLoanSchemesByAdminId(int adminId) {
 		List<LoanScheme> schemes = loanSchemeRepository.findByAdminId(adminId);
-		ModelMapper mapper = new ModelMapper();
+//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return schemes.stream().map(scheme -> mapper.map(scheme, LoanSchemeResponseDTO.class))

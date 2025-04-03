@@ -17,9 +17,12 @@ public class UserTypeServiceImpl implements UserTypeService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
 
+	private UserTypeServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
+	
 	@Override
 	public UserTypeResponseDTO updateUserProfile(int userId, UserTypeUpdateDTO updateDTO) {
 		Optional<User> userOpt = userRepository.findById(userId);
@@ -29,11 +32,11 @@ public class UserTypeServiceImpl implements UserTypeService {
 		User user = userOpt.get();
 		UserType userType = user.getUserType();
 
-		modelMapper.map(updateDTO, userType); // Maps non-null fields only
+		mapper.map(updateDTO, userType); // Maps non-null fields only
 
 		userRepository.save(user);
 
-		return modelMapper.map(userType, UserTypeResponseDTO.class);
+		return mapper.map(userType, UserTypeResponseDTO.class);
 	}
 
 	@Override
@@ -43,6 +46,6 @@ public class UserTypeServiceImpl implements UserTypeService {
 			throw new RuntimeException("User not found with ID: " + userId);
 		}
 		User user = userOpt.get();
-		return modelMapper.map(user.getUserType(), UserTypeResponseDTO.class);
+		return mapper.map(user.getUserType(), UserTypeResponseDTO.class);
 	}
 }

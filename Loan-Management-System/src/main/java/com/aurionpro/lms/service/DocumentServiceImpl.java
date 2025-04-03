@@ -29,8 +29,11 @@ public class DocumentServiceImpl implements DocumentService {
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+	
+	private DocumentServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public DocumentResponseDTO uploadDocument(DocumentRequestDTO requestDTO) {
@@ -46,13 +49,13 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		DocumentType documentType = docTypeOpt.get();
 
-		Document document = modelMapper.map(requestDTO, Document.class);
+		Document document = mapper.map(requestDTO, Document.class);
 		document.setCustomer(customer);
 		document.setDocumentType(documentType);
 
 		document = documentRepository.save(document);
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return mapper.map(document, DocumentResponseDTO.class);
@@ -66,7 +69,7 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		Document document = docOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return mapper.map(document, DocumentResponseDTO.class);
@@ -75,7 +78,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public List<DocumentResponseDTO> getDocumentsByCustomerId(int customerId) {
 		List<Document> documents = documentRepository.findByCustomerId(customerId);
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return documents.stream().map(doc -> mapper.map(doc, DocumentResponseDTO.class)).collect(Collectors.toList());

@@ -19,8 +19,12 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+	
+	private CustomerServiceImpl()
+	{
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public CustomerResponseDTO getCustomerById(int id) {
@@ -30,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		User user = userOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, CustomerResponseDTO.class).addMapping(
 				src -> ((Customer) src.getUserType()).getLoanOfficer().getId(), CustomerResponseDTO::setLoanOfficerId);
 		return mapper.map(user, CustomerResponseDTO.class);
@@ -45,12 +49,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 		List<User> customers = userRepository.findAll().stream()
 				.filter(user -> user.getUserType() instanceof Customer
-						&& ((Customer) user.getUserType()).getLoanOfficer().getId() == loanOfficerId) // Fixed: use ==
-																										// instead of
-																										// equals()
+						&& ((Customer) user.getUserType()).getLoanOfficer().getId() == loanOfficerId) 
 				.collect(Collectors.toList());
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, CustomerResponseDTO.class).addMapping(
 				src -> ((Customer) src.getUserType()).getLoanOfficer().getId(), CustomerResponseDTO::setLoanOfficerId);
 		return customers.stream().map(user -> mapper.map(user, CustomerResponseDTO.class)).collect(Collectors.toList());

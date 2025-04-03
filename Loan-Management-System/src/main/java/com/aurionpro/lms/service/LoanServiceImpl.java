@@ -35,8 +35,11 @@ public class LoanServiceImpl implements LoanService {
 	@Autowired
 	private NotificationService notificationService;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	private ModelMapper mapper;
+	
+	private LoanServiceImpl() {
+		this.mapper = new ModelMapper();
+	}
 
 	@Override
 	public LoanResponseDTO applyForLoan(LoanRequestDTO requestDTO) {
@@ -59,7 +62,7 @@ public class LoanServiceImpl implements LoanService {
 		}
 		LoanStatus status = statusOpt.get();
 
-		Loan loan = modelMapper.map(requestDTO, Loan.class);
+		Loan loan = mapper.map(requestDTO, Loan.class);
 		loan.setCustomer(customer);
 		loan.setLoanOfficer(loanOfficer);
 		loan.setLoanScheme(loanScheme);
@@ -69,7 +72,7 @@ public class LoanServiceImpl implements LoanService {
 
 		loan = loanRepository.save(loan);
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Loan.class, LoanResponseDTO.class)
 				.addMapping(src -> src.getLoanScheme().getSchemeName(), LoanResponseDTO::setLoanSchemeName)
 				.addMapping(src -> src.getStatus().getStatusName(), LoanResponseDTO::setStatusName)
@@ -100,7 +103,7 @@ public class LoanServiceImpl implements LoanService {
 			notificationService.sendLoanStatusEmail(loanId, "rejected");
 		}
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Loan.class, LoanResponseDTO.class)
 				.addMapping(src -> src.getLoanScheme().getSchemeName(), LoanResponseDTO::setLoanSchemeName)
 				.addMapping(src -> src.getStatus().getStatusName(), LoanResponseDTO::setStatusName)
@@ -116,7 +119,7 @@ public class LoanServiceImpl implements LoanService {
 		}
 		Loan loan = loanOpt.get();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Loan.class, LoanResponseDTO.class)
 				.addMapping(src -> src.getLoanScheme().getSchemeName(), LoanResponseDTO::setLoanSchemeName)
 				.addMapping(src -> src.getStatus().getStatusName(), LoanResponseDTO::setStatusName)
@@ -127,7 +130,7 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	public List<LoanResponseDTO> getLoansByCustomerId(int customerId) {
 		List<Loan> loans = loanRepository.findByCustomerId(customerId);
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Loan.class, LoanResponseDTO.class)
 				.addMapping(src -> src.getLoanScheme().getSchemeName(), LoanResponseDTO::setLoanSchemeName)
 				.addMapping(src -> src.getStatus().getStatusName(), LoanResponseDTO::setStatusName)
@@ -138,7 +141,7 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	public List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId) {
 		List<Loan> loans = loanRepository.findByLoanOfficerId(loanOfficerId);
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Loan.class, LoanResponseDTO.class)
 				.addMapping(src -> src.getLoanScheme().getSchemeName(), LoanResponseDTO::setLoanSchemeName)
 				.addMapping(src -> src.getStatus().getStatusName(), LoanResponseDTO::setStatusName)

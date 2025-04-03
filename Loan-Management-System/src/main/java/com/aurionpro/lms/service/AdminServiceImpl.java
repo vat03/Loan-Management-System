@@ -21,12 +21,15 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
 	private AdminRepository adminRepository;
-
-	@Autowired
-	private ModelMapper modelMapper;
-
+	
+	private ModelMapper mapper;
+	
+	private AdminServiceImpl()
+	{
+		this.mapper = new ModelMapper();
+	}
+	
 	@Override
 	public AdminResponseDTO getAdminById(int id) {
 		Optional<User> userOpt = userRepository.findById(id);
@@ -36,7 +39,7 @@ public class AdminServiceImpl implements AdminService {
 		User user = userOpt.get();
 		Admin admin = (Admin) user.getUserType();
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, AdminResponseDTO.class)
 				.addMapping(src -> ((Admin) src.getUserType()).getLoanOfficers().stream().map(LoanOfficer::getId)
 						.collect(Collectors.toList()), AdminResponseDTO::setLoanOfficerIds)
@@ -50,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
 		List<User> admins = userRepository.findAll().stream().filter(user -> user.getUserType() instanceof Admin)
 				.collect(Collectors.toList());
 
-		ModelMapper mapper = new ModelMapper();
+		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, AdminResponseDTO.class)
 				.addMapping(src -> ((Admin) src.getUserType()).getLoanOfficers().stream().map(LoanOfficer::getId)
 						.collect(Collectors.toList()), AdminResponseDTO::setLoanOfficerIds)
