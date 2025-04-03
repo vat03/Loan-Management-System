@@ -4,7 +4,7 @@ import com.aurionpro.lms.dto.UserRequestDTO;
 import com.aurionpro.lms.dto.UserResponseDTO;
 
 public interface UserService {
-	UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName);
+	UserResponseDTO registerUser(UserRequestDTO requestDTO, String roleName);
 
 	UserResponseDTO getUserById(int id);
 }
