@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "customer")
 public class Customer {
 	@Id
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
@@ -20,6 +21,6 @@ public class Customer {
 	private User user;
 
 	@ManyToOne
-	@JoinColumn(name = "loan_officer_id") 
+	@JoinColumn(name = "loan_officer_id")
 	private LoanOfficer loanOfficer;
 }

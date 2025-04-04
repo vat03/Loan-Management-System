@@ -92,6 +92,235 @@
 //	}
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.CustomerResponseDTO;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.repository.CustomerRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//import org.modelmapper.ModelMapper;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class CustomerServiceImpl implements CustomerService {
+//
+//    @Autowired
+//    private CustomerRepository customerRepository;
+//
+//    @Autowired
+//    private UserRepository userRepository;
+//
+//    @Autowired
+//    private LoanOfficerRepository loanOfficerRepository;
+//
+//    private ModelMapper mapper;
+//
+//    private CustomerServiceImpl() {
+//        this.mapper = new ModelMapper();
+//    }
+//
+//    @Override
+//    public CustomerResponseDTO getCustomerById(int id) {
+//        Optional<Customer> customerOpt = customerRepository.findById(id);
+//        if (customerOpt.isEmpty()) {
+//            throw new RuntimeException("Customer not found with ID: " + id);
+//        }
+//        Customer customer = customerOpt.get();
+//
+//        mapper.typeMap(Customer.class, CustomerResponseDTO.class)
+//              .addMapping(src -> src.getUser().getEmail(), CustomerResponseDTO::setEmail)
+//              .addMapping(src -> src.getUser().getUsername(), CustomerResponseDTO::setUsername)
+//              .addMapping(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : null, CustomerResponseDTO::setLoanOfficerId);
+//        return mapper.map(customer, CustomerResponseDTO.class);
+//    }
+//
+//    @Override
+//    public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
+//        List<Customer> customers = customerRepository.findByLoanOfficerId(loanOfficerId); // Now defined
+//        mapper.typeMap(Customer.class, CustomerResponseDTO.class)
+//              .addMapping(src -> src.getUser().getEmail(), CustomerResponseDTO::setEmail)
+//              .addMapping(src -> src.getUser().getUsername(), CustomerResponseDTO::setUsername)
+//              .addMapping(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : null, CustomerResponseDTO::setLoanOfficerId);
+//        return customers.stream()
+//                .map(customer -> mapper.map(customer, CustomerResponseDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public void assignLoanOfficer(int customerId, int loanOfficerId) {
+//        Optional<Customer> customerOpt = customerRepository.findById(customerId);
+//        if (customerOpt.isEmpty()) {
+//            throw new RuntimeException("Customer not found with ID: " + customerId);
+//        }
+//        Customer customer = customerOpt.get();
+//
+//        Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(loanOfficerId);
+//        if (loanOfficerOpt.isEmpty()) {
+//            throw new RuntimeException("Loan Officer not found with ID: " + loanOfficerId);
+//        }
+//        LoanOfficer loanOfficer = loanOfficerOpt.get();
+//
+//        customer.setLoanOfficer(loanOfficer);
+//        customerRepository.save(customer);
+//    }
+//}
+
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.CustomerResponseDTO;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.repository.CustomerRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//import org.modelmapper.ModelMapper;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class CustomerServiceImpl implements CustomerService {
+//
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//
+//	@Autowired
+//	private UserRepository userRepository;
+//
+//	@Autowired
+//	private LoanOfficerRepository loanOfficerRepository;
+//
+//	private final ModelMapper mapper;
+//
+//	public CustomerServiceImpl() {
+//		this.mapper = new ModelMapper();
+//		// Configure mapping once in constructor
+//		mapper.typeMap(Customer.class, CustomerResponseDTO.class).addMappings(mapping -> {
+//			mapping.map(Customer::getId, CustomerResponseDTO::setId); // Explicit ID mapping
+//			mapping.map(src -> src.getUser() != null ? src.getUser().getEmail() : null, CustomerResponseDTO::setEmail);
+//			mapping.map(src -> src.getUser() != null ? src.getUser().getUsername() : null,
+//					CustomerResponseDTO::setUsername);
+//			mapping.map(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : 0,
+//					CustomerResponseDTO::setLoanOfficerId);
+//		});
+//	}
+//
+//	@Override
+//	public CustomerResponseDTO getCustomerById(int id) {
+//		Optional<Customer> customerOpt = customerRepository.findById(id);
+//		if (customerOpt.isEmpty()) {
+//			throw new RuntimeException("Customer not found with ID: " + id);
+//		}
+//		Customer customer = customerOpt.get();
+//		return mapper.map(customer, CustomerResponseDTO.class);
+//	}
+//
+//	@Override
+//	public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
+//		List<Customer> customers = customerRepository.findByLoanOfficerId(loanOfficerId);
+//		return customers.stream().map(customer -> mapper.map(customer, CustomerResponseDTO.class))
+//				.collect(Collectors.toList());
+//	}
+//
+//	@Override
+//	public void assignLoanOfficer(int customerId, int loanOfficerId) {
+//		Optional<Customer> customerOpt = customerRepository.findById(customerId);
+//		if (customerOpt.isEmpty()) {
+//			throw new RuntimeException("Customer not found with ID: " + customerId);
+//		}
+//		Customer customer = customerOpt.get();
+//
+//		Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(loanOfficerId);
+//		if (loanOfficerOpt.isEmpty()) {
+//			throw new RuntimeException("Loan Officer not found with ID: " + loanOfficerId);
+//		}
+//		LoanOfficer loanOfficer = loanOfficerOpt.get();
+//
+//		customer.setLoanOfficer(loanOfficer);
+//		customerRepository.save(customer);
+//	}
+//}
+
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.CustomerResponseDTO;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.repository.CustomerRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//import org.hibernate.Hibernate;
+//import org.modelmapper.ModelMapper;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class CustomerServiceImpl implements CustomerService {
+//
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//	
+//	@Autowired
+//	private LoanOfficerRepository loanOfficerRepository;
+//
+//	private final ModelMapper mapper;
+//
+//	public CustomerServiceImpl() {
+//		this.mapper = new ModelMapper();
+//		// No custom typeMap; rely on default mapping with proxy handling
+//	}
+//
+//	@Override
+//	public CustomerResponseDTO getCustomerById(int id) {
+//		Optional<Customer> customerOpt = customerRepository.findById(id);
+//		if (customerOpt.isEmpty()) {
+//			throw new RuntimeException("Customer not found with ID: " + id);
+//		}
+//		// Unproxy to ensure ModelMapper works with the real Customer instance
+//		Customer customer = (Customer) Hibernate.unproxy(customerOpt.get());
+//		return mapper.map(customer, CustomerResponseDTO.class);
+//	}
+//
+//	@Override
+//	public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
+//		List<Customer> customers = customerRepository.findByLoanOfficerId(loanOfficerId);
+//		return customers.stream().map(customer -> mapper.map(Hibernate.unproxy(customer), CustomerResponseDTO.class))
+//				.collect(Collectors.toList());
+//	}
+//
+//	@Override
+//	public void assignLoanOfficer(int customerId, int loanOfficerId) {
+//		Optional<Customer> customerOpt = customerRepository.findById(customerId);
+//		if (customerOpt.isEmpty()) {
+//			throw new RuntimeException("Customer not found with ID: " + customerId);
+//		}
+//		Customer customer = customerOpt.get();
+//
+//		Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(loanOfficerId);
+//		if (loanOfficerOpt.isEmpty()) {
+//			throw new RuntimeException("Loan Officer not found with ID: " + loanOfficerId);
+//		}
+//		LoanOfficer loanOfficer = loanOfficerOpt.get();
+//
+//		customer.setLoanOfficer(loanOfficer);
+//		customerRepository.save(customer);
+//	}
+//}
+
 package com.aurionpro.lms.service;
 
 import com.aurionpro.lms.dto.CustomerResponseDTO;
@@ -99,7 +328,7 @@ import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.LoanOfficer;
 import com.aurionpro.lms.repository.CustomerRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
-import com.aurionpro.lms.repository.UserRepository;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,63 +340,60 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+	@Autowired
+	private CustomerRepository customerRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private LoanOfficerRepository loanOfficerRepository;
 
-    @Autowired
-    private LoanOfficerRepository loanOfficerRepository;
+	private final ModelMapper mapper;
 
-    private ModelMapper mapper;
+	public CustomerServiceImpl() {
+		this.mapper = new ModelMapper();
+		// Configure mapping once in constructor
+		mapper.typeMap(Customer.class, CustomerResponseDTO.class).addMappings(mapping -> {
+			mapping.map(Customer::getId, CustomerResponseDTO::setId); // Explicit ID mapping
+			mapping.map(src -> src.getUser() != null ? src.getUser().getEmail() : null, CustomerResponseDTO::setEmail);
+			mapping.map(src -> src.getUser() != null ? src.getUser().getUsername() : null,
+					CustomerResponseDTO::setUsername);
+			mapping.map(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : 0,
+					CustomerResponseDTO::setLoanOfficerId);
+		});
+	}
 
-    private CustomerServiceImpl() {
-        this.mapper = new ModelMapper();
-    }
+	@Override
+	public CustomerResponseDTO getCustomerById(int id) {
+		Optional<Customer> customerOpt = customerRepository.findById(id);
+		if (customerOpt.isEmpty()) {
+			throw new RuntimeException("Customer not found with ID: " + id);
+		}
+		// Unproxy the Customer object to avoid Hibernate proxy issues
+		Customer customer = (Customer) Hibernate.unproxy(customerOpt.get());
+		return mapper.map(customer, CustomerResponseDTO.class);
+	}
 
-    @Override
-    public CustomerResponseDTO getCustomerById(int id) {
-        Optional<Customer> customerOpt = customerRepository.findById(id);
-        if (customerOpt.isEmpty()) {
-            throw new RuntimeException("Customer not found with ID: " + id);
-        }
-        Customer customer = customerOpt.get();
+	@Override
+	public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
+		List<Customer> customers = customerRepository.findByLoanOfficerId(loanOfficerId);
+		return customers.stream().map(customer -> mapper.map(Hibernate.unproxy(customer), CustomerResponseDTO.class))
+				.collect(Collectors.toList());
+	}
 
-        mapper.typeMap(Customer.class, CustomerResponseDTO.class)
-              .addMapping(src -> src.getUser().getEmail(), CustomerResponseDTO::setEmail)
-              .addMapping(src -> src.getUser().getUsername(), CustomerResponseDTO::setUsername)
-              .addMapping(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : null, CustomerResponseDTO::setLoanOfficerId);
-        return mapper.map(customer, CustomerResponseDTO.class);
-    }
+	@Override
+	public void assignLoanOfficer(int customerId, int loanOfficerId) {
+		Optional<Customer> customerOpt = customerRepository.findById(customerId);
+		if (customerOpt.isEmpty()) {
+			throw new RuntimeException("Customer not found with ID: " + customerId);
+		}
+		Customer customer = customerOpt.get();
 
-    @Override
-    public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
-        List<Customer> customers = customerRepository.findByLoanOfficerId(loanOfficerId); // Now defined
-        mapper.typeMap(Customer.class, CustomerResponseDTO.class)
-              .addMapping(src -> src.getUser().getEmail(), CustomerResponseDTO::setEmail)
-              .addMapping(src -> src.getUser().getUsername(), CustomerResponseDTO::setUsername)
-              .addMapping(src -> src.getLoanOfficer() != null ? src.getLoanOfficer().getId() : null, CustomerResponseDTO::setLoanOfficerId);
-        return customers.stream()
-                .map(customer -> mapper.map(customer, CustomerResponseDTO.class))
-                .collect(Collectors.toList());
-    }
+		Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(loanOfficerId);
+		if (loanOfficerOpt.isEmpty()) {
+			throw new RuntimeException("Loan Officer not found with ID: " + loanOfficerId);
+		}
+		LoanOfficer loanOfficer = loanOfficerOpt.get();
 
-    @Override
-    public void assignLoanOfficer(int customerId, int loanOfficerId) {
-        Optional<Customer> customerOpt = customerRepository.findById(customerId);
-        if (customerOpt.isEmpty()) {
-            throw new RuntimeException("Customer not found with ID: " + customerId);
-        }
-        Customer customer = customerOpt.get();
-
-        Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(loanOfficerId);
-        if (loanOfficerOpt.isEmpty()) {
-            throw new RuntimeException("Loan Officer not found with ID: " + loanOfficerId);
-        }
-        LoanOfficer loanOfficer = loanOfficerOpt.get();
-
-        customer.setLoanOfficer(loanOfficer);
-        customerRepository.save(customer);
-    }
+		customer.setLoanOfficer(loanOfficer);
+		customerRepository.save(customer);
+	}
 }

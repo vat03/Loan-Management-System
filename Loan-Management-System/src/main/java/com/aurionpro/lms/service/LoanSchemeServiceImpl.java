@@ -40,7 +40,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		if (adminOpt.isEmpty()) {
 			throw new RuntimeException("User not found with ID: " + adminId);
 		}
-		Optional<Admin> adminEntityOpt = adminRepository.findByUserId(adminId);
+		Optional<Admin> adminEntityOpt = adminRepository.findById(adminId);
 		if (adminEntityOpt.isEmpty()) {
 			throw new RuntimeException("Admin not found with ID: " + adminId);
 		}

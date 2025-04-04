@@ -26,9 +26,20 @@
 
 package com.aurionpro.lms.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,8 +60,8 @@ public class Admin {
 	private User user;
 
 	@OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-	private List<LoanOfficer> loanOfficers;
+	private List<LoanOfficer> loanOfficers = new ArrayList<>();
 
 	@OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-	private List<LoanScheme> loanSchemes;
+	private List<LoanScheme> loanSchemes = new ArrayList<>();
 }
