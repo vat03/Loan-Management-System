@@ -15,13 +15,13 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping("/{id}")
+	@GetMapping("/getCustomerById/{id}")
 	public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable int id) {
 		CustomerResponseDTO responseDTO = customerService.getCustomerById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	@GetMapping("/loan-officer/{loanOfficerId}")
+	@GetMapping("/getCustomerByLoanOfficerId/loan-officer/{loanOfficerId}")
 	public ResponseEntity<List<CustomerResponseDTO>> getCustomersByLoanOfficerId(@PathVariable int loanOfficerId) {
 		List<CustomerResponseDTO> responseDTOs = customerService.getCustomersByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);

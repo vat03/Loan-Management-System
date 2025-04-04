@@ -24,9 +24,6 @@
 //	private List<LoanScheme> loanSchemes;
 //}
 
-
-
-
 package com.aurionpro.lms.entity;
 
 import java.util.List;
@@ -41,18 +38,19 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "admin")
-public class Admin { // Removed extends UserType
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Admin {
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+	@OneToOne
+	@JoinColumn(name = "user_id", nullable = false, unique = true)
+	private User user;
 
-    @OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private List<LoanOfficer> loanOfficers;
+	@OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+	private List<LoanOfficer> loanOfficers;
 
-    @OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-    private List<LoanScheme> loanSchemes;
+	@OneToMany(mappedBy = "admin", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+	private List<LoanScheme> loanSchemes;
 }

@@ -247,6 +247,126 @@
 
 
 
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
+//import com.aurionpro.lms.dto.LoanOfficerResponseDTO;
+//import com.aurionpro.lms.entity.Admin;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.entity.Role;
+//import com.aurionpro.lms.entity.User;
+//import com.aurionpro.lms.repository.AdminRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.RoleRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//import org.modelmapper.ModelMapper;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.Collections;
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class LoanOfficerServiceImpl implements LoanOfficerService {
+//
+//    @Autowired
+//    private UserRepository userRepository;
+//
+//    @Autowired
+//    private RoleRepository roleRepository;
+//
+//    @Autowired
+//    private AdminRepository adminRepository;
+//
+//    @Autowired
+//    private LoanOfficerRepository loanOfficerRepository;
+//
+//    private ModelMapper mapper;
+//
+//    private LoanOfficerServiceImpl() {
+//        this.mapper = new ModelMapper();
+//    }
+//
+//    @Override
+//    public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
+//        Optional<Admin> adminOpt = adminRepository.findById(adminId);
+//        if (adminOpt.isEmpty()) {
+//            throw new RuntimeException("Admin not found with ID: " + adminId);
+//        }
+//        Admin admin = adminOpt.get();
+//
+//        Optional<Role> roleOpt = roleRepository.findByRoleName("LOAN_OFFICER");
+//        if (roleOpt.isEmpty()) {
+//            throw new RuntimeException("Role not found: LOAN_OFFICER");
+//        }
+//        Role role = roleOpt.get();
+//
+//        User user = mapper.map(requestDTO, User.class);
+//        user.setRole(role);
+//        user = userRepository.save(user);
+//
+//        LoanOfficer loanOfficer = new LoanOfficer();
+//        loanOfficer.setUser(user);
+//        loanOfficer.setAdmin(admin);
+//        loanOfficer = loanOfficerRepository.save(loanOfficer);
+//
+//        mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
+//              .addMapping(User::getId, LoanOfficerResponseDTO::setId)
+//              .addMapping(src -> admin.getId(), LoanOfficerResponseDTO::setAdminId)
+//              .addMapping(src -> Collections.emptyList(), LoanOfficerResponseDTO::setCustomerIds);
+//        return mapper.map(user, LoanOfficerResponseDTO.class);
+//    }
+//
+//    @Override
+//    public LoanOfficerResponseDTO getLoanOfficerById(int id) {
+//        Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(id);
+//        if (loanOfficerOpt.isEmpty()) {
+//            throw new RuntimeException("Loan Officer not found with ID: " + id);
+//        }
+//        LoanOfficer loanOfficer = loanOfficerOpt.get();
+//        User user = loanOfficer.getUser();
+//
+//        mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
+//              .addMapping(User::getId, LoanOfficerResponseDTO::setId)
+//              .addMapping(src -> loanOfficer.getAdmin().getId(), LoanOfficerResponseDTO::setAdminId)
+//              .addMapping(src -> loanOfficer.getCustomers().stream().map(Customer::getId)
+//                      .collect(Collectors.toList()), LoanOfficerResponseDTO::setCustomerIds);
+//        return mapper.map(user, LoanOfficerResponseDTO.class);
+//    }
+//
+//    @Override
+//    public List<LoanOfficerResponseDTO> getLoanOfficersByAdminId(int adminId) {
+//        Optional<Admin> adminOpt = adminRepository.findById(adminId);
+//        if (adminOpt.isEmpty()) {
+//            throw new RuntimeException("Admin not found with ID: " + adminId);
+//        }
+//        Admin admin = adminOpt.get();
+//
+//        List<LoanOfficer> loanOfficers = loanOfficerRepository.findByAdminId(adminId);
+//
+//        return loanOfficers.stream().map(loanOfficer -> {
+//            User user = loanOfficer.getUser();
+//            mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
+//                  .addMapping(User::getId, LoanOfficerResponseDTO::setId)
+//                  .addMapping(src -> loanOfficer.getAdmin().getId(), LoanOfficerResponseDTO::setAdminId)
+//                  .addMapping(src -> loanOfficer.getCustomers().stream().map(Customer::getId)
+//                          .collect(Collectors.toList()), LoanOfficerResponseDTO::setCustomerIds);
+//            return mapper.map(user, LoanOfficerResponseDTO.class);
+//        }).collect(Collectors.toList());
+//    }
+//}
+
+
+
+
+
+
+
+
+
 package com.aurionpro.lms.service;
 
 import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
@@ -306,16 +426,16 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 
         User user = mapper.map(requestDTO, User.class);
         user.setRole(role);
-        user = userRepository.save(user); // Save User first
+        user = userRepository.save(user);
 
         LoanOfficer loanOfficer = new LoanOfficer();
         loanOfficer.setUser(user);
-        loanOfficer.setAdmin(admin); // Sets admin_id to admin.id (e.g., 1)
+        loanOfficer.setAdmin(admin);
         loanOfficer = loanOfficerRepository.save(loanOfficer);
 
         mapper.typeMap(User.class, LoanOfficerResponseDTO.class)
-              .addMapping(User::getId, LoanOfficerResponseDTO::setId) // User ID (e.g., 2)
-              .addMapping(src -> admin.getId(), LoanOfficerResponseDTO::setAdminId) // Admin ID (e.g., 1)
+              .addMapping(User::getId, LoanOfficerResponseDTO::setId)
+              .addMapping(src -> admin.getId(), LoanOfficerResponseDTO::setAdminId)
               .addMapping(src -> Collections.emptyList(), LoanOfficerResponseDTO::setCustomerIds);
         return mapper.map(user, LoanOfficerResponseDTO.class);
     }

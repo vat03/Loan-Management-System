@@ -9,6 +9,7 @@ import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.repository.DocumentRepository;
 import com.aurionpro.lms.repository.DocumentTypeRepository;
 import com.aurionpro.lms.repository.UserRepository;
+import com.aurionpro.lms.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,11 @@ public class DocumentServiceImpl implements DocumentService {
 	@Autowired
 	private DocumentTypeRepository documentTypeRepository;
 
+	@Autowired
+	private CustomerRepository customerRepository;
+
 	private ModelMapper mapper;
-	
+
 	private DocumentServiceImpl() {
 		this.mapper = new ModelMapper();
 	}
@@ -38,10 +42,14 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public DocumentResponseDTO uploadDocument(DocumentRequestDTO requestDTO) {
 		Optional<User> customerOpt = userRepository.findById(requestDTO.getCustomerId());
-		if (customerOpt.isEmpty() || !(customerOpt.get().getUserType() instanceof Customer)) {
+		if (customerOpt.isEmpty()) {
+			throw new RuntimeException("User not found with ID: " + requestDTO.getCustomerId());
+		}
+		Optional<Customer> customerEntityOpt = customerRepository.findByUserId(requestDTO.getCustomerId());
+		if (customerEntityOpt.isEmpty()) {
 			throw new RuntimeException("Customer not found with ID: " + requestDTO.getCustomerId());
 		}
-		Customer customer = (Customer) customerOpt.get().getUserType();
+		Customer customer = customerEntityOpt.get();
 
 		Optional<DocumentType> docTypeOpt = documentTypeRepository.findById(requestDTO.getDocumentTypeId());
 		if (docTypeOpt.isEmpty()) {
@@ -55,7 +63,6 @@ public class DocumentServiceImpl implements DocumentService {
 
 		document = documentRepository.save(document);
 
-		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return mapper.map(document, DocumentResponseDTO.class);
@@ -69,7 +76,6 @@ public class DocumentServiceImpl implements DocumentService {
 		}
 		Document document = docOpt.get();
 
-		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return mapper.map(document, DocumentResponseDTO.class);
@@ -78,7 +84,6 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public List<DocumentResponseDTO> getDocumentsByCustomerId(int customerId) {
 		List<Document> documents = documentRepository.findByCustomerId(customerId);
-		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(Document.class, DocumentResponseDTO.class).addMapping(src -> src.getDocumentType().getTypeName(),
 				DocumentResponseDTO::setDocumentTypeName);
 		return documents.stream().map(doc -> mapper.map(doc, DocumentResponseDTO.class)).collect(Collectors.toList());

@@ -21,44 +21,49 @@ public class AdminServiceImpl implements AdminService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired // Fixed: Autowire AdminRepository
 	private AdminRepository adminRepository;
-	
+
 	private ModelMapper mapper;
-	
-	private AdminServiceImpl()
-	{
+
+	private AdminServiceImpl() {
 		this.mapper = new ModelMapper();
 	}
-	
+
 	@Override
 	public AdminResponseDTO getAdminById(int id) {
 		Optional<User> userOpt = userRepository.findById(id);
-		if (userOpt.isEmpty() || !(userOpt.get().getUserType() instanceof Admin)) {
-			throw new RuntimeException("Admin not found with ID: " + id);
+		if (userOpt.isEmpty()) {
+			throw new RuntimeException("User not found with ID: " + id);
 		}
 		User user = userOpt.get();
-		Admin admin = (Admin) user.getUserType();
+		Optional<Admin> adminOpt = adminRepository.findByUserId(id);
+		if (adminOpt.isEmpty()) {
+			throw new RuntimeException("Admin not found with ID: " + id);
+		}
+		Admin admin = adminOpt.get();
 
-		//ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(User.class, AdminResponseDTO.class)
-				.addMapping(src -> ((Admin) src.getUserType()).getLoanOfficers().stream().map(LoanOfficer::getId)
-						.collect(Collectors.toList()), AdminResponseDTO::setLoanOfficerIds)
-				.addMapping(src -> ((Admin) src.getUserType()).getLoanSchemes().stream().map(LoanScheme::getId)
-						.collect(Collectors.toList()), AdminResponseDTO::setLoanSchemeIds);
+				.addMapping(
+						src -> admin.getLoanOfficers().stream().map(LoanOfficer::getId).collect(Collectors.toList()),
+						AdminResponseDTO::setLoanOfficerIds)
+				.addMapping(src -> admin.getLoanSchemes().stream().map(LoanScheme::getId).collect(Collectors.toList()),
+						AdminResponseDTO::setLoanSchemeIds);
 		return mapper.map(user, AdminResponseDTO.class);
 	}
 
 	@Override
 	public List<AdminResponseDTO> getAllAdmins() {
-		List<User> admins = userRepository.findAll().stream().filter(user -> user.getUserType() instanceof Admin)
-				.collect(Collectors.toList());
-
-		//ModelMapper mapper = new ModelMapper();
-		mapper.typeMap(User.class, AdminResponseDTO.class)
-				.addMapping(src -> ((Admin) src.getUserType()).getLoanOfficers().stream().map(LoanOfficer::getId)
-						.collect(Collectors.toList()), AdminResponseDTO::setLoanOfficerIds)
-				.addMapping(src -> ((Admin) src.getUserType()).getLoanSchemes().stream().map(LoanScheme::getId)
-						.collect(Collectors.toList()), AdminResponseDTO::setLoanSchemeIds);
-		return admins.stream().map(user -> mapper.map(user, AdminResponseDTO.class)).collect(Collectors.toList());
+		List<Admin> admins = adminRepository.findAll();
+		return admins.stream().map(admin -> {
+			User user = admin.getUser();
+			mapper.typeMap(User.class, AdminResponseDTO.class)
+					.addMapping(src -> admin.getLoanOfficers().stream().map(LoanOfficer::getId)
+							.collect(Collectors.toList()), AdminResponseDTO::setLoanOfficerIds)
+					.addMapping(
+							src -> admin.getLoanSchemes().stream().map(LoanScheme::getId).collect(Collectors.toList()),
+							AdminResponseDTO::setLoanSchemeIds);
+			return mapper.map(user, AdminResponseDTO.class);
+		}).collect(Collectors.toList());
 	}
 }

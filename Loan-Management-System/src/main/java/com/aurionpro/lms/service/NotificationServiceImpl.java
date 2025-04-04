@@ -3,9 +3,11 @@ package com.aurionpro.lms.service;
 import com.aurionpro.lms.entity.Loan;
 import com.aurionpro.lms.entity.LoanPayment;
 import com.aurionpro.lms.entity.User;
+import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.repository.LoanPaymentRepository;
 import com.aurionpro.lms.repository.LoanRepository;
 import com.aurionpro.lms.repository.UserRepository;
+import com.aurionpro.lms.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	@Value("${mail.smtp.host}")
 	private String smtpHost;
@@ -68,11 +73,12 @@ public class NotificationServiceImpl implements NotificationService {
 			throw new RuntimeException("Loan not found with ID: " + loanId);
 		}
 		Loan loan = loanOpt.get();
-
-		User customerUser = userRepository.findAll().stream()
-				.filter(user -> user.getUserType().getId() == loan.getCustomer().getId()) // Fixed: use == instead of
-																							// equals()
-				.findFirst().orElseThrow(() -> new RuntimeException("Customer not found for loan ID: " + loanId));
+		Customer customer = loan.getCustomer();
+		Optional<User> customerUserOpt = userRepository.findById(customer.getUser().getId());
+		if (customerUserOpt.isEmpty()) {
+			throw new RuntimeException("Customer user not found for loan ID: " + loanId);
+		}
+		User customerUser = customerUserOpt.get();
 
 		Session session = getMailSession();
 		try {
@@ -98,12 +104,12 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 		LoanPayment payment = paymentOpt.get();
 		Loan loan = payment.getLoan();
-
-		User customerUser = userRepository.findAll().stream()
-				.filter(user -> user.getUserType().getId() == loan.getCustomer().getId()) // Fixed: use == instead of
-																							// equals()
-				.findFirst()
-				.orElseThrow(() -> new RuntimeException("Customer not found for loan ID: " + loan.getLoanId()));
+		Customer customer = loan.getCustomer();
+		Optional<User> customerUserOpt = userRepository.findById(customer.getUser().getId());
+		if (customerUserOpt.isEmpty()) {
+			throw new RuntimeException("Customer user not found for loan ID: " + loan.getLoanId());
+		}
+		User customerUser = customerUserOpt.get();
 
 		Session session = getMailSession();
 		try {

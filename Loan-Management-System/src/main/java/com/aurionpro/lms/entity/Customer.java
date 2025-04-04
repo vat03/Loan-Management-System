@@ -10,8 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "customer")
-public class Customer extends UserType {
+public class Customer {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@OneToOne
+	@JoinColumn(name = "user_id", nullable = false, unique = true)
+	private User user;
+
 	@ManyToOne
-	@JoinColumn(name = "loan_officer_id", nullable = false)
+	@JoinColumn(name = "loan_officer_id") 
 	private LoanOfficer loanOfficer;
 }

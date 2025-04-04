@@ -17,7 +17,7 @@ public class LoanController {
 	@Autowired
 	private LoanService loanService;
 
-	@PostMapping
+	@PostMapping("/apply")
 	public ResponseEntity<LoanResponseDTO> applyForLoan(@RequestBody LoanRequestDTO requestDTO) {
 		LoanResponseDTO responseDTO = loanService.applyForLoan(requestDTO);
 		return ResponseEntity.status(201).body(responseDTO);
@@ -30,19 +30,19 @@ public class LoanController {
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/getByLoanId/{id}")
 	public ResponseEntity<LoanResponseDTO> getLoanById(@PathVariable int id) {
 		LoanResponseDTO responseDTO = loanService.getLoanById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	@GetMapping("/customer/{customerId}")
+	@GetMapping("/getByCustomerId/customer/{customerId}")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@PathVariable int customerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByCustomerId(customerId);
 		return ResponseEntity.ok(responseDTOs);
 	}
 
-	@GetMapping("/loan-officer/{loanOfficerId}")
+	@GetMapping("/getByLoanOfficerId/loan-officer/{loanOfficerId}")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@PathVariable int loanOfficerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);

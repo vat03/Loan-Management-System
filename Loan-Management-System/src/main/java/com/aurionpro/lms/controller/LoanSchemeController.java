@@ -16,20 +16,20 @@ public class LoanSchemeController {
 	@Autowired
 	private LoanSchemeService loanSchemeService;
 
-	@PostMapping
+	@PostMapping("/create")
 	public ResponseEntity<LoanSchemeResponseDTO> createLoanScheme(@RequestParam int adminId,
 			@RequestBody LoanSchemeRequestDTO requestDTO) {
 		LoanSchemeResponseDTO responseDTO = loanSchemeService.createLoanScheme(adminId, requestDTO);
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/getByLoanId/{id}")
 	public ResponseEntity<LoanSchemeResponseDTO> getLoanSchemeById(@PathVariable int id) {
 		LoanSchemeResponseDTO responseDTO = loanSchemeService.getLoanSchemeById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	@GetMapping("/admin/{adminId}")
+	@GetMapping("/getByAdminId/admin/{adminId}")
 	public ResponseEntity<List<LoanSchemeResponseDTO>> getLoanSchemesByAdminId(@PathVariable int adminId) {
 		List<LoanSchemeResponseDTO> responseDTOs = loanSchemeService.getLoanSchemesByAdminId(adminId);
 		return ResponseEntity.ok(responseDTOs);

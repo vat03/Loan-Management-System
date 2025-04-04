@@ -84,7 +84,6 @@ import com.aurionpro.lms.dto.UserRequestDTO;
 import com.aurionpro.lms.dto.UserResponseDTO;
 import com.aurionpro.lms.entity.Admin;
 import com.aurionpro.lms.entity.Customer;
-import com.aurionpro.lms.entity.LoanOfficer;
 import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.repository.AdminRepository;
@@ -143,8 +142,6 @@ public class UserServiceImpl implements UserService {
 			adminRepository.save(admin);
 			break;
 		case "LOAN_OFFICER":
-			// Loan officers need an admin, so this will be handled in
-			// LoanOfficerServiceImpl
 			throw new RuntimeException("Use LoanOfficerService to register a Loan Officer");
 		case "CUSTOMER":
 			Customer customer = new Customer();

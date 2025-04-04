@@ -29,7 +29,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	private AdminRepository adminRepository;
 
 	private ModelMapper mapper;
-	
+
 	private LoanSchemeServiceImpl() {
 		this.mapper = new ModelMapper();
 	}
@@ -37,17 +37,20 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	@Override
 	public LoanSchemeResponseDTO createLoanScheme(int adminId, LoanSchemeRequestDTO requestDTO) {
 		Optional<User> adminOpt = userRepository.findById(adminId);
-		if (adminOpt.isEmpty() || !(adminOpt.get().getUserType() instanceof Admin)) {
+		if (adminOpt.isEmpty()) {
+			throw new RuntimeException("User not found with ID: " + adminId);
+		}
+		Optional<Admin> adminEntityOpt = adminRepository.findByUserId(adminId);
+		if (adminEntityOpt.isEmpty()) {
 			throw new RuntimeException("Admin not found with ID: " + adminId);
 		}
-		Admin admin = (Admin) adminOpt.get().getUserType();
+		Admin admin = adminEntityOpt.get();
 
 		LoanScheme loanScheme = mapper.map(requestDTO, LoanScheme.class);
 		loanScheme.setAdmin(admin);
 
 		loanScheme = loanSchemeRepository.save(loanScheme);
 
-//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return mapper.map(loanScheme, LoanSchemeResponseDTO.class);
@@ -61,7 +64,6 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		}
 		LoanScheme loanScheme = schemeOpt.get();
 
-//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return mapper.map(loanScheme, LoanSchemeResponseDTO.class);
@@ -70,7 +72,6 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	@Override
 	public List<LoanSchemeResponseDTO> getLoanSchemesByAdminId(int adminId) {
 		List<LoanScheme> schemes = loanSchemeRepository.findByAdminId(adminId);
-//		ModelMapper mapper = new ModelMapper();
 		mapper.typeMap(LoanScheme.class, LoanSchemeResponseDTO.class).addMapping(src -> src.getAdmin().getId(),
 				LoanSchemeResponseDTO::setAdminId);
 		return schemes.stream().map(scheme -> mapper.map(scheme, LoanSchemeResponseDTO.class))
