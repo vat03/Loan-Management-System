@@ -1,10 +1,25 @@
+//package com.aurionpro.lms.repository;
+//
+//import com.aurionpro.lms.entity.Customer;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//import java.util.List;
+//
+//public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+//	List<Customer> findByLoanOfficerId(Integer loanOfficerId);
+//}
+
+
+
+
 package com.aurionpro.lms.repository;
 
-import com.aurionpro.lms.entity.Customer;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.aurionpro.lms.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-	List<Customer> findByLoanOfficerId(Integer loanOfficerId);
+    Optional<Customer> findByUserId(int userId);
 }
