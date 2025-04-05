@@ -23,7 +23,7 @@ public class LoanOfficerController {
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
-	@GetMapping("getLoanOfficerById/{id}")
+	@GetMapping("/getLoanOfficerById/{id}")
 	public ResponseEntity<LoanOfficerResponseDTO> getLoanOfficerById(@PathVariable int id) {
 		LoanOfficerResponseDTO responseDTO = loanOfficerService.getLoanOfficerById(id);
 		return ResponseEntity.ok(responseDTO);

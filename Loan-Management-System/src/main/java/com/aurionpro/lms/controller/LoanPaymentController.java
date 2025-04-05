@@ -15,7 +15,7 @@ public class LoanPaymentController {
 	@Autowired
 	private LoanPaymentService loanPaymentService;
 
-	@PostMapping("/loan/{loanId}")
+	@PostMapping("/makePayment/loan/{loanId}")
 	public ResponseEntity<Void> createLoanPayments(@PathVariable int loanId) {
 		loanPaymentService.createLoanPayments(loanId);
 		return ResponseEntity.status(201).build();

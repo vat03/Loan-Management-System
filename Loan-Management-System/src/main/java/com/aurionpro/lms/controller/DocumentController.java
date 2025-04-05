@@ -16,19 +16,19 @@ public class DocumentController {
 	@Autowired
 	private DocumentService documentService;
 
-	@PostMapping
+	@PostMapping("/upload")
 	public ResponseEntity<DocumentResponseDTO> uploadDocument(@RequestBody DocumentRequestDTO requestDTO) {
 		DocumentResponseDTO responseDTO = documentService.uploadDocument(requestDTO);
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/getById/{id}")
 	public ResponseEntity<DocumentResponseDTO> getDocumentById(@PathVariable int id) {
 		DocumentResponseDTO responseDTO = documentService.getDocumentById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	@GetMapping("/customer/{customerId}")
+	@GetMapping("/getByCustomerId/customer/{customerId}")
 	public ResponseEntity<List<DocumentResponseDTO>> getDocumentsByCustomerId(@PathVariable int customerId) {
 		List<DocumentResponseDTO> responseDTOs = documentService.getDocumentsByCustomerId(customerId);
 		return ResponseEntity.ok(responseDTOs);
