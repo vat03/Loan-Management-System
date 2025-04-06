@@ -1,5 +1,7 @@
 package com.aurionpro.lms.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +22,7 @@ public class LoanScheme {
 	private String schemeName;
 
 	@Column(nullable = false)
-	private Double interestRate;
+	private BigDecimal interestRate;
 
 	@Column(nullable = false)
 	private Integer tenureMonths;

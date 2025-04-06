@@ -181,7 +181,6 @@ import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.CustomerRepository;
-import com.aurionpro.lms.repository.LoanOfficerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,9 +199,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private AdminRepository adminRepository;
-
-	@Autowired
-	private LoanOfficerRepository loanOfficerRepository;
 
 	@Autowired
 	private CustomerRepository customerRepository;

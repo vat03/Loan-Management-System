@@ -54,7 +54,6 @@ package com.aurionpro.lms.service;
 import com.aurionpro.lms.entity.Loan;
 import com.aurionpro.lms.entity.LoanOfficer;
 import com.aurionpro.lms.repository.LoanRepository;
-import com.aurionpro.lms.repository.UserRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,10 +66,7 @@ import java.util.Optional;
 
 @Service
 public class ReportServiceImpl implements ReportService {
-
-	@Autowired
-	private UserRepository userRepository;
-
+	
 	@Autowired
 	private LoanRepository loanRepository;
 
