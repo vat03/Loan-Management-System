@@ -414,9 +414,9 @@ public class NotificationServiceImpl implements NotificationService {
 			message.setText(String.format("Dear %s,\n\n"
 					+ "We are pleased to inform you that your loan (ID: %d) has been approved. Below is your installment plan:\n\n"
 					+ "Customer Username: %s\n" + "Customer Email ID: %s\n" + "Loan Amount Approved: %s\n"
-					+ "Tenure: %d months\n" + "Interest Rate: %s%%\n" + "Installments:\n%s\n"
-					+ "Penalty (if paid after due date): %s%% (%s per late installment)\n"
-					+ "Loan Officer Email: %s (for any grievances)\n\n" + "Regards,\nLoan Management Team",
+					+ "Tenure: %d months\n" + "Interest Rate: %s%%\n" + "\nInstallments:\n%s\n"
+					+ "\nPenalty (if paid after due date): %s%% (%s per late installment)\n"
+					+ "\nLoan Officer Email: %s (for any grievances)\n\n" + "Regards,\nLoan Management Team",
 					customerUser.getUsername(), loanId, customerUser.getUsername(), customerUser.getEmail(),
 					loan.getAmount(), loan.getLoanScheme().getTenureMonths(), loan.getLoanScheme().getInterestRate(),
 					installmentList, payments.get(0).getPenaltyPercentage(),
@@ -426,6 +426,40 @@ public class NotificationServiceImpl implements NotificationService {
 			Transport.send(message);
 		} catch (MessagingException e) {
 			throw new RuntimeException("Failed to send installment plan email: " + e.getMessage());
+		}
+	}
+
+	// Only showing the updated method
+	@Override
+	public void sendPaymentConfirmationEmail(int loanPaymentId, BigDecimal amountPaid) {
+		Optional<LoanPayment> paymentOpt = loanPaymentRepository.findById(loanPaymentId);
+		if (paymentOpt.isEmpty()) {
+			throw new RuntimeException("Loan payment not found with ID: " + loanPaymentId);
+		}
+		LoanPayment payment = paymentOpt.get();
+		Loan loan = payment.getLoan();
+		Customer customer = loan.getCustomer();
+		Optional<User> customerUserOpt = userRepository.findById(customer.getUser().getId());
+		if (customerUserOpt.isEmpty()) {
+			throw new RuntimeException("Customer user not found for loan ID: " + loan.getLoanId());
+		}
+		User customerUser = customerUserOpt.get();
+
+		Session session = getMailSession();
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(smtpUsername));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(customerUser.getEmail()));
+			message.setSubject("Payment Confirmation");
+			message.setText(String.format(
+					"Dear %s,\n\n" + "We have received your payment for Loan ID: %d, due on %s.\n" + "Base Amount: %s\n"
+							+ "Penalty Amount: %s\n" + "Total Amount Paid: %s\n" + "Payment Status: %s\n\n"
+							+ "Thank you for your payment.\n\nRegards,\nLoan Management Team",
+					customerUser.getUsername(), loan.getLoanId(), payment.getDueDate(), payment.getAmount(),
+					payment.getPenaltyAmount(), amountPaid, payment.getStatus()));
+			Transport.send(message);
+		} catch (MessagingException e) {
+			throw new RuntimeException("Failed to send payment confirmation email: " + e.getMessage());
 		}
 	}
 }

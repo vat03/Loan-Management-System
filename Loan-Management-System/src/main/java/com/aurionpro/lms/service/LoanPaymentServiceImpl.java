@@ -147,20 +147,22 @@
 
 package com.aurionpro.lms.service;
 
-import com.aurionpro.lms.dto.LoanResponseDTO;
-import com.aurionpro.lms.entity.Loan;
-import com.aurionpro.lms.entity.LoanPayment;
-import com.aurionpro.lms.repository.LoanPaymentRepository;
-import com.aurionpro.lms.repository.LoanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.aurionpro.lms.dto.LoanPaymentResponseDTO;
+import com.aurionpro.lms.dto.LoanResponseDTO;
+import com.aurionpro.lms.entity.Loan;
+import com.aurionpro.lms.entity.LoanPayment;
+import com.aurionpro.lms.repository.LoanPaymentRepository;
+import com.aurionpro.lms.repository.LoanRepository;
 
 @Service
 public class LoanPaymentServiceImpl implements LoanPaymentService {
@@ -170,6 +172,9 @@ public class LoanPaymentServiceImpl implements LoanPaymentService {
 
 	@Autowired
 	private LoanPaymentRepository loanPaymentRepository;
+
+	@Autowired
+	private NotificationService notificationService;
 
 	@Override
 	public void createLoanPayments(int loanId) {
@@ -226,5 +231,55 @@ public class LoanPaymentServiceImpl implements LoanPaymentService {
 					dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
 					return dto;
 				}).collect(Collectors.toList());
+	}
+
+	@Override
+	public void processRepayment(int loanPaymentId) {
+		Optional<LoanPayment> paymentOpt = loanPaymentRepository.findById(loanPaymentId);
+		if (paymentOpt.isEmpty()) {
+			throw new RuntimeException("Loan payment not found with ID: " + loanPaymentId);
+		}
+		LoanPayment payment = paymentOpt.get();
+
+		if (!"PENDING".equals(payment.getStatus())) {
+			throw new RuntimeException("Payment with ID: " + loanPaymentId + " is already processed");
+		}
+
+		LocalDate today = LocalDate.now();
+		BigDecimal totalAmountPaid = payment.getAmount();
+
+		// Check if payment is late and apply penalty
+		if (today.isAfter(payment.getDueDate())) {
+			BigDecimal penalty = payment.getAmount().multiply(payment.getPenaltyPercentage())
+					.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+			totalAmountPaid = totalAmountPaid.add(penalty);
+			payment.setStatus("PAID_LATE");
+		} else {
+			payment.setStatus("PAID");
+		}
+
+		loanPaymentRepository.save(payment);
+
+		// Send confirmation email
+		notificationService.sendPaymentConfirmationEmail(loanPaymentId, totalAmountPaid);
+	}
+
+	@Override
+	public List<LoanPaymentResponseDTO> getPaymentsByLoanId(int loanId) {
+		List<LoanPayment> payments = loanPaymentRepository.findByLoanLoanId(loanId);
+		if (payments.isEmpty()) {
+			throw new RuntimeException("No payments found for Loan ID: " + loanId);
+		}
+
+		return payments.stream().map(payment -> {
+			LoanPaymentResponseDTO dto = new LoanPaymentResponseDTO();
+			dto.setId(payment.getId());
+			dto.setLoanId(payment.getLoan().getLoanId());
+			dto.setAmount(payment.getAmount());
+			dto.setDueDate(payment.getDueDate());
+			dto.setStatus(payment.getStatus());
+			dto.setPenaltyAmount(payment.getPenaltyAmount());
+			return dto;
+		}).collect(Collectors.toList());
 	}
 }
