@@ -164,8 +164,6 @@ import com.aurionpro.lms.entity.LoanPayment;
 import com.aurionpro.lms.repository.LoanPaymentRepository;
 import com.aurionpro.lms.repository.LoanRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class LoanPaymentServiceImpl implements LoanPaymentService {
 
@@ -285,5 +283,24 @@ public class LoanPaymentServiceImpl implements LoanPaymentService {
 			dto.setPenaltyAmount(payment.getPenaltyAmount());
 			return dto;
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public BigDecimal getPaymentAmount(int loanPaymentId) {
+		Optional<LoanPayment> paymentOpt = loanPaymentRepository.findById(loanPaymentId);
+		if (paymentOpt.isEmpty()) {
+			throw new RuntimeException("Loan payment not found with ID: " + loanPaymentId);
+		}
+		LoanPayment payment = paymentOpt.get();
+
+		BigDecimal totalAmount = payment.getAmount();
+		LocalDate today = LocalDate.now();
+
+		if ("PENDING".equals(payment.getStatus()) && today.isAfter(payment.getDueDate())) {
+			BigDecimal penalty = payment.getAmount().multiply(payment.getPenaltyPercentage())
+					.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+			totalAmount = totalAmount.add(penalty);
+		}
+		return totalAmount;
 	}
 }

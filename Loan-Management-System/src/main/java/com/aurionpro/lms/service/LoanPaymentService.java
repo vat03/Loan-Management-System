@@ -1,5 +1,6 @@
 package com.aurionpro.lms.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.aurionpro.lms.dto.LoanPaymentResponseDTO;
@@ -13,4 +14,6 @@ public interface LoanPaymentService {
 	void processRepayment(int loanPaymentId);
 	
 	List<LoanPaymentResponseDTO> getPaymentsByLoanId(int loanId);
+	
+	BigDecimal getPaymentAmount(int loanPaymentId);
 }
