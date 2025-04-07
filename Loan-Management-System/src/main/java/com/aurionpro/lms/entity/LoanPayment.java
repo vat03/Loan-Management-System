@@ -72,6 +72,6 @@ public class LoanPayment {
 	@Column(name = "penalty_percentage")
 	private BigDecimal penaltyPercentage; // Penalty if paid late (e.g., 2% of amount)
 	
-	@Column(name = "penalty_amount")
+	@Column(name = "penalty_amount", nullable = true)
     private BigDecimal penaltyAmount;
 }

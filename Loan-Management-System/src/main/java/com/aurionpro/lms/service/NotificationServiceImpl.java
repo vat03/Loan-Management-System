@@ -429,7 +429,6 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 	}
 
-	// Only showing the updated method
 	@Override
 	public void sendPaymentConfirmationEmail(int loanPaymentId, BigDecimal amountPaid) {
 		Optional<LoanPayment> paymentOpt = loanPaymentRepository.findById(loanPaymentId);
@@ -456,7 +455,8 @@ public class NotificationServiceImpl implements NotificationService {
 							+ "Penalty Amount: %s\n" + "Total Amount Paid: %s\n" + "Payment Status: %s\n\n"
 							+ "Thank you for your payment.\n\nRegards,\nLoan Management Team",
 					customerUser.getUsername(), loan.getLoanId(), payment.getDueDate(), payment.getAmount(),
-					payment.getPenaltyAmount(), amountPaid, payment.getStatus()));
+					payment.getPenaltyAmount() != null ? payment.getPenaltyAmount() : BigDecimal.ZERO, amountPaid,
+					payment.getStatus()));
 			Transport.send(message);
 		} catch (MessagingException e) {
 			throw new RuntimeException("Failed to send payment confirmation email: " + e.getMessage());

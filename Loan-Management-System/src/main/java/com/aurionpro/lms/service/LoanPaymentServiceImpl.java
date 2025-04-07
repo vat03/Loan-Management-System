@@ -164,6 +164,8 @@ import com.aurionpro.lms.entity.LoanPayment;
 import com.aurionpro.lms.repository.LoanPaymentRepository;
 import com.aurionpro.lms.repository.LoanRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class LoanPaymentServiceImpl implements LoanPaymentService {
 
@@ -253,8 +255,10 @@ public class LoanPaymentServiceImpl implements LoanPaymentService {
 			BigDecimal penalty = payment.getAmount().multiply(payment.getPenaltyPercentage())
 					.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
 			totalAmountPaid = totalAmountPaid.add(penalty);
+			payment.setPenaltyAmount(penalty);
 			payment.setStatus("PAID_LATE");
 		} else {
+			payment.setPenaltyAmount(BigDecimal.ZERO);
 			payment.setStatus("PAID");
 		}
 
