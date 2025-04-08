@@ -465,6 +465,128 @@
 //    }
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
+//import com.aurionpro.lms.dto.LoanOfficerResponseDTO;
+//import com.aurionpro.lms.entity.Admin;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.entity.Role;
+//import com.aurionpro.lms.entity.User;
+//import com.aurionpro.lms.repository.AdminRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.RoleRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.Collections;
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class LoanOfficerServiceImpl implements LoanOfficerService {
+//
+//	@Autowired
+//	private UserRepository userRepository;
+//
+//	@Autowired
+//	private RoleRepository roleRepository;
+//
+//	@Autowired
+//	private AdminRepository adminRepository;
+//
+//	@Autowired
+//	private LoanOfficerRepository loanOfficerRepository;
+//
+//	@Override
+//	public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
+//		Optional<Admin> adminOpt = adminRepository.findById(adminId);
+//		if (adminOpt.isEmpty()) {
+//			throw new RuntimeException("Admin not found with ID: " + adminId);
+//		}
+//		Admin admin = adminOpt.get();
+//
+//		Optional<Role> roleOpt = roleRepository.findByRoleName("LOAN_OFFICER");
+//		if (roleOpt.isEmpty()) {
+//			throw new RuntimeException("Role not found: LOAN_OFFICER");
+//		}
+//		Role role = roleOpt.get();
+//
+//		User user = new User();
+//		user.setUsername(requestDTO.getUsername());
+//		user.setEmail(requestDTO.getEmail());
+//		user.setPassword(requestDTO.getPassword());
+//		user.setRole(role);
+//		user = userRepository.save(user);
+//
+//		LoanOfficer loanOfficer = new LoanOfficer();
+//		loanOfficer.setUser(user);
+//		loanOfficer.setAdmin(admin);
+//		loanOfficer = loanOfficerRepository.save(loanOfficer);
+//
+//		LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+//		dto.setId(user.getId());
+//		dto.setUsername(user.getUsername());
+//		dto.setEmail(user.getEmail());
+//		dto.setAdminId(admin.getId());
+//		dto.setCustomerIds(Collections.emptyList());
+//		return dto;
+//	}
+//
+//	@Override
+//	public LoanOfficerResponseDTO getLoanOfficerById(int id) {
+//		Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(id);
+//		if (loanOfficerOpt.isEmpty()) {
+//			throw new RuntimeException("Loan Officer not found with ID: " + id);
+//		}
+//		LoanOfficer loanOfficer = loanOfficerOpt.get();
+//		User user = loanOfficer.getUser();
+//
+//		LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+//		dto.setId(user.getId());
+//		dto.setUsername(user.getUsername());
+//		dto.setEmail(user.getEmail());
+//		dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
+//		dto.setCustomerIds(loanOfficer.getCustomers() != null
+//				? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
+//				: Collections.emptyList());
+//		return dto;
+//	}
+//
+//	@Override
+//	public List<LoanOfficerResponseDTO> getLoanOfficersByAdminId(int adminId) {
+//		Optional<Admin> adminOpt = adminRepository.findById(adminId);
+//		if (adminOpt.isEmpty()) {
+//			throw new RuntimeException("Admin not found with ID: " + adminId);
+//		}
+//
+//		List<LoanOfficer> loanOfficers = loanOfficerRepository.findByAdminId(adminId);
+//		return loanOfficers.stream().map(loanOfficer -> {
+//			User user = loanOfficer.getUser();
+//			LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+//			dto.setId(user.getId());
+//			dto.setUsername(user.getUsername());
+//			dto.setEmail(user.getEmail());
+//			dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
+//			dto.setCustomerIds(loanOfficer.getCustomers() != null
+//					? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
+//					: Collections.emptyList());
+//			return dto;
+//		}).collect(Collectors.toList());
+//	}
+//}
+
+
+
+
+
+
+
+
+
 package com.aurionpro.lms.service;
 
 import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
@@ -478,6 +600,7 @@ import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -489,92 +612,92 @@ import java.util.stream.Collectors;
 @Service
 public class LoanOfficerServiceImpl implements LoanOfficerService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private RoleRepository roleRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-	@Autowired
-	private AdminRepository adminRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
-	@Autowired
-	private LoanOfficerRepository loanOfficerRepository;
+    @Autowired
+    private LoanOfficerRepository loanOfficerRepository;
 
-	@Override
-	public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
-		Optional<Admin> adminOpt = adminRepository.findById(adminId);
-		if (adminOpt.isEmpty()) {
-			throw new RuntimeException("Admin not found with ID: " + adminId);
-		}
-		Admin admin = adminOpt.get();
+    @Override
+    public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
+        Optional<Admin> adminOpt = adminRepository.findById(adminId);
+        if (adminOpt.isEmpty()) {
+            throw new RuntimeException("Admin not found with ID: " + adminId);
+        }
+        Admin admin = adminOpt.get();
 
-		Optional<Role> roleOpt = roleRepository.findByRoleName("LOAN_OFFICER");
-		if (roleOpt.isEmpty()) {
-			throw new RuntimeException("Role not found: LOAN_OFFICER");
-		}
-		Role role = roleOpt.get();
+        Optional<Role> roleOpt = roleRepository.findByRoleName("LOAN_OFFICER");
+        if (roleOpt.isEmpty()) {
+            throw new RuntimeException("Role not found: LOAN_OFFICER");
+        }
+        Role role = roleOpt.get();
 
-		User user = new User();
-		user.setUsername(requestDTO.getUsername());
-		user.setEmail(requestDTO.getEmail());
-		user.setPassword(requestDTO.getPassword());
-		user.setRole(role);
-		user = userRepository.save(user);
+        User user = new User();
+        user.setUsername(requestDTO.getUsername());
+        user.setEmail(requestDTO.getEmail());
+        user.setPassword(requestDTO.getPassword());
+        user.setRole(role);
+        user = userRepository.save(user);
 
-		LoanOfficer loanOfficer = new LoanOfficer();
-		loanOfficer.setUser(user);
-		loanOfficer.setAdmin(admin);
-		loanOfficer = loanOfficerRepository.save(loanOfficer);
+        LoanOfficer loanOfficer = new LoanOfficer();
+        loanOfficer.setUser(user);
+        loanOfficer.setAdmin(admin);
+        loanOfficer = loanOfficerRepository.save(loanOfficer);
 
-		LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
-		dto.setId(user.getId());
-		dto.setUsername(user.getUsername());
-		dto.setEmail(user.getEmail());
-		dto.setAdminId(admin.getId());
-		dto.setCustomerIds(Collections.emptyList());
-		return dto;
-	}
+        LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setAdminId(admin.getId());
+        dto.setCustomerIds(Collections.emptyList());
+        return dto;
+    }
 
-	@Override
-	public LoanOfficerResponseDTO getLoanOfficerById(int id) {
-		Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(id);
-		if (loanOfficerOpt.isEmpty()) {
-			throw new RuntimeException("Loan Officer not found with ID: " + id);
-		}
-		LoanOfficer loanOfficer = loanOfficerOpt.get();
-		User user = loanOfficer.getUser();
+    @Override
+    public LoanOfficerResponseDTO getLoanOfficerById(int id) {
+        Optional<LoanOfficer> loanOfficerOpt = loanOfficerRepository.findById(id);
+        if (loanOfficerOpt.isEmpty()) {
+            throw new RuntimeException("Loan Officer not found with ID: " + id);
+        }
+        LoanOfficer loanOfficer = loanOfficerOpt.get();
+        User user = loanOfficer.getUser();
 
-		LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
-		dto.setId(user.getId());
-		dto.setUsername(user.getUsername());
-		dto.setEmail(user.getEmail());
-		dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
-		dto.setCustomerIds(loanOfficer.getCustomers() != null
-				? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
-				: Collections.emptyList());
-		return dto;
-	}
+        LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
+        dto.setCustomerIds(loanOfficer.getCustomers() != null
+                ? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
+                : Collections.emptyList());
+        return dto;
+    }
 
-	@Override
-	public List<LoanOfficerResponseDTO> getLoanOfficersByAdminId(int adminId) {
-		Optional<Admin> adminOpt = adminRepository.findById(adminId);
-		if (adminOpt.isEmpty()) {
-			throw new RuntimeException("Admin not found with ID: " + adminId);
-		}
+    @Override
+    public List<LoanOfficerResponseDTO> getLoanOfficersByAdminId(int adminId) {
+        Optional<Admin> adminOpt = adminRepository.findById(adminId);
+        if (adminOpt.isEmpty()) {
+            throw new RuntimeException("Admin not found with ID: " + adminId);
+        }
 
-		List<LoanOfficer> loanOfficers = loanOfficerRepository.findByAdminId(adminId);
-		return loanOfficers.stream().map(loanOfficer -> {
-			User user = loanOfficer.getUser();
-			LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
-			dto.setId(user.getId());
-			dto.setUsername(user.getUsername());
-			dto.setEmail(user.getEmail());
-			dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
-			dto.setCustomerIds(loanOfficer.getCustomers() != null
-					? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
-					: Collections.emptyList());
-			return dto;
-		}).collect(Collectors.toList());
-	}
+        List<LoanOfficer> loanOfficers = loanOfficerRepository.findByAdminId(adminId);
+        return loanOfficers.stream().map(loanOfficer -> {
+            User user = loanOfficer.getUser();
+            LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+            dto.setId(user.getId());
+            dto.setUsername(user.getUsername());
+            dto.setEmail(user.getEmail());
+            dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
+            dto.setCustomerIds(loanOfficer.getCustomers() != null
+                    ? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
+                    : Collections.emptyList());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

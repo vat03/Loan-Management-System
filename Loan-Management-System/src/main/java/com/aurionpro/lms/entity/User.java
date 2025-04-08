@@ -44,6 +44,8 @@
 
 package com.aurionpro.lms.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -88,4 +90,19 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
+
+	@Column(nullable = true)
+	private String firstName;
+
+	@Column(nullable = true)
+	private String lastName;
+
+	@Column(nullable = true)
+	private LocalDate dateOfBirth;
+
+	@Column(nullable = true)
+	private String mobileNumber;
+
+	@Column(nullable = true)
+	private String gender; // "MALE", "FEMALE", "OTHER"
 }
