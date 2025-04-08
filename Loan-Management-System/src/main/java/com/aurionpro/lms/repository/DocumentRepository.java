@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document, Integer> {
 	List<Document> findByCustomerId(Integer customerId);
+	List<Document> findByLoanLoanId(Integer loanId);
 }

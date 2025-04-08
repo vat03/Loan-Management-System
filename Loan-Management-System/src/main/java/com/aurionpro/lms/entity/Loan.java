@@ -1,12 +1,22 @@
 package com.aurionpro.lms.entity;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "loans")
@@ -40,11 +50,14 @@ public class Loan {
 	@ManyToOne
 	@JoinColumn(name = "loan_status_id", nullable = false)
 	private LoanStatus status;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "npa_status_id", nullable = true)
-    private NpaStatus npaStatus;
+	@JoinColumn(name = "npa_status_id", nullable = true)
+	private NpaStatus npaStatus;
 
 	@Column(nullable = false)
 	private LocalDate dueDate;
+
+	@OneToMany(mappedBy = "loan", cascade = CascadeType.ALL)
+	private List<Document> documents;
 }
