@@ -8,6 +8,10 @@ public interface NotificationService {
 	void sendPaymentReminderEmail(int loanPaymentId);
 
 	void sendInstallmentPlanEmail(int loanId);
-	
+
 	void sendPaymentConfirmationEmail(int loanPaymentId, BigDecimal amountPaid);
+
+	void sendNpaPendingNotificationToOfficer(int loanId, int loanOfficerId);
+
+	void sendNpaNotificationToCustomer(int customerId, int loanId, BigDecimal totalDues);
 }

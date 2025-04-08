@@ -182,6 +182,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.LoanPaymentResponseDTO;
@@ -225,8 +226,33 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/loan/{loanId}")
-	public ResponseEntity<List<LoanPaymentResponseDTO>> getLoanPayments(@PathVariable int loanId) {
-		List<LoanPaymentResponseDTO> payments = loanPaymentService.getPaymentsByLoanId(loanId);
+	public ResponseEntity<List<LoanPaymentResponseDTO>> getLoanPayments(@PathVariable int loanId,
+			@RequestParam(required = false) String status) {
+		List<LoanPaymentResponseDTO> payments = loanPaymentService.getPaymentsByLoanId(loanId, status);
 		return ResponseEntity.ok(payments);
 	}
+
+	@GetMapping("/getPaymentDetails/{loanPaymentId}")
+	public ResponseEntity<LoanPaymentResponseDTO> getPaymentDetails(@PathVariable int loanPaymentId) {
+		LoanPaymentResponseDTO payment = loanPaymentService.getPaymentDetails(loanPaymentId);
+		return ResponseEntity.ok(payment);
+	}
+
+	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
+	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
+		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
+		return ResponseEntity.ok(amount);
+	}
+
+	@PostMapping("/npa/approve/{loanId}")
+	public ResponseEntity<String> approveNpaStatus(@PathVariable int loanId, @RequestParam boolean approve) {
+		loanPaymentService.approveNpaStatus(loanId, approve);
+		return ResponseEntity.ok(approve ? "NPA status approved" : "NPA status rejected");
+	}
+	
+	@PostMapping("/check-npa")
+    public ResponseEntity<String> checkAndFlagNpaLoans() {
+        loanPaymentService.checkAndFlagNpaLoans();
+        return ResponseEntity.ok("NPA check completed");
+    }
 }

@@ -23,4 +23,7 @@ public class Customer {
 	@ManyToOne
 	@JoinColumn(name = "loan_officer_id")
 	private LoanOfficer loanOfficer;
+	
+	@Column(name = "red_flagged", nullable = false)
+    private boolean redFlagged = false;
 }

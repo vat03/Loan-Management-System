@@ -260,26 +260,36 @@
 
 package com.aurionpro.lms.service;
 
-import com.aurionpro.lms.entity.Loan;
-import com.aurionpro.lms.entity.LoanPayment;
-import com.aurionpro.lms.entity.User;
-import com.aurionpro.lms.entity.Customer;
-import com.aurionpro.lms.repository.LoanPaymentRepository;
-import com.aurionpro.lms.repository.LoanRepository;
-import com.aurionpro.lms.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.math.BigDecimal;
 import java.math.RoundingMode; // Added import
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.aurionpro.lms.entity.Customer;
+import com.aurionpro.lms.entity.Loan;
+import com.aurionpro.lms.entity.LoanOfficer;
+import com.aurionpro.lms.entity.LoanPayment;
+import com.aurionpro.lms.entity.User;
+import com.aurionpro.lms.repository.CustomerRepository;
+import com.aurionpro.lms.repository.LoanOfficerRepository;
+import com.aurionpro.lms.repository.LoanPaymentRepository;
+import com.aurionpro.lms.repository.LoanRepository;
+import com.aurionpro.lms.repository.UserRepository;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -289,6 +299,12 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private LoanPaymentRepository loanPaymentRepository;
+
+	@Autowired
+	private LoanOfficerRepository loanOfficerRepository;
+
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -460,6 +476,58 @@ public class NotificationServiceImpl implements NotificationService {
 			Transport.send(message);
 		} catch (MessagingException e) {
 			throw new RuntimeException("Failed to send payment confirmation email: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void sendNpaPendingNotificationToOfficer(int loanId, int loanOfficerId) {
+		Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
+		LoanOfficer officer = loanOfficerRepository.findById(loanOfficerId)
+				.orElseThrow(() -> new RuntimeException("Loan Officer not found"));
+		Optional<User> officerUserOpt = userRepository.findById(officer.getUser().getId());
+		if (officerUserOpt.isEmpty()) {
+			throw new RuntimeException("Loan officer user not found for ID: " + loanOfficerId);
+		}
+		User officerUser = officerUserOpt.get();
+
+		Session session = getMailSession();
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(smtpUsername));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(officerUser.getEmail()));
+			message.setSubject("Review Required: Potential NPA Loan");
+			message.setText("Dear " + officerUser.getUsername() + ",\n\n" + "Loan ID " + loanId
+					+ " has 3+ overdue payments and is marked as NPA_PENDING. "
+					+ "Please review and approve/reject its NPA status.\n\n" + "Regards,\nLMS Team");
+			Transport.send(message);
+		} catch (MessagingException e) {
+			throw new RuntimeException("Failed to send NPA pending notification: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void sendNpaNotificationToCustomer(int customerId, int loanId, BigDecimal totalDues) {
+		Customer customer = customerRepository.findById(customerId)
+				.orElseThrow(() -> new RuntimeException("Customer not found"));
+		Optional<User> customerUserOpt = userRepository.findById(customer.getUser().getId());
+		if (customerUserOpt.isEmpty()) {
+			throw new RuntimeException("Customer user not found for ID: " + customerId);
+		}
+		User customerUser = customerUserOpt.get();
+
+		Session session = getMailSession();
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(smtpUsername));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(customerUser.getEmail()));
+			message.setSubject("Urgent: Loan Classified as NPA - Immediate Repayment Required");
+			message.setText("Dear " + customerUser.getUsername() + ",\n\n" + "Your loan (ID: " + loanId
+					+ ") has been classified as NPA " + "due to payments overdue by over 3 installments. Total dues: ₹"
+					+ totalDues + ".\n" + "You are now red-flagged, preventing future loans until cleared. "
+					+ "Please repay immediately to resolve this NPA status.\n\n" + "Regards,\nLMS Team");
+			Transport.send(message);
+		} catch (MessagingException e) {
+			throw new RuntimeException("Failed to send NPA notification to customer: " + e.getMessage());
 		}
 	}
 }

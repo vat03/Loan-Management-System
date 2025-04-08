@@ -40,6 +40,10 @@ public class Loan {
 	@ManyToOne
 	@JoinColumn(name = "loan_status_id", nullable = false)
 	private LoanStatus status;
+	
+	@ManyToOne
+    @JoinColumn(name = "npa_status_id", nullable = true)
+    private NpaStatus npaStatus;
 
 	@Column(nullable = false)
 	private LocalDate dueDate;
