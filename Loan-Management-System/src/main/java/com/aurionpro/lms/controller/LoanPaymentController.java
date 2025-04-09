@@ -182,6 +182,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -192,7 +193,8 @@ import com.aurionpro.lms.service.PaymentService;
 
 @RestController
 @RequestMapping("/api/loan-payments")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+		RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class LoanPaymentController {
 
 	@Autowired
@@ -249,10 +251,10 @@ public class LoanPaymentController {
 		loanPaymentService.approveNpaStatus(loanId, approve);
 		return ResponseEntity.ok(approve ? "NPA status approved" : "NPA status rejected");
 	}
-	
+
 	@PostMapping("/check-npa")
-    public ResponseEntity<String> checkAndFlagNpaLoans() {
-        loanPaymentService.checkAndFlagNpaLoans();
-        return ResponseEntity.ok("NPA check completed");
-    }
+	public ResponseEntity<String> checkAndFlagNpaLoans() {
+		loanPaymentService.checkAndFlagNpaLoans();
+		return ResponseEntity.ok("NPA check completed");
+	}
 }
