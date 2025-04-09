@@ -15,5 +15,4 @@ public class ProfileResponseDTO {
 	private LocalDate dateOfBirth;
 	private String mobileNumber;
 	private String gender;
-	private String address;
 }
