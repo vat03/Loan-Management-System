@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Add Loan Scheme</h2>
+<mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Scheme Name</mat-label>
+            <input matInput formControlName="schemeName">
+            <mat-error *ngIf="form.get('schemeName')?.hasError('required')">Scheme Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Interest Rate (%)</mat-label>
+            <input matInput formControlName="interestRate" type="number" step="0.1">
+            <mat-error *ngIf="form.get('interestRate')?.hasError('required')">Interest Rate is required</mat-error>
+            <mat-error *ngIf="form.get('interestRate')?.hasError('min')">Must be positive</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Tenure (Months)</mat-label>
+            <input matInput formControlName="tenureMonths" type="number">
+            <mat-error *ngIf="form.get('tenureMonths')?.hasError('required')">Tenure is required</mat-error>
+            <mat-error *ngIf="form.get('tenureMonths')?.hasError('min')">Must be at least 1 month</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Required Documents</mat-label>
+            <mat-select formControlName="requiredDocumentTypeIds" multiple>
+                <mat-option *ngFor="let doc of documentTypes" [value]="doc.id">{{ doc.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('requiredDocumentTypeIds')?.hasError('required')">At least one document is
+                required</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <app-button label="Cancel" color="warn" (click)="onCancel()"></app-button>
+    <app-button label="Save" color="primary" (click)="onSubmit()" [disabled]="form.invalid"></app-button>
+</mat-dialog-actions>

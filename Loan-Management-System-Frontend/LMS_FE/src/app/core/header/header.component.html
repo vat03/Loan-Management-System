@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <span>LMS - Admin</span>
     <span class="spacer"></span>
-    <button mat-button>Dashboard</button>
-    <button mat-button>Loan Officers</button>
-    <button mat-button>Loan Schemes</button>
-</mat-toolbar>
+    <button mat-button (click)="navigateTo('dashboard')">Dashboard</button>
+    <button mat-button (click)="navigateTo('loan-officers')">Loan Officers</button>
+    <button mat-button (click)="navigateTo('loan-schemes')">Loan Schemes</button>
+  </mat-toolbar>

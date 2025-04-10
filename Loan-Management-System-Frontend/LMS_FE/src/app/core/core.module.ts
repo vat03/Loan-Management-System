@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './header/header.component';
 import { ApiService } from './services/api.service';
@@ -11,6 +12,6 @@ import { ApiService } from './services/api.service';
     MatToolbarModule
   ],
   exports: [HeaderComponent],
-  providers: [ApiService]
+  providers: [provideHttpClient(),ApiService]
 })
 export class CoreModule { }

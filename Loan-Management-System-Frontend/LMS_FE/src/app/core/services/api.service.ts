@@ -20,7 +20,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  // Mock for now; replace with real calls later
   get<T>(endpoint: string): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}`);
   }
