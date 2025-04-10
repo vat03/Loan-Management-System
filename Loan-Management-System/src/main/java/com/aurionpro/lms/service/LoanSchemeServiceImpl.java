@@ -169,6 +169,88 @@
 //	}
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.LoanSchemeRequestDTO;
+//import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
+//import com.aurionpro.lms.entity.Admin;
+//import com.aurionpro.lms.entity.DocumentType;
+//import com.aurionpro.lms.entity.LoanScheme;
+//import com.aurionpro.lms.repository.AdminRepository;
+//import com.aurionpro.lms.repository.DocumentTypeRepository;
+//import com.aurionpro.lms.repository.LoanSchemeRepository;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class LoanSchemeServiceImpl implements LoanSchemeService {
+//
+//	@Autowired
+//	private LoanSchemeRepository loanSchemeRepository;
+//
+//	@Autowired
+//	private AdminRepository adminRepository;
+//
+//	@Autowired
+//	private DocumentTypeRepository documentTypeRepository;
+//
+//	@Override
+//	public LoanSchemeResponseDTO createLoanScheme(int adminId, LoanSchemeRequestDTO requestDTO) {
+//		Optional<Admin> adminOpt = adminRepository.findById(adminId);
+//		if (adminOpt.isEmpty()) {
+//			throw new RuntimeException("Admin not found with ID: " + adminId);
+//		}
+//		Admin admin = adminOpt.get();
+//
+//		List<DocumentType> requiredDocs = requestDTO.getRequiredDocumentTypeIds().stream()
+//				.map(id -> documentTypeRepository.findById(id)
+//						.orElseThrow(() -> new RuntimeException("Document type not found with ID: " + id)))
+//				.collect(Collectors.toList());
+//
+//		LoanScheme loanScheme = new LoanScheme();
+//		loanScheme.setSchemeName(requestDTO.getSchemeName());
+//		loanScheme.setInterestRate(requestDTO.getInterestRate());
+//		loanScheme.setTenureMonths(requestDTO.getTenureMonths());
+//		loanScheme.setAdmin(admin);
+//		loanScheme.setRequiredDocumentTypes(requiredDocs);
+//
+//		loanScheme = loanSchemeRepository.save(loanScheme);
+//
+//		return toResponseDTO(loanScheme);
+//	}
+//
+//	@Override
+//	public LoanSchemeResponseDTO getLoanSchemeById(int id) {
+//		Optional<LoanScheme> schemeOpt = loanSchemeRepository.findById(id);
+//		if (schemeOpt.isEmpty()) {
+//			throw new RuntimeException("Loan scheme not found with ID: " + id);
+//		}
+//		return toResponseDTO(schemeOpt.get());
+//	}
+//
+//	@Override
+//	public List<LoanSchemeResponseDTO> getLoanSchemesByAdminId(int adminId) {
+//		List<LoanScheme> schemes = loanSchemeRepository.findByAdminId(adminId);
+//		return schemes.stream().map(this::toResponseDTO).collect(Collectors.toList());
+//	}
+//
+//	private LoanSchemeResponseDTO toResponseDTO(LoanScheme loanScheme) {
+//		LoanSchemeResponseDTO dto = new LoanSchemeResponseDTO();
+//		dto.setId(loanScheme.getId());
+//		dto.setSchemeName(loanScheme.getSchemeName());
+//		dto.setInterestRate(loanScheme.getInterestRate());
+//		dto.setTenureMonths(loanScheme.getTenureMonths());
+//		dto.setAdminId(loanScheme.getAdmin() != null ? loanScheme.getAdmin().getId() : 0);
+//		dto.setRequiredDocumentTypeNames(loanScheme.getRequiredDocumentTypes().stream().map(DocumentType::getTypeName)
+//				.collect(Collectors.toList()));
+//		return dto;
+//	}
+//}
+
 package com.aurionpro.lms.service;
 
 import com.aurionpro.lms.dto.LoanSchemeRequestDTO;
@@ -176,6 +258,7 @@ import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
 import com.aurionpro.lms.entity.Admin;
 import com.aurionpro.lms.entity.DocumentType;
 import com.aurionpro.lms.entity.LoanScheme;
+import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.DocumentTypeRepository;
 import com.aurionpro.lms.repository.LoanSchemeRepository;
@@ -202,13 +285,13 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	public LoanSchemeResponseDTO createLoanScheme(int adminId, LoanSchemeRequestDTO requestDTO) {
 		Optional<Admin> adminOpt = adminRepository.findById(adminId);
 		if (adminOpt.isEmpty()) {
-			throw new RuntimeException("Admin not found with ID: " + adminId);
+			throw new ResourceNotFoundException("Admin not found with ID: " + adminId);
 		}
 		Admin admin = adminOpt.get();
 
 		List<DocumentType> requiredDocs = requestDTO.getRequiredDocumentTypeIds().stream()
 				.map(id -> documentTypeRepository.findById(id)
-						.orElseThrow(() -> new RuntimeException("Document type not found with ID: " + id)))
+						.orElseThrow(() -> new ResourceNotFoundException("Document type not found with ID: " + id)))
 				.collect(Collectors.toList());
 
 		LoanScheme loanScheme = new LoanScheme();
@@ -227,7 +310,7 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	public LoanSchemeResponseDTO getLoanSchemeById(int id) {
 		Optional<LoanScheme> schemeOpt = loanSchemeRepository.findById(id);
 		if (schemeOpt.isEmpty()) {
-			throw new RuntimeException("Loan scheme not found with ID: " + id);
+			throw new ResourceNotFoundException("Loan scheme not found with ID: " + id);
 		}
 		return toResponseDTO(schemeOpt.get());
 	}
@@ -235,6 +318,9 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 	@Override
 	public List<LoanSchemeResponseDTO> getLoanSchemesByAdminId(int adminId) {
 		List<LoanScheme> schemes = loanSchemeRepository.findByAdminId(adminId);
+		if (schemes.isEmpty()) {
+			throw new ResourceNotFoundException("No loan schemes found for Admin ID: " + adminId);
+		}
 		return schemes.stream().map(this::toResponseDTO).collect(Collectors.toList());
 	}
 

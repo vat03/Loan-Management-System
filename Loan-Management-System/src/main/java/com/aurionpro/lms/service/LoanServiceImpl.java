@@ -670,12 +670,189 @@
 //	}
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import com.aurionpro.lms.dto.LoanRequestDTO;
+//import com.aurionpro.lms.dto.LoanResponseDTO;
+//import com.aurionpro.lms.dto.LoanUpdateDTO;
+//import com.aurionpro.lms.entity.*;
+//import com.aurionpro.lms.repository.*;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import java.time.LocalDate;
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//@Service
+//public class LoanServiceImpl implements LoanService {
+//
+//	@Autowired
+//	private LoanRepository loanRepository;
+//	
+//	@Autowired
+//	private LoanSchemeRepository loanSchemeRepository;
+//
+//	@Autowired
+//	private LoanStatusRepository loanStatusRepository;
+//
+//	@Autowired
+//	private LoanPaymentService loanPaymentService;
+//
+//	@Autowired
+//	private NotificationService notificationService;
+//
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//
+//	@Override
+//	public LoanResponseDTO applyForLoan(LoanRequestDTO requestDTO) {
+//		Optional<Customer> customerEntityOpt = customerRepository.findById(requestDTO.getCustomerId());
+//		if (customerEntityOpt.isEmpty()) {
+//			throw new RuntimeException("Customer not found with ID: " + requestDTO.getCustomerId());
+//		}
+//		Customer customer = customerEntityOpt.get();
+//
+//		if (customer.getLoanOfficer() == null) {
+//			throw new RuntimeException("Customer must be assigned a Loan Officer before applying for a loan");
+//		}
+//		LoanOfficer loanOfficer = customer.getLoanOfficer();
+//
+//		Optional<LoanScheme> schemeOpt = loanSchemeRepository.findById(requestDTO.getLoanSchemeId());
+//		if (schemeOpt.isEmpty()) {
+//			throw new RuntimeException("Loan scheme not found with ID: " + requestDTO.getLoanSchemeId());
+//		}
+//		LoanScheme loanScheme = schemeOpt.get();
+//
+//		Optional<LoanStatus> statusOpt = loanStatusRepository.findByStatusName("PENDING");
+//		if (statusOpt.isEmpty()) {
+//			throw new RuntimeException("Loan status PENDING not found");
+//		}
+//		LoanStatus status = statusOpt.get();
+//
+//		Loan loan = new Loan();
+//		loan.setAmount(requestDTO.getAmount());
+//		loan.setCustomer(customer);
+//		loan.setLoanOfficer(loanOfficer);
+//		loan.setLoanScheme(loanScheme);
+//		loan.setStatus(status);
+//		loan.setApplicationDate(LocalDate.now());
+//		loan.setDueDate(LocalDate.now().plusMonths(loanScheme.getTenureMonths()));
+//
+//		loan = loanRepository.save(loan);
+//
+//		LoanResponseDTO dto = new LoanResponseDTO();
+//		dto.setLoanId(loan.getLoanId());
+//		dto.setAmount(loan.getAmount());
+//		dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+//		dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+//		dto.setApplicationDate(loan.getApplicationDate());
+//		dto.setDueDate(loan.getDueDate());
+//		dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+//		dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+//		return dto;
+//	}
+//
+//	@Override
+//	public LoanResponseDTO updateLoanStatus(int loanId, LoanUpdateDTO updateDTO) {
+//		Optional<Loan> loanOpt = loanRepository.findById(loanId);
+//		if (loanOpt.isEmpty()) {
+//			throw new RuntimeException("Loan not found with ID: " + loanId);
+//		}
+//		Loan loan = loanOpt.get();
+//
+//		Optional<LoanStatus> statusOpt = loanStatusRepository.findByStatusName(updateDTO.getStatusName());
+//		if (statusOpt.isEmpty()) {
+//			throw new RuntimeException("Loan status not found: " + updateDTO.getStatusName());
+//		}
+//		loan.setStatus(statusOpt.get());
+//
+//		loan = loanRepository.save(loan);
+//
+//		if ("APPROVED".equals(updateDTO.getStatusName())) {
+//			loanPaymentService.createLoanPayments(loanId);
+//			notificationService.sendLoanStatusEmail(loanId, "approved");
+//			notificationService.sendInstallmentPlanEmail(loanId);
+//		} else if ("REJECTED".equals(updateDTO.getStatusName())) {
+//			notificationService.sendLoanStatusEmail(loanId, "rejected");
+//		}
+//
+//		LoanResponseDTO dto = new LoanResponseDTO();
+//		dto.setLoanId(loan.getLoanId());
+//		dto.setAmount(loan.getAmount());
+//		dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+//		dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+//		dto.setApplicationDate(loan.getApplicationDate());
+//		dto.setDueDate(loan.getDueDate());
+//		dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+//		dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+//		return dto;
+//	}
+//
+//	@Override
+//	public LoanResponseDTO getLoanById(int id) {
+//		Optional<Loan> loanOpt = loanRepository.findById(id);
+//		if (loanOpt.isEmpty()) {
+//			throw new RuntimeException("Loan not found with ID: " + id);
+//		}
+//		Loan loan = loanOpt.get();
+//
+//		LoanResponseDTO dto = new LoanResponseDTO();
+//		dto.setLoanId(loan.getLoanId());
+//		dto.setAmount(loan.getAmount());
+//		dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+//		dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+//		dto.setApplicationDate(loan.getApplicationDate());
+//		dto.setDueDate(loan.getDueDate());
+//		dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+//		dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+//		return dto;
+//	}
+//
+//	@Override
+//	public List<LoanResponseDTO> getLoansByCustomerId(int customerId) {
+//		List<Loan> loans = loanRepository.findByCustomerId(customerId);
+//		return loans.stream().map(loan -> {
+//			LoanResponseDTO dto = new LoanResponseDTO();
+//			dto.setLoanId(loan.getLoanId());
+//			dto.setAmount(loan.getAmount());
+//			dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+//			dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+//			dto.setApplicationDate(loan.getApplicationDate());
+//			dto.setDueDate(loan.getDueDate());
+//			dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+//			dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+//			return dto;
+//		}).collect(Collectors.toList());
+//	}
+//
+//	@Override
+//	public List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId) {
+//		List<Loan> loans = loanRepository.findByLoanOfficerId(loanOfficerId);
+//		return loans.stream().map(loan -> {
+//			LoanResponseDTO dto = new LoanResponseDTO();
+//			dto.setLoanId(loan.getLoanId());
+//			dto.setAmount(loan.getAmount());
+//			dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+//			dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+//			dto.setApplicationDate(loan.getApplicationDate());
+//			dto.setDueDate(loan.getDueDate());
+//			dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+//			dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+//			return dto;
+//		}).collect(Collectors.toList());
+//	}
+//}
+
 package com.aurionpro.lms.service;
 
 import com.aurionpro.lms.dto.LoanRequestDTO;
 import com.aurionpro.lms.dto.LoanResponseDTO;
 import com.aurionpro.lms.dto.LoanUpdateDTO;
 import com.aurionpro.lms.entity.*;
+import com.aurionpro.lms.exception.BusinessRuleViolationException;
+import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -690,7 +867,7 @@ public class LoanServiceImpl implements LoanService {
 
 	@Autowired
 	private LoanRepository loanRepository;
-	
+
 	@Autowired
 	private LoanSchemeRepository loanSchemeRepository;
 
@@ -710,24 +887,25 @@ public class LoanServiceImpl implements LoanService {
 	public LoanResponseDTO applyForLoan(LoanRequestDTO requestDTO) {
 		Optional<Customer> customerEntityOpt = customerRepository.findById(requestDTO.getCustomerId());
 		if (customerEntityOpt.isEmpty()) {
-			throw new RuntimeException("Customer not found with ID: " + requestDTO.getCustomerId());
+			throw new ResourceNotFoundException("Customer not found with ID: " + requestDTO.getCustomerId());
 		}
 		Customer customer = customerEntityOpt.get();
 
 		if (customer.getLoanOfficer() == null) {
-			throw new RuntimeException("Customer must be assigned a Loan Officer before applying for a loan");
+			throw new BusinessRuleViolationException(
+					"Customer must be assigned a Loan Officer before applying for a loan");
 		}
 		LoanOfficer loanOfficer = customer.getLoanOfficer();
 
 		Optional<LoanScheme> schemeOpt = loanSchemeRepository.findById(requestDTO.getLoanSchemeId());
 		if (schemeOpt.isEmpty()) {
-			throw new RuntimeException("Loan scheme not found with ID: " + requestDTO.getLoanSchemeId());
+			throw new ResourceNotFoundException("Loan scheme not found with ID: " + requestDTO.getLoanSchemeId());
 		}
 		LoanScheme loanScheme = schemeOpt.get();
 
 		Optional<LoanStatus> statusOpt = loanStatusRepository.findByStatusName("PENDING");
 		if (statusOpt.isEmpty()) {
-			throw new RuntimeException("Loan status PENDING not found");
+			throw new ResourceNotFoundException("Loan status PENDING not found");
 		}
 		LoanStatus status = statusOpt.get();
 
@@ -758,13 +936,13 @@ public class LoanServiceImpl implements LoanService {
 	public LoanResponseDTO updateLoanStatus(int loanId, LoanUpdateDTO updateDTO) {
 		Optional<Loan> loanOpt = loanRepository.findById(loanId);
 		if (loanOpt.isEmpty()) {
-			throw new RuntimeException("Loan not found with ID: " + loanId);
+			throw new ResourceNotFoundException("Loan not found with ID: " + loanId);
 		}
 		Loan loan = loanOpt.get();
 
 		Optional<LoanStatus> statusOpt = loanStatusRepository.findByStatusName(updateDTO.getStatusName());
 		if (statusOpt.isEmpty()) {
-			throw new RuntimeException("Loan status not found: " + updateDTO.getStatusName());
+			throw new ResourceNotFoundException("Loan status not found: " + updateDTO.getStatusName());
 		}
 		loan.setStatus(statusOpt.get());
 
@@ -773,7 +951,7 @@ public class LoanServiceImpl implements LoanService {
 		if ("APPROVED".equals(updateDTO.getStatusName())) {
 			loanPaymentService.createLoanPayments(loanId);
 			notificationService.sendLoanStatusEmail(loanId, "approved");
-			notificationService.sendInstallmentPlanEmail(loanId); // New email trigger
+			notificationService.sendInstallmentPlanEmail(loanId);
 		} else if ("REJECTED".equals(updateDTO.getStatusName())) {
 			notificationService.sendLoanStatusEmail(loanId, "rejected");
 		}
@@ -794,7 +972,7 @@ public class LoanServiceImpl implements LoanService {
 	public LoanResponseDTO getLoanById(int id) {
 		Optional<Loan> loanOpt = loanRepository.findById(id);
 		if (loanOpt.isEmpty()) {
-			throw new RuntimeException("Loan not found with ID: " + id);
+			throw new ResourceNotFoundException("Loan not found with ID: " + id);
 		}
 		Loan loan = loanOpt.get();
 
@@ -813,6 +991,9 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	public List<LoanResponseDTO> getLoansByCustomerId(int customerId) {
 		List<Loan> loans = loanRepository.findByCustomerId(customerId);
+		if (loans.isEmpty()) {
+			throw new ResourceNotFoundException("No loans found for Customer ID: " + customerId);
+		}
 		return loans.stream().map(loan -> {
 			LoanResponseDTO dto = new LoanResponseDTO();
 			dto.setLoanId(loan.getLoanId());
@@ -830,6 +1011,9 @@ public class LoanServiceImpl implements LoanService {
 	@Override
 	public List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId) {
 		List<Loan> loans = loanRepository.findByLoanOfficerId(loanOfficerId);
+		if (loans.isEmpty()) {
+			throw new ResourceNotFoundException("No loans found for Loan Officer ID: " + loanOfficerId);
+		}
 		return loans.stream().map(loan -> {
 			LoanResponseDTO dto = new LoanResponseDTO();
 			dto.setLoanId(loan.getLoanId());
