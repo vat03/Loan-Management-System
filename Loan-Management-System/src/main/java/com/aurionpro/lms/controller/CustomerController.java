@@ -92,7 +92,6 @@
 package com.aurionpro.lms.controller;
 
 import com.aurionpro.lms.dto.CustomerResponseDTO;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

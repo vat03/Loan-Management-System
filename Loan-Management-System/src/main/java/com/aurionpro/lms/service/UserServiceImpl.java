@@ -354,6 +354,12 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.aurionpro.lms.dto.LoginRequestDTO;
 import com.aurionpro.lms.dto.UserRequestDTO;
 import com.aurionpro.lms.dto.UserResponseDTO;
 import com.aurionpro.lms.entity.Admin;
@@ -361,16 +367,13 @@ import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.exception.BusinessRuleViolationException;
+import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
+import com.aurionpro.lms.exception.UserNotRegisteredException;
 import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.CustomerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -435,6 +438,27 @@ public class UserServiceImpl implements UserService {
 			throw new ResourceNotFoundException("User not found with ID: " + id);
 		}
 		User user = userOpt.get();
+
+		UserResponseDTO dto = new UserResponseDTO();
+		dto.setId(user.getId());
+		dto.setUsername(user.getUsername());
+		dto.setEmail(user.getEmail());
+		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
+		return dto;
+	}
+
+	@Override
+	public UserResponseDTO login(LoginRequestDTO loginRequestDTO) {
+		Optional<User> userOpt = userRepository.findByUsername(loginRequestDTO.getUsername());
+		if (userOpt.isEmpty()) {
+			throw new UserNotRegisteredException(
+					"User not registered with username: " + loginRequestDTO.getUsername() + ". Please register first.");
+		}
+		User user = userOpt.get();
+
+		if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
+			throw new InvalidInputException("Invalid password for username: " + loginRequestDTO.getUsername());
+		}
 
 		UserResponseDTO dto = new UserResponseDTO();
 		dto.setId(user.getId());

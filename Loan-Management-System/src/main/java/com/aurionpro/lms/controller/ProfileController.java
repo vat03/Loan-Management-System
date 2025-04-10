@@ -243,8 +243,6 @@ package com.aurionpro.lms.controller;
 
 import com.aurionpro.lms.dto.ProfileUpdateRequestDTO;
 import com.aurionpro.lms.dto.ProfileResponseDTO;
-import com.aurionpro.lms.exception.InvalidInputException;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.ProfileService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

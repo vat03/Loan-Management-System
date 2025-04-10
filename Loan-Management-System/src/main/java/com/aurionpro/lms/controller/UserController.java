@@ -77,10 +77,9 @@
 
 package com.aurionpro.lms.controller;
 
+import com.aurionpro.lms.dto.LoginRequestDTO;
 import com.aurionpro.lms.dto.UserRequestDTO;
 import com.aurionpro.lms.dto.UserResponseDTO;
-import com.aurionpro.lms.exception.InvalidInputException;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +103,12 @@ public class UserController {
 	@GetMapping("/getUserById/{id}")
 	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable int id) {
 		UserResponseDTO responseDTO = userService.getUserById(id);
+		return ResponseEntity.ok(responseDTO);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<UserResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+		UserResponseDTO responseDTO = userService.login(loginRequestDTO);
 		return ResponseEntity.ok(responseDTO);
 	}
 }

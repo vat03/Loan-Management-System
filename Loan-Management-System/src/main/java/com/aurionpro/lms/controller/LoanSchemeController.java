@@ -158,8 +158,6 @@ package com.aurionpro.lms.controller;
 
 import com.aurionpro.lms.dto.LoanSchemeRequestDTO;
 import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
-import com.aurionpro.lms.exception.InvalidInputException;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.LoanSchemeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

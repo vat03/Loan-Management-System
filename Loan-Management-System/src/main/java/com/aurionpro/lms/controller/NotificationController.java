@@ -71,8 +71,6 @@
 
 package com.aurionpro.lms.controller;
 
-import com.aurionpro.lms.exception.NotificationException;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

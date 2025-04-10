@@ -55,15 +55,15 @@
 
 package com.aurionpro.lms.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -104,6 +104,11 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(PaymentProcessingException.class)
 	public ResponseEntity<String> handlePaymentProcessingException(PaymentProcessingException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(UserNotRegisteredException.class)
+	public ResponseEntity<String> handleUserNotRegisteredException(UserNotRegisteredException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 

@@ -392,9 +392,7 @@ package com.aurionpro.lms.controller;
 
 import com.aurionpro.lms.dto.LoanPaymentResponseDTO;
 import com.aurionpro.lms.dto.PaymentCompletionRequestDto;
-import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.PaymentProcessingException;
-import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.LoanPaymentService;
 import com.aurionpro.lms.service.PaymentService;
 import com.razorpay.RazorpayException;
