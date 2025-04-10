@@ -268,6 +268,9 @@ import com.aurionpro.lms.exception.PaymentProcessingException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.LoanPaymentService;
 import com.aurionpro.lms.service.PaymentService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -288,7 +291,7 @@ public class LoanPaymentController {
 	private PaymentService paymentService;
 
 	@PostMapping("/{loanPaymentId}/repay")
-	public ResponseEntity<String> repayLoanPayment(@PathVariable int loanPaymentId) {
+	public ResponseEntity<String> repayLoanPayment(@Valid @PathVariable int loanPaymentId) {
 		try {
 			BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
 			String orderId = paymentService.createPaymentOrder(loanPaymentId, amount);
@@ -304,7 +307,7 @@ public class LoanPaymentController {
 
 	@PostMapping("/complete")
 	public ResponseEntity<String> completePayment(
-			@RequestBody PaymentCompletionRequestDto paymentCompletionRequestDto) {
+			@Valid @RequestBody PaymentCompletionRequestDto paymentCompletionRequestDto) {
 		try {
 			if (paymentCompletionRequestDto.getOrderId() == null || paymentCompletionRequestDto.getPaymentId() == null
 					|| paymentCompletionRequestDto.getSignature() == null) {
@@ -326,7 +329,7 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/loan/{loanId}")
-	public ResponseEntity<List<LoanPaymentResponseDTO>> getLoanPayments(@PathVariable int loanId,
+	public ResponseEntity<List<LoanPaymentResponseDTO>> getLoanPayments(@Valid @PathVariable int loanId,
 			@RequestParam(required = false) String status) {
 		try {
 			List<LoanPaymentResponseDTO> payments = loanPaymentService.getPaymentsByLoanId(loanId, status);
@@ -339,7 +342,7 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/getPaymentDetails/{loanPaymentId}")
-	public ResponseEntity<LoanPaymentResponseDTO> getPaymentDetails(@PathVariable int loanPaymentId) {
+	public ResponseEntity<LoanPaymentResponseDTO> getPaymentDetails(@Valid @PathVariable int loanPaymentId) {
 		try {
 			LoanPaymentResponseDTO payment = loanPaymentService.getPaymentDetails(loanPaymentId);
 			return ResponseEntity.ok(payment);
@@ -351,7 +354,7 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
-	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
+	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@Valid @PathVariable int loanPaymentId) {
 		try {
 			BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
 			return ResponseEntity.ok(amount);
@@ -363,7 +366,7 @@ public class LoanPaymentController {
 	}
 
 	@PostMapping("/npa/approve/{loanId}")
-	public ResponseEntity<String> approveNpaStatus(@PathVariable int loanId, @RequestParam boolean approve) {
+	public ResponseEntity<String> approveNpaStatus(@Valid @PathVariable int loanId, @Valid  @RequestParam boolean approve) {
 		try {
 			loanPaymentService.approveNpaStatus(loanId, approve);
 			return ResponseEntity.ok(approve ? "NPA status approved" : "NPA status rejected");

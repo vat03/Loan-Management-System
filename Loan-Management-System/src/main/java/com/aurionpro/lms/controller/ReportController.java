@@ -25,6 +25,9 @@ package com.aurionpro.lms.controller;
 
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.ReportService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +42,7 @@ public class ReportController {
 	private ReportService reportService;
 
 	@GetMapping("/loan-officer/{loanOfficerId}")
-	public ResponseEntity<Map<String, Object>> generateLoanOfficerReport(@PathVariable int loanOfficerId) {
+	public ResponseEntity<Map<String, Object>> generateLoanOfficerReport(@Valid @PathVariable int loanOfficerId) {
 		try {
 			Map<String, Object> report = reportService.generateLoanOfficerReport(loanOfficerId);
 			return ResponseEntity.ok(report);

@@ -88,6 +88,9 @@ import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
 import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.LoanSchemeService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -102,8 +105,8 @@ public class LoanSchemeController {
 	private LoanSchemeService loanSchemeService;
 
 	@PostMapping("/create")
-	public ResponseEntity<LoanSchemeResponseDTO> createLoanScheme(@RequestParam int adminId,
-			@RequestBody LoanSchemeRequestDTO requestDTO) {
+	public ResponseEntity<LoanSchemeResponseDTO> createLoanScheme(@Valid @RequestParam int adminId,
+			@Valid @RequestBody LoanSchemeRequestDTO requestDTO) {
 		try {
 			LoanSchemeResponseDTO responseDTO = loanSchemeService.createLoanScheme(adminId, requestDTO);
 			return ResponseEntity.status(201).body(responseDTO);
@@ -115,7 +118,7 @@ public class LoanSchemeController {
 	}
 
 	@GetMapping("/getByLoanId/{id}")
-	public ResponseEntity<LoanSchemeResponseDTO> getLoanSchemeById(@PathVariable int id) {
+	public ResponseEntity<LoanSchemeResponseDTO> getLoanSchemeById(@Valid @PathVariable int id) {
 		try {
 			LoanSchemeResponseDTO responseDTO = loanSchemeService.getLoanSchemeById(id);
 			return ResponseEntity.ok(responseDTO);
@@ -127,7 +130,7 @@ public class LoanSchemeController {
 	}
 
 	@GetMapping("/getByAdminId/admin/{adminId}")
-	public ResponseEntity<List<LoanSchemeResponseDTO>> getLoanSchemesByAdminId(@PathVariable int adminId) {
+	public ResponseEntity<List<LoanSchemeResponseDTO>> getLoanSchemesByAdminId(@Valid @PathVariable int adminId) {
 		try {
 			List<LoanSchemeResponseDTO> responseDTOs = loanSchemeService.getLoanSchemesByAdminId(adminId);
 			return ResponseEntity.ok(responseDTOs);

@@ -76,6 +76,9 @@ import com.aurionpro.lms.dto.LoanUpdateDTO;
 import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.LoanService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -90,7 +93,7 @@ public class LoanController {
 	private LoanService loanService;
 
 	@PostMapping("/apply")
-	public ResponseEntity<LoanResponseDTO> applyForLoan(@RequestBody LoanRequestDTO requestDTO) {
+	public ResponseEntity<LoanResponseDTO> applyForLoan(@Valid @RequestBody LoanRequestDTO requestDTO) {
 		try {
 			LoanResponseDTO responseDTO = loanService.applyForLoan(requestDTO);
 			return ResponseEntity.status(201).body(responseDTO);
@@ -102,7 +105,7 @@ public class LoanController {
 	}
 
 	@PutMapping("/{id}/status")
-	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
+	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@Valid @PathVariable int id,
 			@RequestBody LoanUpdateDTO updateDTO) {
 		try {
 			LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
@@ -115,7 +118,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByLoanId/{id}")
-	public ResponseEntity<LoanResponseDTO> getLoanById(@PathVariable int id) {
+	public ResponseEntity<LoanResponseDTO> getLoanById(@Valid @PathVariable int id) {
 		try {
 			LoanResponseDTO responseDTO = loanService.getLoanById(id);
 			return ResponseEntity.ok(responseDTO);
@@ -127,7 +130,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByCustomerId/customer/{customerId}")
-	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@PathVariable int customerId) {
+	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@Valid @PathVariable int customerId) {
 		try {
 			List<LoanResponseDTO> responseDTOs = loanService.getLoansByCustomerId(customerId);
 			return ResponseEntity.ok(responseDTOs);
@@ -139,7 +142,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByLoanOfficerId/loan-officer/{loanOfficerId}")
-	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@PathVariable int loanOfficerId) {
+	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@Valid @PathVariable int loanOfficerId) {
 		try {
 			List<LoanResponseDTO> responseDTOs = loanService.getLoansByLoanOfficerId(loanOfficerId);
 			return ResponseEntity.ok(responseDTOs);

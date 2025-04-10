@@ -140,6 +140,9 @@ import com.aurionpro.lms.exception.DocumentUploadException;
 import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.DocumentService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -154,7 +157,7 @@ public class DocumentController {
 	private DocumentService documentService;
 
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
-	public ResponseEntity<DocumentResponseDTO> uploadDocument(@ModelAttribute DocumentRequestDTO requestDTO) {
+	public ResponseEntity<DocumentResponseDTO> uploadDocument(@Valid @ModelAttribute DocumentRequestDTO requestDTO) {
 		try {
 			DocumentResponseDTO responseDTO = documentService.uploadDocument(requestDTO);
 			return ResponseEntity.status(201).body(responseDTO);
@@ -166,7 +169,7 @@ public class DocumentController {
 	}
 
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<DocumentResponseDTO> getDocumentById(@PathVariable int id) {
+	public ResponseEntity<DocumentResponseDTO> getDocumentById(@Valid @PathVariable int id) {
 		try {
 			DocumentResponseDTO responseDTO = documentService.getDocumentById(id);
 			return ResponseEntity.ok(responseDTO);
@@ -178,7 +181,7 @@ public class DocumentController {
 	}
 
 	@GetMapping("/getByCustomerId/customer/{customerId}")
-	public ResponseEntity<List<DocumentResponseDTO>> getDocumentsByCustomerId(@PathVariable int customerId) {
+	public ResponseEntity<List<DocumentResponseDTO>> getDocumentsByCustomerId(@Valid @PathVariable int customerId) {
 		try {
 			List<DocumentResponseDTO> responseDTOs = documentService.getDocumentsByCustomerId(customerId);
 			return ResponseEntity.ok(responseDTOs);
@@ -190,7 +193,7 @@ public class DocumentController {
 	}
 
 	@GetMapping("/getByLoanId/loan/{loanId}")
-	public ResponseEntity<List<DocumentResponseDTO>> getDocumentsByLoanId(@PathVariable int loanId) {
+	public ResponseEntity<List<DocumentResponseDTO>> getDocumentsByLoanId(@Valid @PathVariable int loanId) {
 		try {
 			List<DocumentResponseDTO> responseDTOs = documentService.getDocumentsByLoanId(loanId);
 			return ResponseEntity.ok(responseDTOs);
@@ -202,8 +205,8 @@ public class DocumentController {
 	}
 
 	@PutMapping("/{documentId}/verify")
-	public ResponseEntity<DocumentResponseDTO> verifyDocument(@PathVariable int documentId,
-			@RequestBody DocumentVerificationDTO verificationDTO) {
+	public ResponseEntity<DocumentResponseDTO> verifyDocument(@Valid @PathVariable int documentId,
+			@Valid @RequestBody DocumentVerificationDTO verificationDTO) {
 		try {
 			DocumentResponseDTO responseDTO = documentService.verifyDocument(documentId, verificationDTO);
 			return ResponseEntity.ok(responseDTO);

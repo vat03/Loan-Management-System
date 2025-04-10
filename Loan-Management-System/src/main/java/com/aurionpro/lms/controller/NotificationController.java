@@ -30,6 +30,9 @@ package com.aurionpro.lms.controller;
 import com.aurionpro.lms.exception.NotificationException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.service.NotificationService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +45,7 @@ public class NotificationController {
 	private NotificationService notificationService;
 
 	@PostMapping("/loan-status/{loanId}")
-	public ResponseEntity<Void> sendLoanStatusEmail(@PathVariable int loanId, @RequestParam String status) {
+	public ResponseEntity<Void> sendLoanStatusEmail(@Valid @PathVariable int loanId, @Valid @RequestParam String status) {
 		try {
 			notificationService.sendLoanStatusEmail(loanId, status);
 			return ResponseEntity.noContent().build();
@@ -54,7 +57,7 @@ public class NotificationController {
 	}
 
 	@PostMapping("/payment-reminder/{loanPaymentId}")
-	public ResponseEntity<Void> sendPaymentReminderEmail(@PathVariable int loanPaymentId) {
+	public ResponseEntity<Void> sendPaymentReminderEmail(@Valid @PathVariable int loanPaymentId) {
 		try {
 			notificationService.sendPaymentReminderEmail(loanPaymentId);
 			return ResponseEntity.noContent().build();
