@@ -169,6 +169,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loans")
+@CrossOrigin("http://localhost:4200")
 public class LoanController {
 
 	@Autowired

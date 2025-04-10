@@ -233,6 +233,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
+@CrossOrigin("http://localhost:4200")
 public class DocumentController {
 
 	@Autowired
