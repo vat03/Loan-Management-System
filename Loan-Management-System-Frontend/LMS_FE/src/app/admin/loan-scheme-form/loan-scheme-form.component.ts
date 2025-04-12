@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LoanScheme } from '../models/loan-scheme.model';
 
 @Component({
   selector: 'app-loan-scheme-form',
@@ -11,7 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class LoanSchemeFormComponent implements OnInit {
   form: FormGroup;
-  documentTypes: { id: number, name: string }[] = [];
+  documentTypes: DocumentType[] = [];
   adminId = 1; // Hardcoded for now; replace with auth later
 
   constructor(
@@ -33,7 +34,7 @@ export class LoanSchemeFormComponent implements OnInit {
   }
 
   loadDocumentTypes() {
-    this.api.get<any[]>('document-types').subscribe({
+    this.api.get<DocumentType[]>('document-types').subscribe({
       next: (data) => this.documentTypes = data,
       error: () => {
         // Mock data if API fails
@@ -48,8 +49,8 @@ export class LoanSchemeFormComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      const payload = this.form.value;
-      this.api.post(`loan-schemes/create?adminId=${this.adminId}`, payload)
+      const payload: LoanScheme = this.form.value; // Type-safe payload
+      this.api.post<LoanScheme>(`loan-schemes/create?adminId=${this.adminId}`, payload)
         .subscribe({
           next: (response) => this.dialogRef.close(response),
           error: (err) => console.error('Error adding scheme:', err)

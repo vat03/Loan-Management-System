@@ -5,6 +5,7 @@ import { LoanSchemeFormComponent } from '../loan-scheme-form/loan-scheme-form.co
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { LoanScheme } from '../models/loan-scheme.model';
 
 @Component({
   selector: 'app-loan-scheme-list',
@@ -20,7 +21,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 export class LoanSchemeListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'schemeName', 'interestRate', 'tenureMonths'];
-  dataSource = new MatTableDataSource<any>();
+  dataSource = new MatTableDataSource<LoanScheme>(); // Type with LoanScheme
   adminId = 1; // Hardcoded for now
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -36,12 +37,12 @@ export class LoanSchemeListComponent implements OnInit {
   }
 
   loadSchemes() {
-    this.api.get(`loan-schemes/getByAdminId/admin/${this.adminId}`).subscribe({
-      next: (data: any) => this.dataSource.data = data,
+    this.api.get<LoanScheme[]>(`loan-schemes/admin/${this.adminId}`).subscribe({
+      next: (data) => this.dataSource.data = data,
       error: () => {
         this.dataSource.data = [
-          { id: 1, schemeName: 'Home Loan', interestRate: 5.5, tenureMonths: 120 },
-          { id: 2, schemeName: 'Car Loan', interestRate: 6.0, tenureMonths: 60 }
+          { id: 1, schemeName: 'Home Loan', interestRate: 5.5, tenureMonths: 120, requiredDocumentTypeIds: [1, 2] },
+          { id: 2, schemeName: 'Car Loan', interestRate: 6.0, tenureMonths: 60, requiredDocumentTypeIds: [2] }
         ];
       }
     });
