@@ -119,4 +119,7 @@ public class LoanScheme {
 	@ManyToMany
 	@JoinTable(name = "loan_scheme_document_types", joinColumns = @JoinColumn(name = "loan_scheme_id"), inverseJoinColumns = @JoinColumn(name = "document_type_id"))
 	private List<DocumentType> requiredDocumentTypes;
+	
+	@Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 }

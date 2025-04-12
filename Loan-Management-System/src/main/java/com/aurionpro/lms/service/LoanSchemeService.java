@@ -11,4 +11,10 @@ public interface LoanSchemeService {
 	LoanSchemeResponseDTO getLoanSchemeById(int id);
 
 	List<LoanSchemeResponseDTO> getLoanSchemesByAdminId(int adminId);
+
+	List<LoanSchemeResponseDTO> getAllLoanSchemes();
+
+	void softDeleteLoanScheme(Integer schemeId, Integer adminId);
+
+	List<LoanSchemeResponseDTO> getAllLoanSchemesForAdmin(boolean includeDeleted);
 }

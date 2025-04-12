@@ -14,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.aurionpro.lms.entity.Admin;
 
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
-//    Optional<Admin> findByUserId(int userId);
+
 }

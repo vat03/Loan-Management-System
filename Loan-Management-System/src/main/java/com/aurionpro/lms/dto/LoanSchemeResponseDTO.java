@@ -45,4 +45,5 @@ public class LoanSchemeResponseDTO {
 	private Integer tenureMonths;
 	private int adminId;
 	private List<String> requiredDocumentTypeNames;
+	private boolean isDeleted;
 }
