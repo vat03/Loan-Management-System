@@ -544,6 +544,128 @@
 //	}
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import java.util.List;
+//import java.util.stream.Collectors;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//import org.springframework.transaction.annotation.Transactional;
+//
+//import com.aurionpro.lms.dto.CustomerResponseDTO;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.Loan;
+//import com.aurionpro.lms.entity.LoanOfficer;
+//import com.aurionpro.lms.exception.ResourceNotFoundException;
+//import com.aurionpro.lms.repository.CustomerRepository;
+//import com.aurionpro.lms.repository.LoanOfficerRepository;
+//import com.aurionpro.lms.repository.LoanRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//
+//@Service
+//public class CustomerServiceImpl implements CustomerService {
+//
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//
+//	@Autowired
+//	private LoanOfficerRepository loanOfficerRepository;
+//
+//	@Autowired
+//	private LoanRepository loanRepository;
+//
+//	@Autowired
+//	private UserRepository userRepository;
+//
+//	@Override
+//	public CustomerResponseDTO getCustomerById(int id) {
+//		Customer customer = customerRepository.findByIdAndIsDeletedFalse(id)
+//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+//		return toCustomerResponseDTO(customer);
+//	}
+//
+//	@Override
+//	public List<CustomerResponseDTO> getCustomersByLoanOfficerId(int loanOfficerId) {
+//		List<Customer> customers = customerRepository.findByLoanOfficerIdAndIsDeletedFalse(loanOfficerId);
+//		if (customers.isEmpty()) {
+//			throw new ResourceNotFoundException("No customers found for Loan Officer ID: " + loanOfficerId);
+//		}
+//		return customers.stream().map(this::toCustomerResponseDTO).collect(Collectors.toList());
+//	}
+//
+//	@Override
+//	public void assignLoanOfficer(int customerId, int loanOfficerId) {
+//		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+//
+//		LoanOfficer loanOfficer = loanOfficerRepository.findById(loanOfficerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Loan Officer not found with ID: " + loanOfficerId));
+//
+//		customer.setLoanOfficer(loanOfficer);
+//		customerRepository.save(customer);
+//	}
+//
+//	@Override
+//	@Transactional
+//	public void softDeleteCustomer(int customerId, int loanOfficerId) {
+//		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+//
+//		// Validate loan officer assignment
+//		if (customer.getLoanOfficer() == null || customer.getLoanOfficer().getId() != loanOfficerId) {
+//			throw new IllegalStateException("Loan officer is not assigned to this customer");
+//		}
+//
+//		// Check for active loans
+//		List<Loan> loans = loanRepository.findByCustomerId(customerId);
+//		boolean hasActiveLoans = loans.stream().anyMatch(loan -> loan.getStatus().getId() != 4); // 4 = Completed
+//		if (hasActiveLoans) {
+//			throw new IllegalStateException("Cannot soft-delete customer with active loans");
+//		}
+//
+//		customer.setDeleted(true);
+//		customer.getUser().setDeleted(true);
+//		userRepository.save(customer.getUser());
+//		customerRepository.save(customer);
+//	}
+//
+//	@Override
+//	@Transactional
+//	public void selfDeleteCustomer(int customerId) {
+//		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+//
+//		// Check for active loans
+//		List<Loan> loans = loanRepository.findByCustomerId(customerId);
+//		boolean hasActiveLoans = loans.stream().anyMatch(loan -> loan.getStatus().getId() != 4); // 4 = Completed
+//		if (hasActiveLoans) {
+//			throw new IllegalStateException("Cannot self-delete account with active loans");
+//		}
+//
+//		customer.setDeleted(true);
+//		customer.getUser().setDeleted(true);
+//		userRepository.save(customer.getUser());
+//		customerRepository.save(customer);
+//	}
+//
+//	@Override
+//	public List<CustomerResponseDTO> getAllCustomers(boolean includeDeleted) {
+//		List<Customer> customers = customerRepository.findAllCustomers(includeDeleted);
+//		return customers.stream().map(this::toCustomerResponseDTO).collect(Collectors.toList());
+//	}
+//
+//	private CustomerResponseDTO toCustomerResponseDTO(Customer customer) {
+//		CustomerResponseDTO dto = new CustomerResponseDTO();
+//		dto.setId(customer.getId());
+//		dto.setEmail(customer.getUser() != null ? customer.getUser().getEmail() : null);
+//		dto.setUsername(customer.getUser() != null ? customer.getUser().getUsername() : null);
+//		dto.setLoanOfficerId(customer.getLoanOfficer() != null ? customer.getLoanOfficer().getId() : 0);
+//		dto.setDeleted(customer.isDeleted());
+//		return dto;
+//	}
+//}
+
 package com.aurionpro.lms.service;
 
 import java.util.List;
@@ -555,13 +677,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.aurionpro.lms.dto.CustomerResponseDTO;
 import com.aurionpro.lms.entity.Customer;
-import com.aurionpro.lms.entity.Loan;
 import com.aurionpro.lms.entity.LoanOfficer;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.repository.CustomerRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
-import com.aurionpro.lms.repository.LoanRepository;
-import com.aurionpro.lms.repository.UserRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -572,17 +691,11 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private LoanOfficerRepository loanOfficerRepository;
 
-	@Autowired
-	private LoanRepository loanRepository;
-
-	@Autowired
-	private UserRepository userRepository;
-
 	@Override
 	public CustomerResponseDTO getCustomerById(int id) {
 		Customer customer = customerRepository.findByIdAndIsDeletedFalse(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
-		return toCustomerResponseDTO(customer);
+		return toResponseDTO(customer);
 	}
 
 	@Override
@@ -591,10 +704,17 @@ public class CustomerServiceImpl implements CustomerService {
 		if (customers.isEmpty()) {
 			throw new ResourceNotFoundException("No customers found for Loan Officer ID: " + loanOfficerId);
 		}
-		return customers.stream().map(this::toCustomerResponseDTO).collect(Collectors.toList());
+		return customers.stream().map(this::toResponseDTO).collect(Collectors.toList());
 	}
 
 	@Override
+	public List<CustomerResponseDTO> getAllCustomers(boolean includeDeleted) {
+		List<Customer> customers = customerRepository.findAllCustomers(includeDeleted);
+		return customers.stream().map(this::toResponseDTO).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
 	public void assignLoanOfficer(int customerId, int loanOfficerId) {
 		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
@@ -608,26 +728,10 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	public void softDeleteCustomer(int customerId, int loanOfficerId) {
-		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
-
-		// Validate loan officer assignment
-		if (customer.getLoanOfficer() == null || customer.getLoanOfficer().getId() != loanOfficerId) {
-			throw new IllegalStateException("Loan officer is not assigned to this customer");
-		}
-
-		// Check for active loans
-		List<Loan> loans = loanRepository.findByCustomerId(customerId);
-		boolean hasActiveLoans = loans.stream().anyMatch(loan -> loan.getStatus().getId() != 4); // 4 = Completed
-		if (hasActiveLoans) {
-			throw new IllegalStateException("Cannot soft-delete customer with active loans");
-		}
-
-		customer.setDeleted(true);
-		customer.getUser().setDeleted(true);
-		userRepository.save(customer.getUser());
-		customerRepository.save(customer);
+	public void softDeleteCustomer(int id) {
+		Customer customer = customerRepository.findByIdAndIsDeletedFalse(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+		customerRepository.updateIsDeletedById(id, true);
 	}
 
 	@Override
@@ -635,31 +739,13 @@ public class CustomerServiceImpl implements CustomerService {
 	public void selfDeleteCustomer(int customerId) {
 		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
-
-		// Check for active loans
-		List<Loan> loans = loanRepository.findByCustomerId(customerId);
-		boolean hasActiveLoans = loans.stream().anyMatch(loan -> loan.getStatus().getId() != 4); // 4 = Completed
-		if (hasActiveLoans) {
-			throw new IllegalStateException("Cannot self-delete account with active loans");
-		}
-
-		customer.setDeleted(true);
-		customer.getUser().setDeleted(true);
-		userRepository.save(customer.getUser());
-		customerRepository.save(customer);
+		customerRepository.updateIsDeletedById(customerId, true);
 	}
 
-	@Override
-	public List<CustomerResponseDTO> getAllCustomers(boolean includeDeleted) {
-		List<Customer> customers = customerRepository.findAllCustomers(includeDeleted);
-		return customers.stream().map(this::toCustomerResponseDTO).collect(Collectors.toList());
-	}
-
-	private CustomerResponseDTO toCustomerResponseDTO(Customer customer) {
+	private CustomerResponseDTO toResponseDTO(Customer customer) {
 		CustomerResponseDTO dto = new CustomerResponseDTO();
 		dto.setId(customer.getId());
-		dto.setEmail(customer.getUser() != null ? customer.getUser().getEmail() : null);
-		dto.setUsername(customer.getUser() != null ? customer.getUser().getUsername() : null);
+		dto.setId(customer.getUser() != null ? customer.getUser().getId() : 0);
 		dto.setLoanOfficerId(customer.getLoanOfficer() != null ? customer.getLoanOfficer().getId() : 0);
 		dto.setDeleted(customer.isDeleted());
 		return dto;

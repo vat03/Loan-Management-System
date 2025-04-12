@@ -59,6 +59,7 @@ package com.aurionpro.lms.controller;
 import com.aurionpro.lms.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -66,6 +67,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/reports")
 @CrossOrigin("http://localhost:4200")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ReportController {
 
 	@Autowired

@@ -352,15 +352,134 @@
 //	}
 //}
 
+//package com.aurionpro.lms.service;
+//
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Service;
+//
+//import com.aurionpro.lms.dto.LoginRequestDTO;
+//import com.aurionpro.lms.dto.UserRequestDTO;
+//import com.aurionpro.lms.dto.UserResponseDTO;
+//import com.aurionpro.lms.entity.Admin;
+//import com.aurionpro.lms.entity.Customer;
+//import com.aurionpro.lms.entity.Role;
+//import com.aurionpro.lms.entity.User;
+//import com.aurionpro.lms.exception.BusinessRuleViolationException;
+//import com.aurionpro.lms.exception.InvalidInputException;
+//import com.aurionpro.lms.exception.ResourceNotFoundException;
+//import com.aurionpro.lms.exception.UserNotRegisteredException;
+//import com.aurionpro.lms.repository.AdminRepository;
+//import com.aurionpro.lms.repository.CustomerRepository;
+//import com.aurionpro.lms.repository.RoleRepository;
+//import com.aurionpro.lms.repository.UserRepository;
+//
+//@Service
+//public class UserServiceImpl implements UserService {
+//
+//	@Autowired
+//	private UserRepository userRepository;
+//
+//	@Autowired
+//	private RoleRepository roleRepository;
+//
+//	@Autowired
+//	private AdminRepository adminRepository;
+//
+//	@Autowired
+//	private CustomerRepository customerRepository;
+//
+//	@Override
+//	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
+//		Optional<Role> roleOpt = roleRepository.findByRoleName(roleName);
+//		if (roleOpt.isEmpty()) {
+//			throw new ResourceNotFoundException("Role not found: " + roleName);
+//		}
+//		Role role = roleOpt.get();
+//
+//		// Check if email or username already exists
+//		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
+//			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
+//		}
+//		if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
+//			throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
+//		}
+//
+//		User user = new User();
+//		user.setUsername(userRequestDTO.getUsername());
+//		user.setEmail(userRequestDTO.getEmail());
+//		user.setPassword(userRequestDTO.getPassword());
+//		user.setRole(role);
+//
+//		user = userRepository.save(user);
+//
+//		switch (roleName) {
+//		case "ADMIN":
+//			Admin admin = new Admin();
+//			admin.setUser(user);
+//			adminRepository.save(admin);
+//			break;
+//		case "LOAN_OFFICER":
+//			throw new BusinessRuleViolationException("Use LoanOfficerService to register a Loan Officer");
+//		case "CUSTOMER":
+//			Customer customer = new Customer();
+//			customer.setUser(user);
+//			customerRepository.save(customer);
+//			break;
+//		default:
+//			throw new BusinessRuleViolationException("Unsupported role: " + roleName);
+//		}
+//
+//		return toResponseDTO(user);
+//	}
+//
+//	@Override
+//	public UserResponseDTO getUserById(int id) {
+//		User user = userRepository.findByIdAndIsDeletedFalse(id)
+//				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+//		return toResponseDTO(user);
+//	}
+//
+//	@Override
+//	public UserResponseDTO login(LoginRequestDTO loginRequestDTO) {
+//		User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
+//				.orElseThrow(() -> new UserNotRegisteredException("User not registered with username: "
+//						+ loginRequestDTO.getUsername() + ". Please register first."));
+//
+//		if (user.isDeleted()) {
+//			throw new IllegalStateException("Cannot login: User account is deactivated");
+//		}
+//
+//		if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
+//			throw new InvalidInputException("Invalid password for username: " + loginRequestDTO.getUsername());
+//		}
+//
+//		return toResponseDTO(user);
+//	}
+//
+//	@Override
+//	public List<UserResponseDTO> getAllUsers(boolean includeDeleted) {
+//		List<User> users = userRepository.findAllUsers(includeDeleted);
+//		return users.stream().map(this::toResponseDTO).collect(Collectors.toList());
+//	}
+//
+//	private UserResponseDTO toResponseDTO(User user) {
+//		UserResponseDTO dto = new UserResponseDTO();
+//		dto.setId(user.getId());
+//		dto.setUsername(user.getUsername());
+//		dto.setEmail(user.getEmail());
+//		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
+//		dto.setDeleted(user.isDeleted());
+//		return dto;
+//	}
+//}
+
 package com.aurionpro.lms.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.aurionpro.lms.dto.JwtResponseDTO;
 import com.aurionpro.lms.dto.LoginRequestDTO;
 import com.aurionpro.lms.dto.UserRequestDTO;
 import com.aurionpro.lms.dto.UserResponseDTO;
@@ -369,13 +488,22 @@ import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.exception.BusinessRuleViolationException;
-import com.aurionpro.lms.exception.InvalidInputException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
-import com.aurionpro.lms.exception.UserNotRegisteredException;
 import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.CustomerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
+import com.aurionpro.lms.security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -392,15 +520,21 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	@Override
 	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
-		Optional<Role> roleOpt = roleRepository.findByRoleName(roleName);
-		if (roleOpt.isEmpty()) {
-			throw new ResourceNotFoundException("Role not found: " + roleName);
-		}
-		Role role = roleOpt.get();
+		String prefixedRoleName = "ROLE_" + roleName.toUpperCase();
+		Role role = roleRepository.findByRoleName(prefixedRoleName)
+				.orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
 
-		// Check if email or username already exists
 		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
 			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
 		}
@@ -411,12 +545,12 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		user.setUsername(userRequestDTO.getUsername());
 		user.setEmail(userRequestDTO.getEmail());
-		user.setPassword(userRequestDTO.getPassword());
+		user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
 		user.setRole(role);
 
 		user = userRepository.save(user);
 
-		switch (roleName) {
+		switch (roleName.toUpperCase()) {
 		case "ADMIN":
 			Admin admin = new Admin();
 			admin.setUser(user);
@@ -444,20 +578,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserResponseDTO login(LoginRequestDTO loginRequestDTO) {
+	public JwtResponseDTO login(LoginRequestDTO loginRequestDTO) {
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
 		User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
-				.orElseThrow(() -> new UserNotRegisteredException("User not registered with username: "
-						+ loginRequestDTO.getUsername() + ". Please register first."));
+				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-		if (user.isDeleted()) {
-			throw new IllegalStateException("Cannot login: User account is deactivated");
-		}
+		String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole().getRoleName());
 
-		if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
-			throw new InvalidInputException("Invalid password for username: " + loginRequestDTO.getUsername());
-		}
-
-		return toResponseDTO(user);
+		JwtResponseDTO response = new JwtResponseDTO();
+		response.setToken(token);
+		response.setUserId(user.getId());
+		response.setUsername(user.getUsername());
+		response.setRole(user.getRole().getRoleName());
+		return response;
 	}
 
 	@Override

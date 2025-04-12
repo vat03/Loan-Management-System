@@ -154,18 +154,81 @@
 //	}
 //}
 
+//package com.aurionpro.lms.controller;
+//
+//import com.aurionpro.lms.dto.LoanRequestDTO;
+//import com.aurionpro.lms.dto.LoanResponseDTO;
+//import com.aurionpro.lms.dto.LoanUpdateDTO;
+//import com.aurionpro.lms.service.LoanService;
+//import jakarta.validation.Valid;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.*;
+//
+//import java.util.List;
+//
+//@RestController
+//@RequestMapping("/api/loans")
+//@CrossOrigin("http://localhost:4200")
+//public class LoanController {
+//
+//	@Autowired
+//	private LoanService loanService;
+//
+//	@PostMapping("/apply")
+//	public ResponseEntity<LoanResponseDTO> applyForLoan(@Valid @RequestBody LoanRequestDTO requestDTO) {
+//		LoanResponseDTO responseDTO = loanService.applyForLoan(requestDTO);
+//		return ResponseEntity.status(201).body(responseDTO);
+//	}
+//
+//	@PutMapping("/{id}/status")
+//	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
+//			@Valid @RequestBody LoanUpdateDTO updateDTO) {
+//		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
+//		return ResponseEntity.ok(responseDTO);
+//	}
+//
+//	@GetMapping("/getByLoanId/{id}")
+//	public ResponseEntity<LoanResponseDTO> getLoanById(@PathVariable int id) {
+//		LoanResponseDTO responseDTO = loanService.getLoanById(id);
+//		return ResponseEntity.ok(responseDTO);
+//	}
+//
+//	@GetMapping("/getByCustomerId/customer/{customerId}")
+//	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@PathVariable int customerId) {
+//		List<LoanResponseDTO> responseDTOs = loanService.getLoansByCustomerId(customerId);
+//		return ResponseEntity.ok(responseDTOs);
+//	}
+//
+//	@GetMapping("/getByLoanOfficerId/loan-officer/{loanOfficerId}")
+//	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@PathVariable int loanOfficerId) {
+//		List<LoanResponseDTO> responseDTOs = loanService.getLoansByLoanOfficerId(loanOfficerId);
+//		return ResponseEntity.ok(responseDTOs);
+//	}
+//}
+
 package com.aurionpro.lms.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.LoanRequestDTO;
 import com.aurionpro.lms.dto.LoanResponseDTO;
 import com.aurionpro.lms.dto.LoanUpdateDTO;
 import com.aurionpro.lms.service.LoanService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/loans")
@@ -176,12 +239,14 @@ public class LoanController {
 	private LoanService loanService;
 
 	@PostMapping("/apply")
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	public ResponseEntity<LoanResponseDTO> applyForLoan(@Valid @RequestBody LoanRequestDTO requestDTO) {
 		LoanResponseDTO responseDTO = loanService.applyForLoan(requestDTO);
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
 	@PutMapping("/{id}/status")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
 	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
 			@Valid @RequestBody LoanUpdateDTO updateDTO) {
 		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
@@ -189,18 +254,21 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByLoanId/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER', 'ROLE_CUSTOMER')")
 	public ResponseEntity<LoanResponseDTO> getLoanById(@PathVariable int id) {
 		LoanResponseDTO responseDTO = loanService.getLoanById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
 	@GetMapping("/getByCustomerId/customer/{customerId}")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@PathVariable int customerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByCustomerId(customerId);
 		return ResponseEntity.ok(responseDTOs);
 	}
 
 	@GetMapping("/getByLoanOfficerId/loan-officer/{loanOfficerId}")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@PathVariable int loanOfficerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);

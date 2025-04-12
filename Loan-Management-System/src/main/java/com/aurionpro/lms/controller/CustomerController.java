@@ -126,12 +126,75 @@
 //	}
 //}
 
+//package com.aurionpro.lms.controller;
+//
+//import java.util.List;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.PutMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.aurionpro.lms.dto.CustomerResponseDTO;
+//import com.aurionpro.lms.dto.CustomerSoftDeleteRequest;
+//import com.aurionpro.lms.dto.SelfDeleteRequest;
+//import com.aurionpro.lms.service.CustomerService;
+//
+//import jakarta.validation.Valid;
+//
+//@RestController
+//@RequestMapping("/api/customers")
+//@CrossOrigin("http://localhost:4200")
+//public class CustomerController {
+//
+//	@Autowired
+//	private CustomerService customerService;
+//
+//	@GetMapping("/getCustomerById/{id}")
+//	public ResponseEntity<CustomerResponseDTO> getCustomerById(@Valid @PathVariable int id) {
+//		CustomerResponseDTO responseDTO = customerService.getCustomerById(id);
+//		return ResponseEntity.ok(responseDTO);
+//	}
+//
+//	@GetMapping("/getCustomerByLoanOfficerId/loan-officer/{loanOfficerId}")
+//	public ResponseEntity<List<CustomerResponseDTO>> getCustomersByLoanOfficerId(@Valid @PathVariable int loanOfficerId) {
+//		List<CustomerResponseDTO> responseDTOs = customerService.getCustomersByLoanOfficerId(loanOfficerId);
+//		return ResponseEntity.ok(responseDTOs);
+//	}
+//
+//	@PutMapping("/{customerId}/assign-loan-officer")
+//	public ResponseEntity<Void> assignLoanOfficer(@Valid @PathVariable int customerId, @Valid @RequestParam int loanOfficerId) {
+//		customerService.assignLoanOfficer(customerId, loanOfficerId);
+//		return ResponseEntity.noContent().build();
+//	}
+//
+//	@PutMapping("/{id}/soft-delete")
+//	public ResponseEntity<Void> softDeleteCustomer(@Valid @PathVariable int id,
+//			@Valid @RequestBody CustomerSoftDeleteRequest request) {
+//		customerService.softDeleteCustomer(id, request.getLoanOfficerId());
+//		return ResponseEntity.noContent().build();
+//	}
+//
+//	@PutMapping("/me/soft-delete")
+//	public ResponseEntity<Void> selfDeleteCustomer(@Valid @RequestBody SelfDeleteRequest request) {
+//		customerService.selfDeleteCustomer(request.getCustomerId());
+//		return ResponseEntity.noContent().build();
+//	}
+//}
+
 package com.aurionpro.lms.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -142,7 +205,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.CustomerResponseDTO;
-import com.aurionpro.lms.dto.CustomerSoftDeleteRequest;
 import com.aurionpro.lms.dto.SelfDeleteRequest;
 import com.aurionpro.lms.service.CustomerService;
 
@@ -157,32 +219,38 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	@GetMapping("/getCustomerById/{id}")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER') or (hasRole('ROLE_CUSTOMER') and #id == authentication.principal.userId)")
 	public ResponseEntity<CustomerResponseDTO> getCustomerById(@Valid @PathVariable int id) {
 		CustomerResponseDTO responseDTO = customerService.getCustomerById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
 	@GetMapping("/getCustomerByLoanOfficerId/loan-officer/{loanOfficerId}")
-	public ResponseEntity<List<CustomerResponseDTO>> getCustomersByLoanOfficerId(@Valid @PathVariable int loanOfficerId) {
+	@PreAuthorize("hasAnyRole('ROLE_LOAN_OFFICER', 'ROLE_ADMIN')")
+	public ResponseEntity<List<CustomerResponseDTO>> getCustomersByLoanOfficerId(
+			@Valid @PathVariable int loanOfficerId) {
 		List<CustomerResponseDTO> responseDTOs = customerService.getCustomersByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);
 	}
 
 	@PutMapping("/{customerId}/assign-loan-officer")
-	public ResponseEntity<Void> assignLoanOfficer(@Valid @PathVariable int customerId, @Valid @RequestParam int loanOfficerId) {
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Void> assignLoanOfficer(@Valid @PathVariable int customerId,
+			@Valid @RequestParam int loanOfficerId) {
 		customerService.assignLoanOfficer(customerId, loanOfficerId);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/{id}/soft-delete")
-	public ResponseEntity<Void> softDeleteCustomer(@Valid @PathVariable int id,
-			@Valid @RequestBody CustomerSoftDeleteRequest request) {
-		customerService.softDeleteCustomer(id, request.getLoanOfficerId());
+	@PreAuthorize("@customerSecurityService.isAssignedLoanOfficer(authentication, #id)")
+	public ResponseEntity<Void> softDeleteCustomer(@Valid @PathVariable int id) {
+		customerService.softDeleteCustomer(id);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PutMapping("/me/soft-delete")
-	public ResponseEntity<Void> selfDeleteCustomer(@Valid @RequestBody SelfDeleteRequest request) {
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	public ResponseEntity<Void> softDeleteCustomer(@Valid @RequestBody SelfDeleteRequest request) {
 		customerService.selfDeleteCustomer(request.getCustomerId());
 		return ResponseEntity.noContent().build();
 	}

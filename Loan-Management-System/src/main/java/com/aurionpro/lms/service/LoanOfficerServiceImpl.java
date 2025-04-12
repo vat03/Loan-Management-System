@@ -696,6 +696,15 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
 import com.aurionpro.lms.dto.LoanOfficerResponseDTO;
 import com.aurionpro.lms.entity.Admin;
@@ -708,14 +717,6 @@ import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class LoanOfficerServiceImpl implements LoanOfficerService {
@@ -731,6 +732,9 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 
 	@Autowired
 	private LoanOfficerRepository loanOfficerRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public LoanOfficerResponseDTO addLoanOfficer(int adminId, LoanOfficerRequestDTO requestDTO) {
@@ -740,7 +744,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		}
 		Admin admin = adminOpt.get();
 
-		Optional<Role> roleOpt = roleRepository.findByRoleName("LOAN_OFFICER");
+		Optional<Role> roleOpt = roleRepository.findByRoleName("ROLE_LOAN_OFFICER");
 		if (roleOpt.isEmpty()) {
 			throw new ResourceNotFoundException("Role not found: LOAN_OFFICER");
 		}
@@ -749,7 +753,7 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 		User user = new User();
 		user.setUsername(requestDTO.getUsername());
 		user.setEmail(requestDTO.getEmail());
-		user.setPassword(requestDTO.getPassword());
+		user.setPassword((passwordEncoder.encode(requestDTO.getPassword())));
 		user.setRole(role);
 		user = userRepository.save(user);
 
