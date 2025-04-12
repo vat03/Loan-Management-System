@@ -258,6 +258,7 @@ import com.aurionpro.lms.repository.LoanOfficerRepository;
 import com.aurionpro.lms.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -277,6 +278,9 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public ProfileResponseDTO updateProfile(int userId, ProfileUpdateRequestDTO requestDTO) {
 		Optional<User> userOpt = userRepository.findById(userId);
@@ -350,7 +354,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	private ProfileResponseDTO updateUser(User user, ProfileUpdateRequestDTO requestDTO) {
-		if (!(requestDTO.getPassword().equals(user.getPassword()))) {
+		if (!(passwordEncoder.matches(requestDTO.getPassword(),user.getPassword()))) {
 			throw new InvalidInputException("Incorrect password");
 		}
 

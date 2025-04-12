@@ -245,16 +245,16 @@ public class LoanController {
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
-	@PutMapping("/{id}/status")
-	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
-	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
-			@Valid @RequestBody LoanUpdateDTO updateDTO) {
-		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
-		return ResponseEntity.ok(responseDTO);
-	}
+//	@PutMapping("/{id}/status")
+//	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
+//	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
+//			@Valid @RequestBody LoanUpdateDTO updateDTO) {
+//		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
+//		return ResponseEntity.ok(responseDTO);
+//	}
 
 	@GetMapping("/getByLoanId/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER', 'ROLE_CUSTOMER')")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
 	public ResponseEntity<LoanResponseDTO> getLoanById(@PathVariable int id) {
 		LoanResponseDTO responseDTO = loanService.getLoanById(id);
 		return ResponseEntity.ok(responseDTO);

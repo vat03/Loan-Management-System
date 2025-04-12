@@ -400,6 +400,7 @@ import com.razorpay.RazorpayException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -418,6 +419,7 @@ public class LoanPaymentController {
 	private PaymentService paymentService;
 
 	@PostMapping("/{loanPaymentId}/repay")
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	public ResponseEntity<String> repayLoanPayment(@PathVariable int loanPaymentId) throws RazorpayException {
 		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
 		String orderId = paymentService.createPaymentOrder(loanPaymentId, amount);
@@ -425,6 +427,7 @@ public class LoanPaymentController {
 	}
 
 	@PostMapping("/complete")
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	public ResponseEntity<String> completePayment(
 			@Valid @RequestBody PaymentCompletionRequestDto paymentCompletionRequestDto) throws RazorpayException {
 		boolean isValid = paymentService.verifyPayment(paymentCompletionRequestDto.getOrderId(),
@@ -438,6 +441,7 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/loan/{loanId}")
+	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_LOAN_OFFICER')")
 	public ResponseEntity<List<LoanPaymentResponseDTO>> getLoanPayments(@PathVariable int loanId,
 			@RequestParam(required = false) String status) {
 		List<LoanPaymentResponseDTO> payments = loanPaymentService.getPaymentsByLoanId(loanId, status);
@@ -445,24 +449,27 @@ public class LoanPaymentController {
 	}
 
 	@GetMapping("/getPaymentDetails/{loanPaymentId}")
+	@PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_LOAN_OFFICER')")
 	public ResponseEntity<LoanPaymentResponseDTO> getPaymentDetails(@PathVariable int loanPaymentId) {
 		LoanPaymentResponseDTO payment = loanPaymentService.getPaymentDetails(loanPaymentId);
 		return ResponseEntity.ok(payment);
 	}
 
-	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
-	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
-		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
-		return ResponseEntity.ok(amount);
-	}
+//	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
+//	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
+//		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
+//		return ResponseEntity.ok(amount);
+//	}
 
 	@PostMapping("/npa/approve/{loanId}")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
 	public ResponseEntity<String> approveNpaStatus(@PathVariable int loanId, @RequestParam boolean approve) {
 		loanPaymentService.approveNpaStatus(loanId, approve);
 		return ResponseEntity.ok(approve ? "NPA status approved" : "NPA status rejected");
 	}
 
 	@PostMapping("/check-npa")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> checkAndFlagNpaLoans() {
 		loanPaymentService.checkAndFlagNpaLoans();
 		return ResponseEntity.ok("NPA check completed");

@@ -479,6 +479,17 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.aurionpro.lms.dto.JwtResponseDTO;
 import com.aurionpro.lms.dto.LoginRequestDTO;
 import com.aurionpro.lms.dto.UserRequestDTO;
@@ -494,16 +505,6 @@ import com.aurionpro.lms.repository.CustomerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
 import com.aurionpro.lms.security.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -611,5 +612,11 @@ public class UserServiceImpl implements UserService {
 		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
 		dto.setDeleted(user.isDeleted());
 		return dto;
+	}
+	
+	@Override
+	public JwtResponseDTO generateTestToken(int userId, String username, String roleName) {
+	    String token = jwtUtil.generateToken(userId, username, roleName);
+	    return new JwtResponseDTO(token, userId, username, roleName);
 	}
 }

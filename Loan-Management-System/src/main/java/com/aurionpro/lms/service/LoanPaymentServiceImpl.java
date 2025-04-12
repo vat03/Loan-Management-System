@@ -872,7 +872,7 @@ public class LoanPaymentServiceImpl implements LoanPaymentService {
 
 		BigDecimal onePlusR = BigDecimal.ONE.add(monthlyInterestRate);
 		BigDecimal onePlusRPowerN = onePlusR.pow(tenureMonths);
-		BigDecimal emi = principal.multiply(monthlyInterestRate).multiply(onePlusRPowerN)
+		BigDecimal emi = (principal.multiply(monthlyInterestRate).multiply(onePlusRPowerN))
 				.divide(onePlusRPowerN.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_UP);
 
 		LocalDate startDate = loan.getApplicationDate();

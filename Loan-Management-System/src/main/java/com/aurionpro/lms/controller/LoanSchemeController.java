@@ -305,18 +305,21 @@ public class LoanSchemeController {
 	}
 
 	@GetMapping("/getByLoanId/{id}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<LoanSchemeResponseDTO> getLoanSchemeById(@PathVariable int id) {
 		LoanSchemeResponseDTO responseDTO = loanSchemeService.getLoanSchemeById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
 	@GetMapping("/getByAdminId/admin/{adminId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<List<LoanSchemeResponseDTO>> getLoanSchemesByAdminId(@PathVariable int adminId) {
 		List<LoanSchemeResponseDTO> responseDTOs = loanSchemeService.getLoanSchemesByAdminId(adminId);
 		return ResponseEntity.ok(responseDTOs);
 	}
 
 	@GetMapping("/all")
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	public ResponseEntity<List<LoanSchemeResponseDTO>> getAllLoanSchemes() {
 		List<LoanSchemeResponseDTO> responseDTOs = loanSchemeService.getAllLoanSchemes();
 		return ResponseEntity.ok(responseDTOs);

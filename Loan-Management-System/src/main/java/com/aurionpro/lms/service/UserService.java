@@ -33,4 +33,6 @@ public interface UserService {
 	JwtResponseDTO login(LoginRequestDTO loginRequestDTO);
 
 	List<UserResponseDTO> getAllUsers(boolean includeDeleted);
+	
+	JwtResponseDTO generateTestToken(int userId, String username, String roleName);
 }
