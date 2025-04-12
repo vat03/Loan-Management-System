@@ -78,6 +78,42 @@
 //	}
 //}
 
+//package com.aurionpro.lms.controller;
+//
+//import java.util.List;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.aurionpro.lms.dto.AdminResponseDTO;
+//import com.aurionpro.lms.service.AdminService;
+//
+//@RestController
+//@RequestMapping("/api/admins")
+//@CrossOrigin("http://localhost:4200")
+//public class AdminController {
+//
+//	@Autowired
+//	private AdminService adminService;
+//
+//	@GetMapping("/getAdminById/{id}")
+//	public ResponseEntity<AdminResponseDTO> getAdminById(@PathVariable int id) {
+//		AdminResponseDTO responseDTO = adminService.getAdminById(id);
+//		return ResponseEntity.ok(responseDTO);
+//	}
+//
+//	@GetMapping("/getAllAdmins")
+//	public ResponseEntity<List<AdminResponseDTO>> getAllAdmins() {
+//		List<AdminResponseDTO> admins = adminService.getAllAdmins();
+//		return ResponseEntity.ok(admins);
+//	}
+//}
+
 package com.aurionpro.lms.controller;
 
 import java.util.List;
@@ -91,15 +127,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.AdminResponseDTO;
+import com.aurionpro.lms.dto.CustomerResponseDTO;
 import com.aurionpro.lms.service.AdminService;
+import com.aurionpro.lms.service.CustomerService;
 
 @RestController
-@RequestMapping("/api/admins")
+@RequestMapping("/api/admin")
 @CrossOrigin("http://localhost:4200")
 public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
+
+	@Autowired
+	private CustomerService customerService;
 
 	@GetMapping("/getAdminById/{id}")
 	public ResponseEntity<AdminResponseDTO> getAdminById(@PathVariable int id) {
@@ -111,5 +152,11 @@ public class AdminController {
 	public ResponseEntity<List<AdminResponseDTO>> getAllAdmins() {
 		List<AdminResponseDTO> admins = adminService.getAllAdmins();
 		return ResponseEntity.ok(admins);
+	}
+
+	@GetMapping("/customers")
+	public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
+		List<CustomerResponseDTO> customers = customerService.getAllCustomers(true);
+		return ResponseEntity.ok(customers);
 	}
 }

@@ -20,4 +20,5 @@ public class CustomerResponseDTO {
 	private String username;
 	private String email;
 	private int loanOfficerId;
+	private boolean isDeleted;
 }

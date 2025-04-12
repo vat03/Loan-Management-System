@@ -74,4 +74,7 @@ public class Customer {
 
 	@Column(name = "red_flagged", nullable = false)
 	private boolean redFlagged = false;
+	
+	@Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false; 
 }

@@ -257,11 +257,11 @@ public class ReportServiceImpl implements ReportService {
 								|| (l.getNpaStatus() != null && l.getNpaStatus().getStatusName().equals("NPA")))
 						.map(Loan::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
 		report.put("customersEntertained",
-				customerRepository.findByLoanOfficerId(loanOfficerId).stream().map(Customer::getId).distinct().count());
+				customerRepository.findByLoanOfficerIdAndIsDeletedFalse(loanOfficerId).stream().map(Customer::getId).distinct().count());
 		report.put("npas", activeLoans.stream()
 				.filter(l -> l.getNpaStatus() != null && l.getNpaStatus().getStatusName().equals("NPA")).count());
 		report.put("redFlaggedCustomers",
-				customerRepository.findByLoanOfficerId(loanOfficerId).stream().filter(Customer::isRedFlagged).count());
+				customerRepository.findByLoanOfficerIdAndIsDeletedFalse(loanOfficerId).stream().filter(Customer::isRedFlagged).count());
 
 		return report;
 	}
