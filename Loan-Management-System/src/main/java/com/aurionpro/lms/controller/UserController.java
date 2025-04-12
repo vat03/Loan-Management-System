@@ -106,7 +106,7 @@ public class UserController {
 		UserResponseDTO responseDTO = userService.getUserById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<UserResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
 		UserResponseDTO responseDTO = userService.login(loginRequestDTO);

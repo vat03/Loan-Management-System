@@ -49,12 +49,16 @@ import org.springframework.data.repository.query.Param;
 import com.aurionpro.lms.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-	Optional<Customer> findByUserIdAndIsDeletedFalse(int userId);
+	@Query("SELECT c FROM Customer c JOIN c.user u WHERE c.user.id = :userId AND c.isDeleted = false AND u.isDeleted = false")
+	Optional<Customer> findByUserIdAndIsDeletedFalse(@Param("userId") int userId);
 
-	List<Customer> findByLoanOfficerIdAndIsDeletedFalse(int loanOfficerId);
+	@Query("SELECT c FROM Customer c JOIN c.user u WHERE c.loanOfficer.id = :loanOfficerId AND c.isDeleted = false AND u.isDeleted = false")
+	List<Customer> findByLoanOfficerIdAndIsDeletedFalse(@Param("loanOfficerId") int loanOfficerId);
 
-	Optional<Customer> findByIdAndIsDeletedFalse(Integer id);
+	@Query("SELECT c FROM Customer c JOIN c.user u WHERE c.id = :id AND c.isDeleted = false AND u.isDeleted = false")
+	Optional<Customer> findByIdAndIsDeletedFalse(@Param("id") Integer id);
 
+	@Query("SELECT c FROM Customer c JOIN c.user u WHERE c.isDeleted = false AND u.isDeleted = false")
 	List<Customer> findAllByIsDeletedFalse();
 
 	@Query("SELECT c FROM Customer c WHERE (:includeDeleted = true OR c.isDeleted = false)")

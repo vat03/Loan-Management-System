@@ -20,4 +20,5 @@ public class UserResponseDTO {
 	private String username;
 	private String email;
 	private String roleName;
+	private boolean isDeleted;
 }

@@ -1056,113 +1056,116 @@ import com.aurionpro.lms.repository.LoanStatusRepository;
 @Service
 public class LoanServiceImpl implements LoanService {
 
-	@Autowired
-	private LoanRepository loanRepository;
+    @Autowired
+    private LoanRepository loanRepository;
 
-	@Autowired
-	private LoanSchemeRepository loanSchemeRepository;
+    @Autowired
+    private LoanSchemeRepository loanSchemeRepository;
 
-	@Autowired
-	private LoanStatusRepository loanStatusRepository;
+    @Autowired
+    private LoanStatusRepository loanStatusRepository;
 
-	@Autowired
-	private LoanPaymentService loanPaymentService;
+    @Autowired
+    private LoanPaymentService loanPaymentService;
 
-	@Autowired
-	private NotificationService notificationService;
+    @Autowired
+    private NotificationService notificationService;
 
-	@Autowired
-	private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
-	@Override
-	public LoanResponseDTO applyForLoan(LoanRequestDTO requestDTO) {
-		Customer customer = customerRepository.findById(requestDTO.getCustomerId()).orElseThrow(
-				() -> new ResourceNotFoundException("Customer not found with ID: " + requestDTO.getCustomerId()));
+    @Override
+    public LoanResponseDTO applyForLoan(LoanRequestDTO requestDTO) {
+        Customer customer = customerRepository.findByIdAndIsDeletedFalse(requestDTO.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + requestDTO.getCustomerId()));
 
-		if (customer.getLoanOfficer() == null) {
-			throw new BusinessRuleViolationException(
-					"Customer must be assigned a Loan Officer before applying for a loan");
-		}
-		LoanOfficer loanOfficer = customer.getLoanOfficer();
+        if (customer.isDeleted()) {
+            throw new IllegalStateException("Cannot apply for loan: Customer account is deactivated");
+        }
 
-		LoanScheme loanScheme = loanSchemeRepository.findByIdAndIsDeletedFalse(requestDTO.getLoanSchemeId())
-				.orElseThrow(() -> new ResourceNotFoundException("Loan scheme not found with ID: "
-						+ requestDTO.getLoanSchemeId() + " or it has been deactivated"));
+        if (customer.getLoanOfficer() == null) {
+            throw new BusinessRuleViolationException("Customer must be assigned a Loan Officer before applying for a loan");
+        }
+        LoanOfficer loanOfficer = customer.getLoanOfficer();
 
-		LoanStatus status = loanStatusRepository.findByStatusName("PENDING")
-				.orElseThrow(() -> new ResourceNotFoundException("Loan status PENDING not found"));
+        LoanScheme loanScheme = loanSchemeRepository.findByIdAndIsDeletedFalse(requestDTO.getLoanSchemeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Loan scheme not found with ID: "
+                        + requestDTO.getLoanSchemeId() + " or it has been deactivated"));
 
-		Loan loan = new Loan();
-		loan.setAmount(requestDTO.getAmount());
-		loan.setCustomer(customer);
-		loan.setLoanOfficer(loanOfficer);
-		loan.setLoanScheme(loanScheme);
-		loan.setStatus(status);
-		loan.setApplicationDate(LocalDate.now());
-		loan.setDueDate(LocalDate.now().plusMonths(loanScheme.getTenureMonths()));
+        LoanStatus status = loanStatusRepository.findByStatusName("PENDING")
+                .orElseThrow(() -> new ResourceNotFoundException("Loan status PENDING not found"));
 
-		loan = loanRepository.save(loan);
+        Loan loan = new Loan();
+        loan.setAmount(requestDTO.getAmount());
+        loan.setCustomer(customer);
+        loan.setLoanOfficer(loanOfficer);
+        loan.setLoanScheme(loanScheme);
+        loan.setStatus(status);
+        loan.setApplicationDate(LocalDate.now());
+        loan.setDueDate(LocalDate.now().plusMonths(loanScheme.getTenureMonths()));
 
-		return toResponseDTO(loan);
-	}
+        loan = loanRepository.save(loan);
 
-	@Override
-	public LoanResponseDTO updateLoanStatus(int loanId, LoanUpdateDTO updateDTO) {
-		Loan loan = loanRepository.findById(loanId)
-				.orElseThrow(() -> new ResourceNotFoundException("Loan not found with ID: " + loanId));
+        return toResponseDTO(loan);
+    }
 
-		LoanStatus status = loanStatusRepository.findByStatusName(updateDTO.getStatusName()).orElseThrow(
-				() -> new ResourceNotFoundException("Loan status not found: " + updateDTO.getStatusName()));
-		loan.setStatus(status);
+    @Override
+    public LoanResponseDTO updateLoanStatus(int loanId, LoanUpdateDTO updateDTO) {
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan not found with ID: " + loanId));
 
-		loan = loanRepository.save(loan);
+        LoanStatus status = loanStatusRepository.findByStatusName(updateDTO.getStatusName())
+                .orElseThrow(() -> new ResourceNotFoundException("Loan status not found: " + updateDTO.getStatusName()));
+        loan.setStatus(status);
 
-		if ("APPROVED".equals(updateDTO.getStatusName())) {
-			loanPaymentService.createLoanPayments(loanId);
-			notificationService.sendLoanStatusEmail(loanId, "approved");
-			notificationService.sendInstallmentPlanEmail(loanId);
-		} else if ("REJECTED".equals(updateDTO.getStatusName())) {
-			notificationService.sendLoanStatusEmail(loanId, "rejected");
-		}
+        loan = loanRepository.save(loan);
 
-		return toResponseDTO(loan);
-	}
+        if ("APPROVED".equals(updateDTO.getStatusName())) {
+            loanPaymentService.createLoanPayments(loanId);
+            notificationService.sendLoanStatusEmail(loanId, "approved");
+            notificationService.sendInstallmentPlanEmail(loanId);
+        } else if ("REJECTED".equals(updateDTO.getStatusName())) {
+            notificationService.sendLoanStatusEmail(loanId, "rejected");
+        }
 
-	@Override
-	public LoanResponseDTO getLoanById(int id) {
-		Loan loan = loanRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Loan not found with ID: " + id));
-		return toResponseDTO(loan);
-	}
+        return toResponseDTO(loan);
+    }
 
-	@Override
-	public List<LoanResponseDTO> getLoansByCustomerId(int customerId) {
-		List<Loan> loans = loanRepository.findByCustomerId(customerId);
-		if (loans.isEmpty()) {
-			throw new ResourceNotFoundException("No loans found for Customer ID: " + customerId);
-		}
-		return loans.stream().map(this::toResponseDTO).collect(Collectors.toList());
-	}
+    @Override
+    public LoanResponseDTO getLoanById(int id) {
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Loan not found with ID: " + id));
+        return toResponseDTO(loan);
+    }
 
-	@Override
-	public List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId) {
-		List<Loan> loans = loanRepository.findByLoanOfficerId(loanOfficerId);
-		if (loans.isEmpty()) {
-			throw new ResourceNotFoundException("No loans found for Loan Officer ID: " + loanOfficerId);
-		}
-		return loans.stream().map(this::toResponseDTO).collect(Collectors.toList());
-	}
+    @Override
+    public List<LoanResponseDTO> getLoansByCustomerId(int customerId) {
+        List<Loan> loans = loanRepository.findByCustomerId(customerId);
+        if (loans.isEmpty()) {
+            throw new ResourceNotFoundException("No loans found for Customer ID: " + customerId);
+        }
+        return loans.stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
 
-	private LoanResponseDTO toResponseDTO(Loan loan) {
-		LoanResponseDTO dto = new LoanResponseDTO();
-		dto.setLoanId(loan.getLoanId());
-		dto.setAmount(loan.getAmount());
-		dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
-		dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
-		dto.setApplicationDate(loan.getApplicationDate());
-		dto.setDueDate(loan.getDueDate());
-		dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
-		dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
-		return dto;
-	}
+    @Override
+    public List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId) {
+        List<Loan> loans = loanRepository.findByLoanOfficerId(loanOfficerId);
+        if (loans.isEmpty()) {
+            throw new ResourceNotFoundException("No loans found for Loan Officer ID: " + loanOfficerId);
+        }
+        return loans.stream().map(this::toResponseDTO).collect(Collectors.toList());
+    }
+
+    private LoanResponseDTO toResponseDTO(Loan loan) {
+        LoanResponseDTO dto = new LoanResponseDTO();
+        dto.setLoanId(loan.getLoanId());
+        dto.setAmount(loan.getAmount());
+        dto.setLoanSchemeName(loan.getLoanScheme() != null ? loan.getLoanScheme().getSchemeName() : null);
+        dto.setStatusName(loan.getStatus() != null ? loan.getStatus().getStatusName() : null);
+        dto.setApplicationDate(loan.getApplicationDate());
+        dto.setDueDate(loan.getDueDate());
+        dto.setLoanOfficerId(loan.getLoanOfficer() != null ? loan.getLoanOfficer().getId() : 0);
+        dto.setCustomerId(loan.getCustomer() != null ? loan.getCustomer().getId() : 0);
+        return dto;
+    }
 }

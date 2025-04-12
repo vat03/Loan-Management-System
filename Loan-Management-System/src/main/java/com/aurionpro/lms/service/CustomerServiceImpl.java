@@ -546,20 +546,22 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.aurionpro.lms.dto.CustomerResponseDTO;
 import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.Loan;
 import com.aurionpro.lms.entity.LoanOfficer;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.repository.CustomerRepository;
-import com.aurionpro.lms.repository.LoanRepository;
 import com.aurionpro.lms.repository.LoanOfficerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import com.aurionpro.lms.repository.LoanRepository;
+import com.aurionpro.lms.repository.UserRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -573,11 +575,13 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private LoanRepository loanRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+
 	@Override
 	public CustomerResponseDTO getCustomerById(int id) {
 		Customer customer = customerRepository.findByIdAndIsDeletedFalse(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
-
 		return toCustomerResponseDTO(customer);
 	}
 
@@ -620,7 +624,10 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new IllegalStateException("Cannot soft-delete customer with active loans");
 		}
 
-		customerRepository.updateIsDeletedById(customerId, true);
+		customer.setDeleted(true);
+		customer.getUser().setDeleted(true);
+		userRepository.save(customer.getUser());
+		customerRepository.save(customer);
 	}
 
 	@Override
@@ -636,7 +643,10 @@ public class CustomerServiceImpl implements CustomerService {
 			throw new IllegalStateException("Cannot self-delete account with active loans");
 		}
 
-		customerRepository.updateIsDeletedById(customerId, true);
+		customer.setDeleted(true);
+		customer.getUser().setDeleted(true);
+		userRepository.save(customer.getUser());
+		customerRepository.save(customer);
 	}
 
 	@Override

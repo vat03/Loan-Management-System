@@ -180,4 +180,7 @@ public class User {
 	@Pattern(regexp = "^(MALE|FEMALE|OTHER)$", message = "Gender must be MALE, FEMALE, or OTHER")
 	@Column(nullable = true)
 	private String gender;
+
+	@Column(name = "is_deleted", nullable = false)
+	private boolean isDeleted = false;
 }

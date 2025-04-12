@@ -1,4 +1,4 @@
-		//package com.aurionpro.lms.controller;
+//package com.aurionpro.lms.controller;
 //
 //import java.util.List;
 //
@@ -132,9 +132,13 @@ import com.aurionpro.lms.dto.AdminResponseDTO;
 import com.aurionpro.lms.dto.CustomerResponseDTO;
 import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
 import com.aurionpro.lms.dto.LoanSchemeSoftDeleteRequest;
+import com.aurionpro.lms.dto.UserResponseDTO;
 import com.aurionpro.lms.service.AdminService;
 import com.aurionpro.lms.service.CustomerService;
 import com.aurionpro.lms.service.LoanSchemeService;
+import com.aurionpro.lms.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -146,12 +150,15 @@ public class AdminController {
 
 	@Autowired
 	private CustomerService customerService;
-	
+
 	@Autowired
 	private LoanSchemeService loanSchemeService;
 
+	@Autowired
+	private UserService userService;
+
 	@GetMapping("/getAdminById/{id}")
-	public ResponseEntity<AdminResponseDTO> getAdminById(@PathVariable int id) {
+	public ResponseEntity<AdminResponseDTO> getAdminById(@Valid @PathVariable int id) {
 		AdminResponseDTO responseDTO = adminService.getAdminById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
@@ -169,7 +176,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/loan-schemes/{id}/soft-delete")
-	public ResponseEntity<Void> softDeleteLoanScheme(@PathVariable int id,
+	public ResponseEntity<Void> softDeleteLoanScheme(@Valid @PathVariable int id,
 			@RequestBody LoanSchemeSoftDeleteRequest request) {
 		loanSchemeService.softDeleteLoanScheme(id, request.getAdminId());
 		return ResponseEntity.noContent().build();
@@ -179,5 +186,11 @@ public class AdminController {
 	public ResponseEntity<List<LoanSchemeResponseDTO>> getAllLoanSchemes() {
 		List<LoanSchemeResponseDTO> schemes = loanSchemeService.getAllLoanSchemesForAdmin(true);
 		return ResponseEntity.ok(schemes);
+	}
+
+	@GetMapping("/users")
+	public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+		List<UserResponseDTO> users = userService.getAllUsers(true);
+		return ResponseEntity.ok(users);
 	}
 }

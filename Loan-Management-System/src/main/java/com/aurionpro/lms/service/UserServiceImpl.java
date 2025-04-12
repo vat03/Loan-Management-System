@@ -354,7 +354,9 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -398,6 +400,14 @@ public class UserServiceImpl implements UserService {
 		}
 		Role role = roleOpt.get();
 
+		// Check if email or username already exists
+		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
+			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
+		}
+		if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
+			throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
+		}
+
 		User user = new User();
 		user.setUsername(userRequestDTO.getUsername());
 		user.setEmail(userRequestDTO.getEmail());
@@ -423,48 +433,46 @@ public class UserServiceImpl implements UserService {
 			throw new BusinessRuleViolationException("Unsupported role: " + roleName);
 		}
 
-		UserResponseDTO dto = new UserResponseDTO();
-		dto.setId(user.getId());
-		dto.setUsername(user.getUsername());
-		dto.setEmail(user.getEmail());
-		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
-		return dto;
+		return toResponseDTO(user);
 	}
 
 	@Override
 	public UserResponseDTO getUserById(int id) {
-		Optional<User> userOpt = userRepository.findById(id);
-		if (userOpt.isEmpty()) {
-			throw new ResourceNotFoundException("User not found with ID: " + id);
-		}
-		User user = userOpt.get();
-
-		UserResponseDTO dto = new UserResponseDTO();
-		dto.setId(user.getId());
-		dto.setUsername(user.getUsername());
-		dto.setEmail(user.getEmail());
-		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
-		return dto;
+		User user = userRepository.findByIdAndIsDeletedFalse(id)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+		return toResponseDTO(user);
 	}
 
 	@Override
 	public UserResponseDTO login(LoginRequestDTO loginRequestDTO) {
-		Optional<User> userOpt = userRepository.findByUsername(loginRequestDTO.getUsername());
-		if (userOpt.isEmpty()) {
-			throw new UserNotRegisteredException(
-					"User not registered with username: " + loginRequestDTO.getUsername() + ". Please register first.");
+		User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
+				.orElseThrow(() -> new UserNotRegisteredException("User not registered with username: "
+						+ loginRequestDTO.getUsername() + ". Please register first."));
+
+		if (user.isDeleted()) {
+			throw new IllegalStateException("Cannot login: User account is deactivated");
 		}
-		User user = userOpt.get();
 
 		if (!user.getPassword().equals(loginRequestDTO.getPassword())) {
 			throw new InvalidInputException("Invalid password for username: " + loginRequestDTO.getUsername());
 		}
 
+		return toResponseDTO(user);
+	}
+
+	@Override
+	public List<UserResponseDTO> getAllUsers(boolean includeDeleted) {
+		List<User> users = userRepository.findAllUsers(includeDeleted);
+		return users.stream().map(this::toResponseDTO).collect(Collectors.toList());
+	}
+
+	private UserResponseDTO toResponseDTO(User user) {
 		UserResponseDTO dto = new UserResponseDTO();
 		dto.setId(user.getId());
 		dto.setUsername(user.getUsername());
 		dto.setEmail(user.getEmail());
 		dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
+		dto.setDeleted(user.isDeleted());
 		return dto;
 	}
 }

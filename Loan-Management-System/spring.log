@@ -309,3 +309,333 @@
 2025-04-12T10:53:03.762+05:30  INFO 14592 --- [Loan-Management-System] [RMI TCP Connection(15)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-04-12T10:53:03.765+05:30  INFO 14592 --- [Loan-Management-System] [RMI TCP Connection(15)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-04-12T10:53:03.777+05:30  INFO 14592 --- [Loan-Management-System] [RMI TCP Connection(15)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-12T14:49:29.093+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 27404 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T14:49:29.095+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T14:49:29.177+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-12T14:49:29.178+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-12T14:49:30.281+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T14:49:30.493+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 200 ms. Found 12 JPA repository interfaces.
+2025-04-12T14:49:31.076+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T14:49:31.096+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T14:49:31.096+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T14:49:31.158+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T14:49:31.158+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1980 ms
+2025-04-12T14:49:31.334+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T14:49:31.421+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-04-12T14:49:31.477+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T14:49:31.845+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T14:49:31.886+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-12T14:49:32.287+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2528626a
+2025-04-12T14:49:32.289+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-12T14:49:32.385+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T14:49:33.714+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T14:49:33.907+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T14:49:34.220+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-04-12T14:49:35.502+05:30  WARN 27404 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T14:49:35.920+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T14:49:35.974+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T14:49:35.983+05:30  INFO 27404 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 7.447 seconds (process running for 8.448)
+2025-04-12T14:49:49.641+05:30  INFO 27404 --- [Loan-Management-System] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T14:49:49.641+05:30  INFO 27404 --- [Loan-Management-System] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T14:49:49.649+05:30  INFO 27404 --- [Loan-Management-System] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 8 ms
+2025-04-12T14:50:33.092+05:30  WARN 27404 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalStateException: Cannot soft-delete customer with active loans]
+2025-04-12T14:51:31.358+05:30  WARN 27404 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 4]
+2025-04-12T14:51:56.427+05:30  WARN 27404 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 4]
+2025-04-12T14:52:05.577+05:30  INFO 27404 --- [Loan-Management-System] [RMI TCP Connection(12)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-04-12T14:52:05.583+05:30  INFO 27404 --- [Loan-Management-System] [RMI TCP Connection(12)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T14:52:05.593+05:30  INFO 27404 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T14:52:05.603+05:30  INFO 27404 --- [Loan-Management-System] [RMI TCP Connection(12)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T14:52:05.609+05:30  INFO 27404 --- [Loan-Management-System] [RMI TCP Connection(12)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-12T14:52:05.637+05:30  INFO 27404 --- [Loan-Management-System] [RMI TCP Connection(12)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-12T18:42:38.674+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T18:42:38.677+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T18:42:38.732+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-04-12T18:42:38.732+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-04-12T18:42:39.585+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T18:42:39.761+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 163 ms. Found 12 JPA repository interfaces.
+2025-04-12T18:42:40.234+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T18:42:40.252+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T18:42:40.253+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T18:42:40.299+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T18:42:40.299+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1566 ms
+2025-04-12T18:42:40.431+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T18:42:40.469+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-04-12T18:42:40.496+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T18:42:40.724+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T18:42:40.753+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-12T18:42:41.067+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@707130b2
+2025-04-12T18:42:41.070+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-12T18:42:41.140+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T18:42:42.227+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T18:42:42.362+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T18:42:42.595+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-04-12T18:42:43.710+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T18:42:44.060+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T18:42:44.111+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T18:42:44.121+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 5.884 seconds (process running for 6.76)
+2025-04-12T18:44:27.878+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T18:44:27.878+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T18:44:27.878+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-04-12T18:44:27.920+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-04-12T18:44:35.743+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan scheme not found with ID: 1]
+2025-04-12T18:45:01.893+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalStateException: Only the admin who created the scheme can update it]
+2025-04-12T19:05:47.294+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: User not found with ID: 6]
+2025-04-12T19:06:16.175+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.InvalidInputException: Invalid password for username: vat03]
+2025-04-12T19:06:25.276+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.UserNotRegisteredException: User not registered with username: vat031. Please register first.]
+2025-04-12T19:07:09.301+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Admin not found with ID: 2]
+2025-04-12T19:07:43.698+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.InvalidInputException: Incorrect password]
+2025-04-12T19:08:31.092+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.InvalidInputException: Incorrect password]
+2025-04-12T19:13:01.464+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/admins/getAdminById/1.]
+2025-04-12T19:13:38.093+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/admins/getAllAdmins.]
+2025-04-12T19:14:22.793+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 4]
+2025-04-12T19:14:33.649+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No customers found for Loan Officer ID: 1]
+2025-04-12T19:16:19.574+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Admin not found with ID: 88]
+2025-04-12T19:16:59.436+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No customers found for Loan Officer ID: 1]
+2025-04-12T19:24:49.343+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Admin not found with ID: 2]
+2025-04-12T19:25:49.914+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan scheme not found with ID: 2]
+2025-04-12T19:26:05.579+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No loan schemes found for Admin ID: 2]
+2025-04-12T19:27:07.051+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [2] in public org.springframework.http.ResponseEntity<com.aurionpro.lms.dto.LoanSchemeResponseDTO> com.aurionpro.lms.controller.LoanSchemeController.updateLoanScheme(int,int,com.aurionpro.lms.dto.LoanSchemeUpdateDTO) with 2 errors: [Field error in object 'loanSchemeUpdateDTO' on field 'tenureMonths': rejected value [null]; codes [NotNull.loanSchemeUpdateDTO.tenureMonths,NotNull.tenureMonths,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanSchemeUpdateDTO.tenureMonths,tenureMonths]; arguments []; default message [tenureMonths]]; default message [Tenure in months is required]] [Field error in object 'loanSchemeUpdateDTO' on field 'requiredDocumentTypeIds': rejected value [null]; codes [NotEmpty.loanSchemeUpdateDTO.requiredDocumentTypeIds,NotEmpty.requiredDocumentTypeIds,NotEmpty.java.util.List,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanSchemeUpdateDTO.requiredDocumentTypeIds,requiredDocumentTypeIds]; arguments []; default message [requiredDocumentTypeIds]]; default message [At least one document type is required]] ]
+2025-04-12T19:32:09.185+05:30  INFO 14412 --- [Loan-Management-System] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-04-12T19:32:09.189+05:30  INFO 14412 --- [Loan-Management-System] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T19:32:09.199+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T19:32:09.206+05:30  INFO 14412 --- [Loan-Management-System] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:32:09.210+05:30  INFO 14412 --- [Loan-Management-System] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-04-12T19:32:09.222+05:30  INFO 14412 --- [Loan-Management-System] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-04-12T19:32:09.334+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T19:32:09.335+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T19:32:09.790+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T19:32:09.899+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 107 ms. Found 12 JPA repository interfaces.
+2025-04-12T19:32:10.014+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T19:32:10.016+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T19:32:10.016+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T19:32:10.032+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T19:32:10.032+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 695 ms
+2025-04-12T19:32:10.067+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T19:32:10.071+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T19:32:10.079+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T19:32:10.080+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-04-12T19:32:10.096+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@8199bda
+2025-04-12T19:32:10.097+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-04-12T19:32:10.117+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T19:32:10.309+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T19:32:10.378+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:32:10.674+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T19:32:10.769+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T19:32:10.783+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T19:32:10.789+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 1.491 seconds (process running for 2973.429)
+2025-04-12T19:32:10.793+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-04-12T19:32:19.254+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T19:32:19.254+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T19:32:19.254+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-04-12T19:32:19.299+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [2] in public org.springframework.http.ResponseEntity<com.aurionpro.lms.dto.LoanSchemeResponseDTO> com.aurionpro.lms.controller.LoanSchemeController.updateLoanScheme(int,int,com.aurionpro.lms.dto.LoanSchemeUpdateDTO): [Field error in object 'loanSchemeUpdateDTO' on field 'requiredDocumentTypeIds': rejected value [null]; codes [NotEmpty.loanSchemeUpdateDTO.requiredDocumentTypeIds,NotEmpty.requiredDocumentTypeIds,NotEmpty.java.util.List,NotEmpty]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [loanSchemeUpdateDTO.requiredDocumentTypeIds,requiredDocumentTypeIds]; arguments []; default message [requiredDocumentTypeIds]]; default message [At least one document type is required]] ]
+2025-04-12T19:32:29.828+05:30  INFO 14412 --- [Loan-Management-System] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-04-12T19:32:29.830+05:30  INFO 14412 --- [Loan-Management-System] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T19:32:29.842+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T19:32:29.847+05:30  INFO 14412 --- [Loan-Management-System] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:32:29.848+05:30  INFO 14412 --- [Loan-Management-System] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-04-12T19:32:29.865+05:30  INFO 14412 --- [Loan-Management-System] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2025-04-12T19:32:29.984+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T19:32:29.984+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T19:32:30.400+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T19:32:30.557+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 154 ms. Found 12 JPA repository interfaces.
+2025-04-12T19:32:30.630+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T19:32:30.631+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T19:32:30.631+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T19:32:30.649+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T19:32:30.649+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 663 ms
+2025-04-12T19:32:30.682+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T19:32:30.684+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T19:32:30.692+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T19:32:30.693+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-04-12T19:32:30.706+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1629b08c
+2025-04-12T19:32:30.707+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-04-12T19:32:30.708+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T19:32:30.879+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T19:32:30.955+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:32:31.245+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T19:32:31.330+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T19:32:31.343+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T19:32:31.345+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 1.391 seconds (process running for 2993.984)
+2025-04-12T19:32:31.347+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-04-12T19:32:48.385+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T19:32:48.385+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T19:32:48.390+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2025-04-12T19:32:48.418+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan scheme not found with ID: 2]
+2025-04-12T19:32:55.186+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.IllegalStateException: Only the admin who created the scheme can update it]
+2025-04-12T19:33:00.661+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.NullPointerException: Cannot invoke "java.util.List.stream()" because the return value of "com.aurionpro.lms.dto.LoanSchemeUpdateDTO.getRequiredDocumentTypeIds()" is null]
+2025-04-12T19:33:14.821+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.NullPointerException: Cannot invoke "java.util.List.stream()" because the return value of "com.aurionpro.lms.dto.LoanSchemeUpdateDTO.getRequiredDocumentTypeIds()" is null]
+2025-04-12T19:33:35.695+05:30  INFO 14412 --- [Loan-Management-System] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-04-12T19:33:35.698+05:30  INFO 14412 --- [Loan-Management-System] [Thread-11] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T19:33:35.706+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T19:33:35.709+05:30  INFO 14412 --- [Loan-Management-System] [Thread-11] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:33:35.710+05:30  INFO 14412 --- [Loan-Management-System] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-04-12T19:33:35.720+05:30  INFO 14412 --- [Loan-Management-System] [Thread-11] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2025-04-12T19:33:35.830+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T19:33:35.831+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T19:33:36.199+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T19:33:36.324+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 124 ms. Found 12 JPA repository interfaces.
+2025-04-12T19:33:36.383+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T19:33:36.384+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T19:33:36.384+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T19:33:36.401+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T19:33:36.401+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 569 ms
+2025-04-12T19:33:36.427+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T19:33:36.430+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T19:33:36.435+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T19:33:36.436+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2025-04-12T19:33:36.452+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@fdcf626
+2025-04-12T19:33:36.452+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2025-04-12T19:33:36.454+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T19:33:36.615+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T19:33:36.676+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:33:36.940+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T19:33:37.011+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T19:33:37.025+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T19:33:37.028+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 1.23 seconds (process running for 3059.667)
+2025-04-12T19:33:37.030+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-04-12T19:33:54.941+05:30  INFO 14412 --- [Loan-Management-System] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-04-12T19:33:54.944+05:30  INFO 14412 --- [Loan-Management-System] [Thread-15] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T19:33:54.962+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T19:33:54.965+05:30  INFO 14412 --- [Loan-Management-System] [Thread-15] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:33:54.966+05:30  INFO 14412 --- [Loan-Management-System] [Thread-15] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2025-04-12T19:33:54.975+05:30  INFO 14412 --- [Loan-Management-System] [Thread-15] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+2025-04-12T19:33:55.092+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T19:33:55.092+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T19:33:55.512+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T19:33:55.643+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 12 JPA repository interfaces.
+2025-04-12T19:33:55.715+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T19:33:55.716+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T19:33:55.716+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T19:33:55.734+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T19:33:55.734+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 641 ms
+2025-04-12T19:33:55.765+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T19:33:55.767+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T19:33:55.775+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T19:33:55.775+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2025-04-12T19:33:55.789+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24f1744e
+2025-04-12T19:33:55.790+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2025-04-12T19:33:55.791+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-5)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T19:33:55.927+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T19:33:56.002+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:33:56.250+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T19:33:56.327+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T19:33:56.343+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T19:33:56.347+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 1.285 seconds (process running for 3078.986)
+2025-04-12T19:33:56.348+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-04-12T19:34:05.340+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T19:34:05.340+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T19:34:05.343+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2025-04-12T19:34:05.405+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T19:34:22.832+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T19:35:23.730+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T19:35:49.432+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.aurionpro.lms.dto.UserResponseDTO> com.aurionpro.lms.controller.UserController.registerUser(com.aurionpro.lms.dto.UserRequestDTO,java.lang.String): [Field error in object 'userRequestDTO' on field 'email': rejected value [testCustomer1]; codes [Email.userRequestDTO.email,Email.email,Email.java.lang.String,Email]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [userRequestDTO.email,email]; arguments []; default message [email],[Ljakarta.validation.constraints.Pattern$Flag;@7a3f634a,.*]; default message [Invalid email format]] ]
+2025-04-12T19:36:20.776+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T19:37:05.870+05:30  INFO 14412 --- [Loan-Management-System] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-04-12T19:37:05.872+05:30  INFO 14412 --- [Loan-Management-System] [Thread-19] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T19:37:05.885+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T19:37:05.889+05:30  INFO 14412 --- [Loan-Management-System] [Thread-19] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:37:05.889+05:30  INFO 14412 --- [Loan-Management-System] [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2025-04-12T19:37:05.900+05:30  INFO 14412 --- [Loan-Management-System] [Thread-19] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+2025-04-12T19:37:06.012+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Starting Application using Java 21.0.6 with PID 14412 (D:\Capstone Project\Loan-Management-System\target\classes started by vatsal.soni in D:\Capstone Project\Loan-Management-System)
+2025-04-12T19:37:06.013+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : No active profile set, falling back to 1 default profile: "default"
+2025-04-12T19:37:06.446+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-12T19:37:06.575+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 127 ms. Found 12 JPA repository interfaces.
+2025-04-12T19:37:06.652+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-04-12T19:37:06.653+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-04-12T19:37:06.653+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-04-12T19:37:06.671+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-04-12T19:37:06.672+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 658 ms
+2025-04-12T19:37:06.709+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-12T19:37:06.711+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-12T19:37:06.717+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-12T19:37:06.718+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2025-04-12T19:37:06.736+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection com.mysql.cj.jdbc.ConnectionImpl@69a0dcca
+2025-04-12T19:37:06.737+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2025-04-12T19:37:06.738+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-6)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-12T19:37:06.884+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-12T19:37:06.953+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T19:37:07.201+05:30  WARN 14412 --- [Loan-Management-System] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-12T19:37:07.311+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-04-12T19:37:07.323+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-04-12T19:37:07.326+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 1.341 seconds (process running for 3269.965)
+2025-04-12T19:37:07.327+05:30  INFO 14412 --- [Loan-Management-System] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-04-12T19:37:30.383+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-12T19:37:30.383+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-12T19:37:30.383+05:30  INFO 14412 --- [Loan-Management-System] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-04-12T19:37:53.876+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 0]
+2025-04-12T19:38:00.175+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 3]
+2025-04-12T19:38:23.273+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 2]
+2025-04-12T19:39:44.976+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Customer not found with ID: 2]
+2025-04-12T19:39:54.455+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan scheme not found with ID: 2 or it has been deactivated]
+2025-04-12T19:47:08.181+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Document not found with ID: 1]
+2025-04-12T19:48:27.281+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan not found with ID: 2]
+2025-04-12T19:48:47.458+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/loans/repay/1.]
+2025-04-12T19:50:34.629+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No loans found for Loan Officer ID: 2]
+2025-04-12T19:52:48.332+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Document not found with ID: 2]
+2025-04-12T19:53:03.313+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No documents found for Customer ID: 2]
+2025-04-12T19:53:12.511+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No documents found for Loan ID: 2]
+2025-04-12T19:53:15.183+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No documents found for Loan ID: 2]
+2025-04-12T19:53:28.675+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Document not found with ID: 7]
+2025-04-12T20:12:41.762+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: No payments found for Loan ID: 2]
+2025-04-12T20:12:57.978+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan payment not found with ID: 110]
+2025-04-12T20:13:08.500+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan payment not found with ID: 110]
+2025-04-12T20:17:34.572+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.ResourceNotFoundException: Loan not found with ID: 2]
+2025-04-12T20:17:37.934+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource api/loan-payments/npa/approve.]
+2025-04-12T20:24:42.478+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T20:32:27.692+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction]
+2025-04-12T20:36:32.082+05:30  WARN 14412 --- [Loan-Management-System] [http-nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.aurionpro.lms.exception.BusinessRuleViolationException: Loan is not in NPA_PENDING status]
+2025-04-12T20:37:25.906+05:30  INFO 14412 --- [Loan-Management-System] [RMI TCP Connection(149)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2025-04-12T20:37:25.907+05:30  INFO 14412 --- [Loan-Management-System] [RMI TCP Connection(149)-127.0.0.1] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-04-12T20:37:25.918+05:30  INFO 14412 --- [Loan-Management-System] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-04-12T20:37:25.926+05:30  INFO 14412 --- [Loan-Management-System] [RMI TCP Connection(149)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-04-12T20:37:25.927+05:30  INFO 14412 --- [Loan-Management-System] [RMI TCP Connection(149)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown initiated...
+2025-04-12T20:37:25.932+05:30  INFO 14412 --- [Loan-Management-System] [RMI TCP Connection(149)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Shutdown completed.
