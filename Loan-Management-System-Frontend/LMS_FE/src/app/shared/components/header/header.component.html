@@ -1,7 +1,36 @@
-<mat-toolbar color="primary">
+<!-- <mat-toolbar color="primary">
     <div class="header-left">
         <img src="/assets/images/logo.png" alt="LMS Corp Logo" class="logo" />
         <span>LMS Corp</span>
+    </div>
+    <div class="header-middle">
+        <span>{{ role || 'Guest' }}</span>
+    </div>
+    <div class="header-right">
+        <a mat-button routerLink="/admin/dashboard">Dashboard</a>
+        <a mat-button routerLink="/admin/users">Users</a>
+        <a mat-button routerLink="/admin/schemes">Loan Schemes</a>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #profileMenu="matMenu">
+            <button mat-menu-item (click)="navigateToProfile()">Profile</button>
+            <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+    </div>
+</mat-toolbar> -->
+
+
+
+
+
+
+
+
+<mat-toolbar color="primary">
+    <div class="header-left">
+        <img src="/assets/images/logo.png" alt="LendEase logo" class="logo" />
+        <span>LendEase</span>
     </div>
     <div class="header-middle">
         <span>{{ role || 'Guest' }}</span>

@@ -1,3 +1,32 @@
+// mat-toolbar {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+
+//     .header-left {
+//         display: flex;
+//         align-items: center;
+//         gap: 8px;
+
+//         .logo {
+//             width: 40px;
+//             height: 40px;
+//         }
+//     }
+
+//     .header-middle {
+//         flex-grow: 1;
+//         text-align: center;
+//     }
+
+//     .header-right {
+//         display: flex;
+//         align-items: center;
+//         gap: 8px;
+//     }
+// }
+
+
 mat-toolbar {
     display: flex;
     justify-content: space-between;
