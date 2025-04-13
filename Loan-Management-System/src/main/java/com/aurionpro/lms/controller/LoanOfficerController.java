@@ -132,6 +132,7 @@ public class LoanOfficerController {
 		return ResponseEntity.ok(responseDTO);
 	}
 
+	//--not needed
 	@GetMapping("/admin/{adminId}")
 	public ResponseEntity<List<LoanOfficerResponseDTO>> getLoanOfficersByAdminId(@PathVariable int adminId) {
 		List<LoanOfficerResponseDTO> responseDTOs = loanOfficerService.getLoanOfficersByAdminId(adminId);
