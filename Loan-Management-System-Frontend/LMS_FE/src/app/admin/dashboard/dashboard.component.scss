@@ -1,0 +1,27 @@
+// .dashboard-container {
+//     padding: 20px;
+//     text-align: center;
+
+//     h2 {
+//         margin-bottom: 20px;
+//     }
+
+//     .cards {
+//         display: flex;
+//         justify-content: center;
+//         gap: 20px;
+//         flex-wrap: wrap;
+//     }
+// }
+
+
+.dashboard-container {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 16px;
+  }
