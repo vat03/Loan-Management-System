@@ -1,13 +1,19 @@
 .dashboard-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   gap: 16px;
-  padding: 16px;
+  padding: 20px;
+  background-color: #f5f5f5;
 }
 
 .error-message {
   color: red;
   margin-top: 16px;
+  text-align: center;
+  width: 100%;
 }
 
 .cards {

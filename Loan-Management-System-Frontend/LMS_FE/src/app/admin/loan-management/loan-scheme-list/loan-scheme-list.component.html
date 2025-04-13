@@ -37,6 +37,46 @@
 
 
 
+<!-- <div class="table-container">
+    <h2>Loan Schemes</h2>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.id }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="schemeName">
+            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="interestRate">
+            <mat-header-cell *matHeaderCellDef>Interest Rate</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}%</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tenureMonths">
+            <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let scheme" class="actions-cell">
+                <div class="button-group">
+                    <button mat-icon-button color="primary" (click)="editScheme(scheme)" *ngIf="!scheme.isDeleted"
+                        matTooltip="Edit Scheme" class="action-button">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteScheme(scheme.id)" *ngIf="!scheme.isDeleted"
+                        matTooltip="Delete Scheme" class="action-button">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </div>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div> -->
+
+
 <div class="table-container">
     <h2>Loan Schemes</h2>
     <mat-table [dataSource]="dataSource">
@@ -74,4 +114,6 @@
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons
+        aria-label="Select page of loan schemes"></mat-paginator>
 </div>
