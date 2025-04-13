@@ -29,10 +29,7 @@
 //   }
 
 //   navigateToProfile(): void {
-//     const userId = this.authService.getUserId();
-//     if (userId) {
-//       this.router.navigate([`/admin/profile/${userId}`]);
-//     }
+//     this.router.navigate(['/admin/profile']);
 //   }
 
 //   logout(): void {
@@ -40,9 +37,6 @@
 //     this.router.navigate(['/login']);
 //   }
 // }
-
-
-
 
 
 
@@ -75,6 +69,14 @@ export class HeaderComponent {
 
   constructor(private authService: AuthService, private router: Router) {
     this.role = this.authService.getRole();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  isAdmin(): boolean {
+    return this.role === 'ROLE_ADMIN';
   }
 
   navigateToProfile(): void {

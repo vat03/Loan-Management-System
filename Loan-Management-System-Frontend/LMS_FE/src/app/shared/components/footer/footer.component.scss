@@ -1,4 +1,28 @@
+// mat-toolbar {
+//     justify-content: space-between;
+//     padding: 8px 16px;
+// }
+
 mat-toolbar {
     justify-content: space-between;
     padding: 8px 16px;
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+    }
+
+    .footer-right {
+        display: flex;
+        gap: 12px;
+
+        a {
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

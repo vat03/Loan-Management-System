@@ -1,7 +1,7 @@
 <!-- <mat-toolbar color="primary">
     <div class="header-left">
-        <img src="/assets/images/logo.png" alt="LMS Corp Logo" class="logo" />
-        <span>LMS Corp</span>
+        <img src="/assets/images/logo.png" alt="LendEase logo" class="logo" />
+        <span>LendEase</span>
     </div>
     <div class="header-middle">
         <span>{{ role || 'Guest' }}</span>
@@ -22,24 +22,21 @@
 
 
 
-
-
-
-
-
 <mat-toolbar color="primary">
     <div class="header-left">
-        <img src="/assets/images/logo.png" alt="LendEase logo" class="logo" />
+        <img src="/assets/logo.png" alt="LendEase Logo" class="logo" />
         <span>LendEase</span>
     </div>
     <div class="header-middle">
-        <span>{{ role || 'Guest' }}</span>
+        <span *ngIf="isLoggedIn()">{{ role || 'Guest' }}</span>
     </div>
     <div class="header-right">
-        <a mat-button routerLink="/admin/dashboard">Dashboard</a>
-        <a mat-button routerLink="/admin/users">Users</a>
-        <a mat-button routerLink="/admin/schemes">Loan Schemes</a>
-        <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+        <a mat-button routerLink="/">Home</a>
+        <a mat-button routerLink="/login" *ngIf="!isLoggedIn()">Login</a>
+        <a mat-button routerLink="/admin/dashboard" *ngIf="isAdmin()">Dashboard</a>
+        <a mat-button routerLink="/admin/users" *ngIf="isAdmin()">Users</a>
+        <a mat-button routerLink="/admin/schemes" *ngIf="isAdmin()">Loan Schemes</a>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" *ngIf="isLoggedIn()">
             <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #profileMenu="matMenu">

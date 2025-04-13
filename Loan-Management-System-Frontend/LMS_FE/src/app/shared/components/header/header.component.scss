@@ -37,10 +37,18 @@ mat-toolbar {
         align-items: center;
         gap: 8px;
 
+        // .logo {
+        //     width: 40px;
+        //     height: 40px;
+        // }
+
         .logo {
-            width: 40px;
-            height: 40px;
-        }
+            width: 10vw; // 10% of viewport width
+            max-width: 80px;
+            min-width: 40px;
+            height: auto;
+          }
+          
     }
 
     .header-middle {
@@ -51,6 +59,7 @@ mat-toolbar {
     .header-right {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
+        /* Increased for better spacing */
     }
 }
