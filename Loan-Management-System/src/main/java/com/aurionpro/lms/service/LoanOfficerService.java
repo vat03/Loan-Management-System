@@ -11,4 +11,6 @@ public interface LoanOfficerService {
 	LoanOfficerResponseDTO getLoanOfficerById(int id);
 
 	List<LoanOfficerResponseDTO> getLoanOfficersByAdminId(int adminId);
+	
+	List<LoanOfficerResponseDTO> getAllLoanOfficers();
 }

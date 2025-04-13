@@ -208,6 +208,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.AdminResponseDTO;
@@ -222,7 +223,8 @@ import com.aurionpro.lms.service.UserService;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
 

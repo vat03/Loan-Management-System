@@ -696,6 +696,7 @@
 
 package com.aurionpro.lms.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -705,11 +706,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.aurionpro.lms.dto.AdminResponseDTO;
 import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
 import com.aurionpro.lms.dto.LoanOfficerResponseDTO;
 import com.aurionpro.lms.entity.Admin;
 import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.LoanOfficer;
+import com.aurionpro.lms.entity.LoanScheme;
 import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
@@ -815,4 +818,24 @@ public class LoanOfficerServiceImpl implements LoanOfficerService {
 			return dto;
 		}).collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<LoanOfficerResponseDTO> getAllLoanOfficers() {
+	    List<LoanOfficer> loanOfficers = loanOfficerRepository.findAll();
+	    if (loanOfficers.isEmpty()) {
+	        throw new ResourceNotFoundException("No loan officers found in the system");
+	    }
+	    return loanOfficers.stream().map(loanOfficer -> {
+	        LoanOfficerResponseDTO dto = new LoanOfficerResponseDTO();
+	        dto.setId(loanOfficer.getId());
+	        dto.setUsername(loanOfficer.getUser() != null ? loanOfficer.getUser().getUsername() : null);
+	        dto.setEmail(loanOfficer.getUser() != null ? loanOfficer.getUser().getEmail() : null);
+	        dto.setAdminId(loanOfficer.getAdmin() != null ? loanOfficer.getAdmin().getId() : 0);
+	        dto.setCustomerIds(loanOfficer.getCustomers() != null
+	                ? loanOfficer.getCustomers().stream().map(Customer::getId).collect(Collectors.toList())
+	                : new ArrayList<>());
+	        return dto;
+	    }).collect(Collectors.toList());
+	}
+
 }

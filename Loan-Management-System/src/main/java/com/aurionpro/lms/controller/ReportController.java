@@ -66,7 +66,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reports")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ReportController {
 

@@ -114,73 +114,15 @@
 //	}
 //}
 
-//package com.aurionpro.lms.controller;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.web.bind.annotation.CrossOrigin;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.aurionpro.lms.dto.JwtResponseDTO;
-//import com.aurionpro.lms.dto.LoginRequestDTO;
-//import com.aurionpro.lms.dto.UserRequestDTO;
-//import com.aurionpro.lms.dto.UserResponseDTO;
-//import com.aurionpro.lms.service.UserService;
-//
-//import jakarta.validation.Valid;
-//
-//@RestController
-//@RequestMapping("/api/users")
-////@CrossOrigin("http://localhost:4200")
-//@CrossOrigin(origins = { "http://localhost:4200"}, allowedHeaders = "*", methods = {
-//		RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
-//public class UserController {
-//
-//	@Autowired
-//	private UserService userService;
-//
-//	@PostMapping("/registerUser")
-//	public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO requestDTO,
-//			@RequestParam String roleName) {
-//		UserResponseDTO responseDTO = userService.registerUser(requestDTO, roleName);
-//		return ResponseEntity.status(201).body(responseDTO);
-//	}
-//
-//	@GetMapping("/getUserById/{id}")
-//	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER')")
-//	// or (hasRole('ROLE_CUSTOMER') and #id == authentication.principal.userId)
-//	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable int id) {
-//		UserResponseDTO responseDTO = userService.getUserById(id);
-//		return ResponseEntity.ok(responseDTO);
-//	}
-//
-//	@PostMapping("/login")
-//	public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-//		JwtResponseDTO responseDTO = userService.login(loginRequestDTO);
-//		return ResponseEntity.ok(responseDTO);
-//	}
-//}
-
 package com.aurionpro.lms.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -197,8 +139,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = {"http://127.0.0.1:5500"}, allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
-		RequestMethod.DELETE, RequestMethod.OPTIONS })
+//@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = { "http://localhost:4200"}, allowedHeaders = "*", methods = {
+//		RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class UserController {
 
 	@Autowired
@@ -212,29 +155,85 @@ public class UserController {
 	}
 
 	@GetMapping("/getUserById/{id}")
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER') or (hasRole('ROLE_CUSTOMER') and #id == authentication.principal.userId)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER')")
+	// or (hasRole('ROLE_CUSTOMER') and #id == authentication.principal.userId)
 	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable int id) {
 		UserResponseDTO responseDTO = userService.getUserById(id);
 		return ResponseEntity.ok(responseDTO);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-		try {
-			JwtResponseDTO responseDTO = userService.login(loginRequestDTO);
-			return ResponseEntity.ok(responseDTO);
-		} catch (BadCredentialsException e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
-		}
+	public ResponseEntity<JwtResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+		JwtResponseDTO responseDTO = userService.login(loginRequestDTO);
+		return ResponseEntity.ok(responseDTO);
 	}
-	
-	@GetMapping("/test-token")
-    @CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS})
-    public ResponseEntity<JwtResponseDTO> getTestToken() {
-        // Hardcode customer1 for testing
-        JwtResponseDTO responseDTO = userService.generateTestToken(4, "vat03", "ROLE_CUSTOMER");
-        return ResponseEntity.ok(responseDTO);
-    }
 }
+
+//package com.aurionpro.lms.controller;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.authentication.BadCredentialsException;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.PutMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMethod;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.aurionpro.lms.dto.JwtResponseDTO;
+//import com.aurionpro.lms.dto.LoginRequestDTO;
+//import com.aurionpro.lms.dto.UserRequestDTO;
+//import com.aurionpro.lms.dto.UserResponseDTO;
+//import com.aurionpro.lms.service.UserService;
+//
+//import jakarta.validation.Valid;
+//
+//@RestController
+//@RequestMapping("/api/users")
+//@CrossOrigin("http://localhost:4200")
+//public class UserController {
+//
+//	@Autowired
+//	private UserService userService;
+//
+//	@PostMapping("/registerUser")
+//	public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRequestDTO requestDTO,
+//			@RequestParam String roleName) {
+//		UserResponseDTO responseDTO = userService.registerUser(requestDTO, roleName);
+//		return ResponseEntity.status(201).body(responseDTO);
+//	}
+//
+//	@GetMapping("/getUserById/{id}")
+//	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_LOAN_OFFICER') or (hasRole('ROLE_CUSTOMER') and #id == authentication.principal.userId)")
+//	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable int id) {
+//		UserResponseDTO responseDTO = userService.getUserById(id);
+//		return ResponseEntity.ok(responseDTO);
+//	}
+//
+//	@PostMapping("/login")
+//	public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
+//		try {
+//			JwtResponseDTO responseDTO = userService.login(loginRequestDTO);
+//			return ResponseEntity.ok(responseDTO);
+//		} catch (BadCredentialsException e) {
+//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+//		}
+//	}
+//	
+//	@GetMapping("/test-token")
+//    @CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.OPTIONS})
+//    public ResponseEntity<JwtResponseDTO> getTestToken() {
+//        // Hardcode customer1 for testing
+//        JwtResponseDTO responseDTO = userService.generateTestToken(4, "vat03", "ROLE_CUSTOMER");
+//        return ResponseEntity.ok(responseDTO);
+//    }
+//}

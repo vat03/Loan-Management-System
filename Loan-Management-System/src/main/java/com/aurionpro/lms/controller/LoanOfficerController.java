@@ -112,7 +112,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/loan-officers")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 @PreAuthorize("hasRole('ROLE_ADMIN')")
 public class LoanOfficerController {
 
@@ -132,7 +134,12 @@ public class LoanOfficerController {
 		return ResponseEntity.ok(responseDTO);
 	}
 
-	//--not needed
+	@GetMapping("/getAllLoanOfficers")
+	public ResponseEntity<List<LoanOfficerResponseDTO>> getAllLoanOfficers() {
+		return ResponseEntity.ok(loanOfficerService.getAllLoanOfficers());
+	}
+
+	// --not needed
 	@GetMapping("/admin/{adminId}")
 	public ResponseEntity<List<LoanOfficerResponseDTO>> getLoanOfficersByAdminId(@PathVariable int adminId) {
 		List<LoanOfficerResponseDTO> responseDTOs = loanOfficerService.getLoanOfficersByAdminId(adminId);

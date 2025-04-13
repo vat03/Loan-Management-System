@@ -201,6 +201,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -212,7 +213,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/customers")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class CustomerController {
 
 	@Autowired

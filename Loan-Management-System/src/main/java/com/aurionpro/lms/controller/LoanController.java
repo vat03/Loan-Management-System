@@ -221,6 +221,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.LoanRequestDTO;
@@ -232,7 +233,9 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/loans")
-@CrossOrigin("http://localhost:4200")
+//@CrossOrigin("http://localhost:4200")
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class LoanController {
 
 	@Autowired
