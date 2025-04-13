@@ -1,0 +1,14 @@
+mat-card {
+    width: 300px;
+    text-align: center;
+
+    mat-card-content {
+        margin: 16px 0;
+    }
+
+    mat-card-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+}

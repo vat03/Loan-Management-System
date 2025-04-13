@@ -1,0 +1,44 @@
+<mat-dialog-content>
+    <h2>Add Loan Officer</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" required />
+            <mat-error *ngIf="form.get('username')?.hasError('required')">
+                Username is required
+            </mat-error>
+            <mat-error *ngIf="form.get('username')?.hasError('minlength')">
+                Username must be at least 3 characters
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required />
+            <mat-error *ngIf="form.get('email')?.hasError('required')">
+                Email is required
+            </mat-error>
+            <mat-error *ngIf="form.get('email')?.hasError('email')">
+                Invalid email format
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password" required />
+            <mat-error *ngIf="form.get('password')?.hasError('required')">
+                Password is required
+            </mat-error>
+            <mat-error *ngIf="form.get('password')?.hasError('pattern')">
+                Password must have uppercase, lowercase, digit, and special character
+            </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+            <button mat-button type="button" (click)="onCancel()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+                Add
+            </button>
+        </div>
+    </form>
+</mat-dialog-content>

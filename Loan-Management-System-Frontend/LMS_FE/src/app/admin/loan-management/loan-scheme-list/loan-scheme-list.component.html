@@ -1,0 +1,35 @@
+<div class="table-container">
+    <h2>Loan Schemes</h2>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.id }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="schemeName">
+            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="interestRate">
+            <mat-header-cell *matHeaderCellDef>Interest Rate</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}%</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tenureMonths">
+            <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let scheme">
+                <button mat-icon-button color="primary" (click)="editScheme(scheme)" *ngIf="!scheme.isDeleted">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteScheme(scheme.id)" *ngIf="!scheme.isDeleted">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

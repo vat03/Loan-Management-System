@@ -7,6 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "style": "scss",
           "standalone": false
         },
         "@schematics/angular:directive": {
@@ -30,6 +31,7 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -37,8 +39,8 @@
               }
             ],
             "styles": [
-              "src/custom-theme.scss",
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
@@ -94,6 +96,7 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -101,7 +104,8 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -110,6 +114,6 @@
     }
   },
   "cli": {
-    "analytics": "637d652d-effb-4efa-8ebd-2deccc32e614"
+    "analytics": "f5176b3d-d261-40f4-90e6-7913b8663ccd"
   }
 }

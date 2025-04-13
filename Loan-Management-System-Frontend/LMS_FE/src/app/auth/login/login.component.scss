@@ -1,0 +1,15 @@
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+
+    mat-form-field {
+        display: block;
+        margin-bottom: 16px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
