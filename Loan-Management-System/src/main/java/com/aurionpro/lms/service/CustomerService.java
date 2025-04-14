@@ -45,7 +45,7 @@ public interface CustomerService {
 
 	List<CustomerResponseDTO> getAllCustomers(boolean includeDeleted);
 
-	void assignLoanOfficer(int customerId, int loanOfficerId);
+	void assignLoanOfficer(int customerId);
 
 	void softDeleteCustomer(int id);
 

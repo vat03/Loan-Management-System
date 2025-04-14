@@ -213,9 +213,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/customers")
-//@CrossOrigin("http://localhost:4200")
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
-//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class CustomerController {
 
 	@Autowired
@@ -229,20 +226,20 @@ public class CustomerController {
 	}
 
 	@GetMapping("/getCustomerByLoanOfficerId/loan-officer/{loanOfficerId}")
-	@PreAuthorize("hasAnyRole('ROLE_LOAN_OFFICER', 'ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
 	public ResponseEntity<List<CustomerResponseDTO>> getCustomersByLoanOfficerId(
 			@Valid @PathVariable int loanOfficerId) {
 		List<CustomerResponseDTO> responseDTOs = customerService.getCustomersByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);
 	}
 
-	@PutMapping("/{customerId}/assign-loan-officer")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Void> assignLoanOfficer(@Valid @PathVariable int customerId,
-			@Valid @RequestParam int loanOfficerId) {
-		customerService.assignLoanOfficer(customerId, loanOfficerId);
-		return ResponseEntity.noContent().build();
-	}
+//	@PutMapping("/{customerId}/assign-loan-officer")
+//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+//	public ResponseEntity<Void> assignLoanOfficer(@Valid @PathVariable int customerId,
+//			@Valid @RequestParam int loanOfficerId) {
+//		customerService.assignLoanOfficer(customerId, loanOfficerId);
+//		return ResponseEntity.noContent().build();
+//	}
 
 	@PutMapping("/{id}/soft-delete")
 	@PreAuthorize("@customerSecurityService.isAssignedLoanOfficer(authentication, #id)")

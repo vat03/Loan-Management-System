@@ -768,6 +768,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -810,19 +811,46 @@ public class CustomerServiceImpl implements CustomerService {
 		return customers.stream().map(this::toResponseDTO).collect(Collectors.toList());
 	}
 
+//	@Override
+//	@Transactional
+//	public void assignLoanOfficer(int customerId, int loanOfficerId) {
+//		logger.debug("Assigning loan officer ID: {} to customer ID: {}", loanOfficerId, customerId);
+//		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+//
+//		LoanOfficer loanOfficer = loanOfficerRepository.findById(loanOfficerId)
+//				.orElseThrow(() -> new ResourceNotFoundException("Loan Officer not found with ID: " + loanOfficerId));
+//
+//		customer.setLoanOfficer(loanOfficer);
+//		customerRepository.save(customer);
+//	}
+	
 	@Override
 	@Transactional
-	public void assignLoanOfficer(int customerId, int loanOfficerId) {
-		logger.debug("Assigning loan officer ID: {} to customer ID: {}", loanOfficerId, customerId);
-		Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+	public void assignLoanOfficer(int customerId) {
+	    logger.debug("Assigning loan officer randomly to customer ID: {}", customerId);
 
-		LoanOfficer loanOfficer = loanOfficerRepository.findById(loanOfficerId)
-				.orElseThrow(() -> new ResourceNotFoundException("Loan Officer not found with ID: " + loanOfficerId));
+	    Customer customer = customerRepository.findByIdAndIsDeletedFalse(customerId)
+	            .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
 
-		customer.setLoanOfficer(loanOfficer);
-		customerRepository.save(customer);
+	    List<LoanOfficer> loanOfficers = loanOfficerRepository.findAll();
+
+	    if (loanOfficers.isEmpty()) {
+	        throw new IllegalStateException("No loan officers available for assignment.");
+	    }
+
+	    // Shuffle and cycle logic
+	    int hash = Integer.hashCode(customerId);
+	    Collections.shuffle(loanOfficers); // randomize order
+	    int index = Math.abs(hash) % loanOfficers.size();
+	    LoanOfficer assignedLoanOfficer = loanOfficers.get(index);
+
+	    customer.setLoanOfficer(assignedLoanOfficer);
+	    customerRepository.save(customer);
+
+	    logger.debug("Assigned Loan Officer ID: {} to Customer ID: {}", assignedLoanOfficer.getId(), customer.getId());
 	}
+
 
 	@Override
 	@Transactional

@@ -533,6 +533,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private JwtUtil jwtUtil;
+	
+	@Autowired
+	private CustomerService customerService;
 
 //	@Override
 //	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
@@ -574,55 +577,95 @@ public class UserServiceImpl implements UserService {
 //
 //		return toResponseDTO(user);
 //	}
+	
+	
+//----------------------------------with admin- -----------------------------------------
+//	@Override
+//	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
+//		// Validate roleName doesn't start with ROLE_
+//		if (roleName != null && roleName.toUpperCase().startsWith("ROLE_")) {
+//			throw new BusinessRuleViolationException(
+//					"Role name should be 'ADMIN' or 'CUSTOMER', not prefixed with 'ROLE_'");
+//		}
+//
+//		// Map roleName to database role
+//		String prefixedRoleName = "ROLE_" + roleName.toUpperCase();
+//		Role role = roleRepository.findByRoleName(prefixedRoleName)
+//				.orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
+//
+//		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
+//			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
+//		}
+//		if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
+//			throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
+//		}
+//
+//		User user = new User();
+//		user.setUsername(userRequestDTO.getUsername());
+//		user.setEmail(userRequestDTO.getEmail());
+//		user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+//		user.setRole(role);
+//
+//		user = userRepository.save(user);
+//
+//		switch (roleName.toUpperCase()) {
+//		case "ADMIN":
+//			Admin admin = new Admin();
+//			admin.setUser(user);
+//			adminRepository.save(admin);
+//			break;
+//		case "LOAN_OFFICER":
+//			throw new BusinessRuleViolationException("Use LoanOfficerService to register a Loan Officer");
+//		case "CUSTOMER":
+//			Customer customer = new Customer();
+//			customer.setUser(user);
+//			customerRepository.save(customer);
+//			break;
+//		default:
+//			throw new BusinessRuleViolationException("Unsupported role: " + roleName);
+//		}
+//
+//		return toResponseDTO(user);
+//	}
 
 	@Override
 	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
-		// Validate roleName doesn't start with ROLE_
-		if (roleName != null && roleName.toUpperCase().startsWith("ROLE_")) {
-			throw new BusinessRuleViolationException(
-					"Role name should be 'ADMIN' or 'CUSTOMER', not prefixed with 'ROLE_'");
-		}
+	    // Validate role name is only CUSTOMER
+	    if (!"CUSTOMER".equalsIgnoreCase(roleName)) {
+	        throw new BusinessRuleViolationException("Only customers can register using this method.");
+	    }
 
-		// Map roleName to database role
-		String prefixedRoleName = "ROLE_" + roleName.toUpperCase();
-		Role role = roleRepository.findByRoleName(prefixedRoleName)
-				.orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
+	    String prefixedRoleName = "ROLE_CUSTOMER";
+	    Role role = roleRepository.findByRoleName(prefixedRoleName)
+	            .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
 
-		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
-			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
-		}
-		if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
-			throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
-		}
+	    if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
+	        throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
+	    }
 
-		User user = new User();
-		user.setUsername(userRequestDTO.getUsername());
-		user.setEmail(userRequestDTO.getEmail());
-		user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-		user.setRole(role);
+	    if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
+	        throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
+	    }
 
-		user = userRepository.save(user);
+	    User user = new User();
+	    user.setUsername(userRequestDTO.getUsername());
+	    user.setEmail(userRequestDTO.getEmail());
+	    user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+	    user.setRole(role);
 
-		switch (roleName.toUpperCase()) {
-		case "ADMIN":
-			Admin admin = new Admin();
-			admin.setUser(user);
-			adminRepository.save(admin);
-			break;
-		case "LOAN_OFFICER":
-			throw new BusinessRuleViolationException("Use LoanOfficerService to register a Loan Officer");
-		case "CUSTOMER":
-			Customer customer = new Customer();
-			customer.setUser(user);
-			customerRepository.save(customer);
-			break;
-		default:
-			throw new BusinessRuleViolationException("Unsupported role: " + roleName);
-		}
+	    user = userRepository.save(user);
 
-		return toResponseDTO(user);
+	    Customer customer = new Customer();
+	    customer.setUser(user);
+	    customer = customerRepository.save(customer);
+
+	    // Auto assign loan officer
+	    customerService.assignLoanOfficer(customer.getId());
+
+	    return toResponseDTO(user);
 	}
 
+	
 	@Override
 	public UserResponseDTO getUserById(int id) {
 		User user = userRepository.findByIdAndIsDeletedFalse(id)
