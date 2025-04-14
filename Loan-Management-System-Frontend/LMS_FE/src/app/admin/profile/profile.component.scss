@@ -1,3 +1,82 @@
+// .profile-container {
+//     margin-top: 20px;
+//     padding: 20px;
+//     background-color: #f5f5f5;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+
+//     h2 {
+//         margin-bottom: 24px;
+//         font-size: 28px;
+//         color: #333;
+//         text-align: center;
+//     }
+
+//     .profile-card,
+//     .update-card {
+//         width: 100%;
+//         max-width: 600px;
+//         margin: 16px 0;
+//         background-color: #fff;
+//         border-radius: 8px;
+//         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+//     }
+
+//     .profile-card {
+//         mat-card-header {
+//             background-color: #1976d2;
+//             color: #fff;
+//             padding: 16px;
+//             border-radius: 8px 8px 0 0;
+//         }
+
+//         mat-card-content {
+//             padding: 16px;
+
+//             p {
+//                 margin: 8px 0;
+//                 font-size: 16px;
+//             }
+//         }
+//     }
+
+//     .update-card {
+//         form {
+//             display: flex;
+//             flex-direction: column;
+//             gap: 16px;
+//             padding: 16px;
+//         }
+
+//         mat-form-field {
+//             width: 100%;
+//         }
+
+//         button {
+//             align-self: flex-end;
+//             padding: 8px 16px;
+//         }
+//     }
+
+//     .error-message {
+//         color: #d32f2f;
+//         margin-bottom: 16px;
+//         text-align: center;
+//         font-size: 16px;
+//     }
+
+//     .success-message {
+//         color: #2e7d32;
+//         margin-bottom: 16px;
+//         text-align: center;
+//         font-size: 16px;
+//     }
+// }
+
+
+
+
 .profile-container {
     margin-top: 20px;
     padding: 20px;
@@ -5,71 +84,76 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    min-height: 100vh;
+  
     h2 {
-        margin-bottom: 24px;
-        font-size: 28px;
-        color: #333;
-        text-align: center;
+      margin-bottom: 24px;
+      font-size: 28px;
+      color: #333;
+      text-align: center;
     }
-
-    .profile-card,
-    .update-card {
-        width: 100%;
-        max-width: 600px;
-        margin: 16px 0;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
+  
     .profile-card {
-        mat-card-header {
-            background-color: #1976d2;
-            color: #fff;
-            padding: 16px;
-            border-radius: 8px 8px 0 0;
+      width: 100%;
+      max-width: 500px; /* Reduced for better centering */
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: 0 auto; /* Center card horizontally */
+  
+      mat-card-header {
+        background-color: #1976d2;
+        color: #fff;
+        padding: 16px;
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        justify-content: center; /* Center title */
+      }
+  
+      mat-card-content {
+        padding: 24px;
+  
+        p {
+          margin: 8px 0;
+          font-size: 16px;
         }
-
-        mat-card-content {
-            padding: 16px;
-
-            p {
-                margin: 8px 0;
-                font-size: 16px;
-            }
+  
+        h3 {
+          margin-top: 24px;
+          margin-bottom: 16px;
+          text-align: center;
         }
-    }
-
-    .update-card {
+  
         form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            padding: 16px;
+          display: flex;
+          flex-direction: column; /* Stack fields vertically */
+          gap: 16px; /* Space between fields */
+          width: 100%;
         }
-
+  
         mat-form-field {
-            width: 100%;
+          width: 100%; /* Full width for each field */
         }
-
+  
         button {
-            align-self: flex-end;
-            padding: 8px 16px;
+          align-self: center; /* Center button */
+          padding: 8px 24px;
+          margin-top: 16px;
         }
+      }
     }
-
+  
     .error-message {
-        color: #d32f2f;
-        margin-bottom: 16px;
-        text-align: center;
-        font-size: 16px;
+      color: #d32f2f;
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 16px;
     }
-
+  
     .success-message {
-        color: #2e7d32;
-        margin-bottom: 16px;
-        text-align: center;
-        font-size: 16px;
+      color: #2e7d32;
+      margin-bottom: 16px;
+      text-align: center;
+      font-size: 16px;
     }
-}
+  }

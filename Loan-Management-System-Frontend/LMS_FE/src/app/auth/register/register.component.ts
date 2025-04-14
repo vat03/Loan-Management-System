@@ -1,18 +1,4 @@
 // import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-register',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './register.component.html',
-//   styleUrl: './register.component.scss'
-// })
-// export class RegisterComponent {
-
-// }
-
-
-// import { Component } from '@angular/core';
 // import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 // import { AuthService } from '../../core/auth/auth.service';
 // import { Router, RouterModule } from '@angular/router';
@@ -44,7 +30,7 @@
 //   errorMessage: string | null = null;
 //   successMessage: string | null = null;
 
-//   roles = ['ROLE_ADMIN', 'ROLE_OFFICER'];
+//   roles = ['ROLE_ADMIN', 'ROLE_CUSTOMER'];
 
 //   constructor(
 //     private fb: FormBuilder,
@@ -79,27 +65,36 @@
 //     }
 
 //     const { username, email, password, roleName } = this.registerForm.value;
+//     console.log('Form values:', { username, email, password, roleName });
 
 //     this.authService.registerUser({ username, email, password }, roleName).subscribe({
 //       next: response => {
 //         this.successMessage = 'Registration successful! Redirecting to login...';
 //         this.errorMessage = null;
+//         console.log('Registration success:', response);
 //         setTimeout(() => {
 //           this.router.navigate(['/login']);
 //         }, 2000);
 //       },
 //       error: err => {
-//         console.error('Registration failed:', err);
+//         console.error('Registration error:', err);
 //         this.errorMessage = err.status === 400
 //           ? 'Invalid input. Check username, email, or password.'
 //           : err.status === 409
 //             ? 'Username or email already taken.'
-//             : 'Registration failed. Please try again.';
+//             : err.status === 0
+//               ? 'Cannot connect to server. Please ensure the backend is running.'
+//               : 'Registration failed. Please try again.';
 //         this.successMessage = null;
 //       }
 //     });
 //   }
 // }
+
+
+
+
+
 
 
 import { Component } from '@angular/core';
@@ -134,7 +129,7 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  roles = ['ROLE_ADMIN', 'ROLE_CUSTOMER'];
+  roles = ['ADMIN', 'CUSTOMER'];
 
   constructor(
     private fb: FormBuilder,
@@ -184,11 +179,13 @@ export class RegisterComponent {
         console.error('Registration error:', err);
         this.errorMessage = err.status === 400
           ? 'Invalid input. Check username, email, or password.'
-          : err.status === 409
-            ? 'Username or email already taken.'
-            : err.status === 0
-              ? 'Cannot connect to server. Please ensure the backend is running.'
-              : 'Registration failed. Please try again.';
+          : err.status === 404
+            ? 'Selected role is not available. Please choose another role.'
+            : err.status === 409
+              ? 'Username or email already taken.'
+              : err.status === 0
+                ? 'Cannot connect to server. Please ensure the backend is running.'
+                : 'Registration failed. Please try again.';
         this.successMessage = null;
       }
     });
