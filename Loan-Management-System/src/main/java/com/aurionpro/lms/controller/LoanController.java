@@ -214,28 +214,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.LoanRequestDTO;
 import com.aurionpro.lms.dto.LoanResponseDTO;
-import com.aurionpro.lms.dto.LoanUpdateDTO;
 import com.aurionpro.lms.service.LoanService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/loans")
-//@CrossOrigin("http://localhost:4200")
-//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
-//		RequestMethod.DELETE, RequestMethod.OPTIONS })
 public class LoanController {
 
 	@Autowired
@@ -271,9 +265,28 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByLoanOfficerId/loan-officer/{loanOfficerId}")
-	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER', 'ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_LOAN_OFFICER', 'ROLE_ADMIN')")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByLoanOfficerId(@PathVariable int loanOfficerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByLoanOfficerId(loanOfficerId);
 		return ResponseEntity.ok(responseDTOs);
 	}
+	
+	@PutMapping("/{loanId}/npa")
+    @PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
+    public ResponseEntity<LoanResponseDTO> markLoanAsNpa(@PathVariable int loanId, @RequestBody NpaRequestDTO requestDTO) {
+        LoanResponseDTO responseDTO = loanService.markLoanAsNpa(loanId, requestDTO.isNpa());
+        return ResponseEntity.ok(responseDTO);
+    }
+}
+
+class NpaRequestDTO {
+    private boolean isNpa;
+
+    public boolean isNpa() {
+        return isNpa;
+    }
+
+    public void setIsNpa(boolean isNpa) {
+        this.isNpa = isNpa;
+    }
 }

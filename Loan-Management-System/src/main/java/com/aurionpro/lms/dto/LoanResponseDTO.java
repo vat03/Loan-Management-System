@@ -22,9 +22,13 @@ package com.aurionpro.lms.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class LoanResponseDTO {
 	private int loanId;
 	private BigDecimal amount;
@@ -34,4 +38,5 @@ public class LoanResponseDTO {
 	private LocalDate dueDate;
 	private int loanOfficerId;
 	private int customerId;
+	private boolean isNpa;
 }

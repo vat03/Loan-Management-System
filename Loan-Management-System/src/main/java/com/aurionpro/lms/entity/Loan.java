@@ -138,4 +138,6 @@ public class Loan {
 
 	@OneToMany(mappedBy = "loan", cascade = CascadeType.ALL)
 	private List<Document> documents;
+	
+	private boolean isNpa;
 }

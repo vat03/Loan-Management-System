@@ -16,4 +16,6 @@ public interface LoanService {
 	List<LoanResponseDTO> getLoansByCustomerId(int customerId);
 
 	List<LoanResponseDTO> getLoansByLoanOfficerId(int loanOfficerId);
+	
+	LoanResponseDTO markLoanAsNpa(int loanId, boolean isNpa);
 }

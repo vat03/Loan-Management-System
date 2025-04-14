@@ -502,6 +502,7 @@ import com.aurionpro.lms.exception.BusinessRuleViolationException;
 import com.aurionpro.lms.exception.ResourceNotFoundException;
 import com.aurionpro.lms.repository.AdminRepository;
 import com.aurionpro.lms.repository.CustomerRepository;
+import com.aurionpro.lms.repository.LoanOfficerRepository;
 import com.aurionpro.lms.repository.RoleRepository;
 import com.aurionpro.lms.repository.UserRepository;
 import com.aurionpro.lms.security.JwtUtil;
@@ -518,6 +519,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private AdminRepository adminRepository;
 
+	@Autowired
+	private LoanOfficerRepository loanOfficerRepository;
+	
 	@Autowired
 	private CustomerRepository customerRepository;
 
@@ -665,6 +669,15 @@ public class UserServiceImpl implements UserService {
         response.setRole(user.getRole().getRoleName());
 
         // Set adminId or customerId based on role
+//        String roleName = user.getRole().getRoleName();
+//        if ("ROLE_ADMIN".equals(roleName)) {
+//            adminRepository.findByUserId(user.getId())
+//                    .ifPresent(admin -> response.setAdminId(admin.getId()));
+//        } else if ("ROLE_CUSTOMER".equals(roleName)) {
+//            customerRepository.findByUserId(user.getId())
+//                    .ifPresent(customer -> response.setCustomerId(customer.getId()));
+//        }
+        
         String roleName = user.getRole().getRoleName();
         if ("ROLE_ADMIN".equals(roleName)) {
             adminRepository.findByUserId(user.getId())
@@ -672,6 +685,9 @@ public class UserServiceImpl implements UserService {
         } else if ("ROLE_CUSTOMER".equals(roleName)) {
             customerRepository.findByUserId(user.getId())
                     .ifPresent(customer -> response.setCustomerId(customer.getId()));
+        } else if ("ROLE_LOAN_OFFICER".equals(roleName)) {
+            loanOfficerRepository.findByUserId(user.getId())
+                    .ifPresent(officer -> response.setLoanOfficerId(officer.getId()));
         }
 
         return response;

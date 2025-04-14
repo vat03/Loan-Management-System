@@ -14,5 +14,5 @@ public class JwtResponseDTO {
 	private String role;
 	private Integer adminId; // Nullable for non-admins
     private Integer customerId; // Nullable for non-customers
-    
+    private Integer loanOfficerId;
 }
