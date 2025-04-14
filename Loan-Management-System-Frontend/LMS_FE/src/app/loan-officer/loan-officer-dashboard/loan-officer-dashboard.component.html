@@ -42,6 +42,161 @@
 
 
 
+<!-- <div class="dashboard-container">
+    <h2>Loan Officer Dashboard - LendEase</h2>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div class="cards">
+        <app-dashboard-card title="Assigned Loans" [count]="assignedLoans.length"
+            (view)="toggleAssignedTable()"></app-dashboard-card>
+        <app-dashboard-card title="NPA Loans" [count]="npaLoans.length" (view)="toggleNpaTable()"></app-dashboard-card>
+        <app-dashboard-card title="Pending Document Verifications" [count]="pendingDocuments.length"
+            (view)="togglePendingTable()"></app-dashboard-card>
+        <app-dashboard-card title="Approved Loans" [count]="approvedLoans.length"
+            (view)="toggleApprovedTable()"></app-dashboard-card>
+    </div>
+
+    <mat-card class="table-card" *ngIf="showAssignedTable">
+        <mat-card-header>
+            <mat-card-title>Assigned Loans</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="assignedLoans">
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="customerId">
+                    <mat-header-cell *matHeaderCellDef>Customer ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.customerId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.amount | currency }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.statusName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">
+                        <button mat-raised-button color="primary" (click)="viewDocuments(loan.loanId)">View
+                            Documents</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="table-card" *ngIf="showNpaTable">
+        <mat-card-header>
+            <mat-card-title>NPA Loans</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="npaLoans">
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="customerId">
+                    <mat-header-cell *matHeaderCellDef>Customer ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.customerId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.amount | currency }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.statusName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">
+                        <button mat-raised-button color="primary" (click)="viewDocuments(loan.loanId)">View
+                            Documents</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="table-card" *ngIf="showPendingTable">
+        <mat-card-header>
+            <mat-card-title>Pending Document Verifications</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="pendingDocuments">
+                <ng-container matColumnDef="documentId">
+                    <mat-header-cell *matHeaderCellDef>Document ID</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.documentId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="documentName">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.documentName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.status }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">
+                        <button mat-raised-button color="primary" (click)="viewDocuments(doc.loanId)">Verify</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="docColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: docColumns;"></mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="table-card" *ngIf="showApprovedTable">
+        <mat-card-header>
+            <mat-card-title>Approved Loans</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="approvedLoans">
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="customerId">
+                    <mat-header-cell *matHeaderCellDef>Customer ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.customerId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.amount | currency }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.statusName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">
+                        <button mat-raised-button color="primary" (click)="viewDocuments(loan.loanId)">View
+                            Documents</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+</div> -->
+
+
+
 <div class="dashboard-container">
     <h2>Loan Officer Dashboard - LendEase</h2>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
@@ -53,6 +208,8 @@
             (view)="togglePendingTable()"></app-dashboard-card>
         <app-dashboard-card title="Approved Loans" [count]="approvedLoans.length"
             (view)="toggleApprovedTable()"></app-dashboard-card>
+        <app-dashboard-card title="Customers" [count]="customers.length"
+            (view)="toggleCustomersTable()"></app-dashboard-card>
     </div>
 
     <!-- Assigned Loans Table -->
@@ -88,6 +245,7 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
+            <div *ngIf="assignedLoans.length === 0" class="empty-message">No assigned loans found.</div>
         </mat-card-content>
     </mat-card>
 
@@ -124,6 +282,7 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
+            <div *ngIf="npaLoans.length === 0" class="empty-message">No NPA loans found.</div>
         </mat-card-content>
     </mat-card>
 
@@ -159,6 +318,7 @@
                 <mat-header-row *matHeaderRowDef="docColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: docColumns;"></mat-row>
             </mat-table>
+            <div *ngIf="pendingDocuments.length === 0" class="empty-message">No pending documents found.</div>
         </mat-card-content>
     </mat-card>
 
@@ -195,6 +355,33 @@
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
+            <div *ngIf="approvedLoans.length === 0" class="empty-message">No approved loans found.</div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Customers Table -->
+    <mat-card class="table-card" *ngIf="showCustomersTable">
+        <mat-card-header>
+            <mat-card-title>Customers</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="customers">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef>Customer ID</mat-header-cell>
+                    <mat-cell *matCellDef="let customer">{{ customer.id }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="username">
+                    <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+                    <mat-cell *matCellDef="let customer">{{ customer.username }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let customer">{{ customer.email }}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="customerColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: customerColumns;"></mat-row>
+            </mat-table>
+            <div *ngIf="customers.length === 0" class="empty-message">No customers found.</div>
         </mat-card-content>
     </mat-card>
 </div>

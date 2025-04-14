@@ -58,3 +58,11 @@ export interface DocumentVerificationDTO {
 export interface NPAMarkRequest {
     approve: boolean;
 }
+
+export interface CustomerResponseDTO {
+    id: number;
+    username: string;
+    email: string;
+    loanOfficerId: number;
+    isDeleted: boolean;
+}

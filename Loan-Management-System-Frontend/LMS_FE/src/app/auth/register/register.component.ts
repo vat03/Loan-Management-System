@@ -30,7 +30,7 @@
 //   errorMessage: string | null = null;
 //   successMessage: string | null = null;
 
-//   roles = ['ROLE_ADMIN', 'ROLE_CUSTOMER'];
+//   roles = ['ADMIN', 'CUSTOMER'];
 
 //   constructor(
 //     private fb: FormBuilder,
@@ -80,18 +80,18 @@
 //         console.error('Registration error:', err);
 //         this.errorMessage = err.status === 400
 //           ? 'Invalid input. Check username, email, or password.'
-//           : err.status === 409
-//             ? 'Username or email already taken.'
-//             : err.status === 0
-//               ? 'Cannot connect to server. Please ensure the backend is running.'
-//               : 'Registration failed. Please try again.';
+//           : err.status === 404
+//             ? 'Selected role is not available. Please choose another role.'
+//             : err.status === 409
+//               ? 'Username or email already taken.'
+//               : err.status === 0
+//                 ? 'Cannot connect to server. Please ensure the backend is running.'
+//                 : 'Registration failed. Please try again.';
 //         this.successMessage = null;
 //       }
 //     });
 //   }
 // }
-
-
 
 
 
@@ -129,8 +129,6 @@ export class RegisterComponent {
   errorMessage: string | null = null;
   successMessage: string | null = null;
 
-  roles = ['ADMIN', 'CUSTOMER'];
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -152,8 +150,7 @@ export class RegisterComponent {
         Validators.minLength(8),
         Validators.maxLength(100),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/)
-      ]],
-      roleName: ['', Validators.required]
+      ]]
     });
   }
 
@@ -163,8 +160,8 @@ export class RegisterComponent {
       return;
     }
 
-    const { username, email, password, roleName } = this.registerForm.value;
-    console.log('Form values:', { username, email, password, roleName });
+    const { username, email, password } = this.registerForm.value;
+    const roleName = 'CUSTOMER'; // Hardcoded role
 
     this.authService.registerUser({ username, email, password }, roleName).subscribe({
       next: response => {
@@ -180,7 +177,7 @@ export class RegisterComponent {
         this.errorMessage = err.status === 400
           ? 'Invalid input. Check username, email, or password.'
           : err.status === 404
-            ? 'Selected role is not available. Please choose another role.'
+            ? 'Role not available. Please contact support.'
             : err.status === 409
               ? 'Username or email already taken.'
               : err.status === 0
