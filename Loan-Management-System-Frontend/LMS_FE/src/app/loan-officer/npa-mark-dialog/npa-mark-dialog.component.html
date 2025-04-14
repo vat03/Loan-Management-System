@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Mark as NPA</h2>
+<mat-dialog-content>
+    <p><strong>Loan ID:</strong> {{ data.loan.loanId }}</p>
+    <p><strong>Customer ID:</strong> {{ data.loan.customerId }}</p>
+    <p>Are you sure you want to mark this loan as NPA?</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()">Confirm</button>
+</mat-dialog-actions>
