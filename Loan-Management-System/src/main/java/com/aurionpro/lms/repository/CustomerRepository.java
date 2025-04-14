@@ -49,6 +49,8 @@ import org.springframework.data.repository.query.Param;
 import com.aurionpro.lms.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+	Optional<Customer> findByUserId(Integer userId);
+	
 	@Query("SELECT c FROM Customer c JOIN c.user u WHERE c.user.id = :userId AND c.isDeleted = false AND u.isDeleted = false")
 	Optional<Customer> findByUserIdAndIsDeletedFalse(@Param("userId") int userId);
 

@@ -530,8 +530,56 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private JwtUtil jwtUtil;
 
+//	@Override
+//	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
+//		String prefixedRoleName = "ROLE_" + roleName.toUpperCase();
+//		Role role = roleRepository.findByRoleName(prefixedRoleName)
+//				.orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
+//
+//		if (userRepository.findByEmailAndIsDeletedFalse(userRequestDTO.getEmail()).isPresent()) {
+//			throw new BusinessRuleViolationException("Email already registered: " + userRequestDTO.getEmail());
+//		}
+//		if (userRepository.findByUsernameAndIsDeletedFalse(userRequestDTO.getUsername()).isPresent()) {
+//			throw new BusinessRuleViolationException("Username already taken: " + userRequestDTO.getUsername());
+//		}
+//
+//		User user = new User();
+//		user.setUsername(userRequestDTO.getUsername());
+//		user.setEmail(userRequestDTO.getEmail());
+//		user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+//		user.setRole(role);
+//
+//		user = userRepository.save(user);
+//
+//		switch (roleName.toUpperCase()) {
+//		case "ADMIN":
+//			Admin admin = new Admin();
+//			admin.setUser(user);
+//			adminRepository.save(admin);
+//			break;
+//		case "LOAN_OFFICER":
+//			throw new BusinessRuleViolationException("Use LoanOfficerService to register a Loan Officer");
+//		case "CUSTOMER":
+//			Customer customer = new Customer();
+//			customer.setUser(user);
+//			customerRepository.save(customer);
+//			break;
+//		default:
+//			throw new BusinessRuleViolationException("Unsupported role: " + roleName);
+//		}
+//
+//		return toResponseDTO(user);
+//	}
+
 	@Override
 	public UserResponseDTO registerUser(UserRequestDTO userRequestDTO, String roleName) {
+		// Validate roleName doesn't start with ROLE_
+		if (roleName != null && roleName.toUpperCase().startsWith("ROLE_")) {
+			throw new BusinessRuleViolationException(
+					"Role name should be 'ADMIN' or 'CUSTOMER', not prefixed with 'ROLE_'");
+		}
+
+		// Map roleName to database role
 		String prefixedRoleName = "ROLE_" + roleName.toUpperCase();
 		Role role = roleRepository.findByRoleName(prefixedRoleName)
 				.orElseThrow(() -> new ResourceNotFoundException("Role not found: " + prefixedRoleName));
@@ -578,25 +626,56 @@ public class UserServiceImpl implements UserService {
 		return toResponseDTO(user);
 	}
 
+//	@Override
+//	public JwtResponseDTO login(LoginRequestDTO loginRequestDTO) {
+//		Authentication authentication = authenticationManager.authenticate(
+//				new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
+//
+//		SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//		User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
+//				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//
+//		String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole().getRoleName());
+//
+//		JwtResponseDTO response = new JwtResponseDTO();
+//		response.setToken(token);
+//		response.setUserId(user.getId());
+//		response.setUsername(user.getUsername());
+//		response.setRole(user.getRole().getRoleName());
+//		return response;
+//	}
+	
 	@Override
-	public JwtResponseDTO login(LoginRequestDTO loginRequestDTO) {
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
+    public JwtResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()));
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
-				.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userRepository.findByUsernameAndIsDeletedFalse(loginRequestDTO.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-		String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole().getRoleName());
+        String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRole().getRoleName());
 
-		JwtResponseDTO response = new JwtResponseDTO();
-		response.setToken(token);
-		response.setUserId(user.getId());
-		response.setUsername(user.getUsername());
-		response.setRole(user.getRole().getRoleName());
-		return response;
-	}
+        JwtResponseDTO response = new JwtResponseDTO();
+        response.setToken(token);
+        response.setUserId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setRole(user.getRole().getRoleName());
+
+        // Set adminId or customerId based on role
+        String roleName = user.getRole().getRoleName();
+        if ("ROLE_ADMIN".equals(roleName)) {
+            adminRepository.findByUserId(user.getId())
+                    .ifPresent(admin -> response.setAdminId(admin.getId()));
+        } else if ("ROLE_CUSTOMER".equals(roleName)) {
+            customerRepository.findByUserId(user.getId())
+                    .ifPresent(customer -> response.setCustomerId(customer.getId()));
+        }
+
+        return response;
+    }
 
 	@Override
 	public List<UserResponseDTO> getAllUsers(boolean includeDeleted) {
@@ -613,10 +692,10 @@ public class UserServiceImpl implements UserService {
 		dto.setDeleted(user.isDeleted());
 		return dto;
 	}
-	
-	@Override
-	public JwtResponseDTO generateTestToken(int userId, String username, String roleName) {
-	    String token = jwtUtil.generateToken(userId, username, roleName);
-	    return new JwtResponseDTO(token, userId, username, roleName);
-	}
+
+//	@Override
+//	public JwtResponseDTO generateTestToken(int userId, String username, String roleName) {
+//	    String token = jwtUtil.generateToken(userId, username, roleName);
+//	    return new JwtResponseDTO(token, userId, username, roleName);
+//	}
 }

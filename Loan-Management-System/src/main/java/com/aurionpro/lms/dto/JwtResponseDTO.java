@@ -12,4 +12,7 @@ public class JwtResponseDTO {
 	private Integer userId;
 	private String username;
 	private String role;
+	private Integer adminId; // Nullable for non-admins
+    private Integer customerId; // Nullable for non-customers
+    
 }
