@@ -1,0 +1,155 @@
+<!-- <div class="view-loans-container">
+    <h1>Loan Schemes and My Loans</h1>
+    <p *ngIf="error" class="error">{{ error }}</p>
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>All Loan Schemes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="loanSchemes" *ngIf="loanSchemes.length; else noSchemes">
+                <ng-container matColumnDef="schemeName">
+                    <mat-header-cell *matHeaderCellDef>Scheme Name</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="interestRate">
+                    <mat-header-cell *matHeaderCellDef>Interest Rate (%)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tenureMonths">
+                    <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">
+                        <button mat-raised-button color="primary" routerLink="/customer/apply-loan">Apply</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="schemeColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: schemeColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noSchemes>
+                <p>No loan schemes available.</p>
+            </ng-template>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>My Loans</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="myLoans" *ngIf="myLoans.length; else noLoans">
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="loanSchemeName">
+                    <mat-header-cell *matHeaderCellDef>Scheme</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanSchemeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.amount }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.statusName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="applicationDate">
+                    <mat-header-cell *matHeaderCellDef>Applied On</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.applicationDate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dueDate">
+                    <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.dueDate }}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="loanColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: loanColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noLoans>
+                <p>You have no loans.</p>
+            </ng-template>
+        </mat-card-content>
+    </mat-card>
+</div> -->
+
+
+
+<div class="view-loans-container">
+    <h1>Loan Schemes and My Loans</h1>
+    <p *ngIf="error" class="error">{{ error }}</p>
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>All Loan Schemes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="loanSchemes" *ngIf="loanSchemes.length; else noSchemes">
+                <ng-container matColumnDef="schemeName">
+                    <mat-header-cell *matHeaderCellDef>Scheme Name</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="interestRate">
+                    <mat-header-cell *matHeaderCellDef>Interest Rate (%)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tenureMonths">
+                    <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">
+                        <button mat-raised-button color="primary" routerLink="/customer/apply-loan">Apply</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="schemeColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: schemeColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noSchemes>
+                <p>No loan schemes available.</p>
+            </ng-template>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>My Loans</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="myLoans" *ngIf="myLoans.length; else noLoans">
+                <ng-container matColumnDef="loanId">
+                    <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="loanSchemeName">
+                    <mat-header-cell *matHeaderCellDef>Scheme</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.loanSchemeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.amount }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="statusName">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.statusName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="applicationDate">
+                    <mat-header-cell *matHeaderCellDef>Applied On</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.applicationDate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dueDate">
+                    <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
+                    <mat-cell *matCellDef="let loan">{{ loan.dueDate }}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="loanColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: loanColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noLoans>
+                <p>You have no loans.</p>
+            </ng-template>
+        </mat-card-content>
+    </mat-card>
+</div>
