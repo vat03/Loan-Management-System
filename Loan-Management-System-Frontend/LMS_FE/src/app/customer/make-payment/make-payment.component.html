@@ -57,6 +57,67 @@
 </div> -->
 
 
+<!-- <div class="payment-container">
+    <h1>Make a Payment</h1>
+    <p *ngIf="error" class="error">{{ error }}</p>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Select Loan</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="paymentForm">
+                <mat-form-field appearance="fill">
+                    <mat-label>Select Loan</mat-label>
+                    <mat-select formControlName="loanId" (selectionChange)="onLoanChange()">
+                        <mat-option *ngFor="let loan of loans" [value]="loan.loanId">
+                            {{ loan.loanSchemeName }} (ID: {{ loan.loanId }})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="paymentForm.get('loanId')?.hasError('required')">
+                        Please select a loan
+                    </mat-error>
+                </mat-form-field>
+            </form>
+
+            <mat-table [dataSource]="payments" *ngIf="payments.length; else noPayments">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef>Payment ID</mat-header-cell>
+                    <mat-cell *matCellDef="let payment">{{ payment.id }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                    <mat-cell *matCellDef="let payment">{{ payment.amount }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dueDate">
+                    <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
+                    <mat-cell *matCellDef="let payment">{{ payment.dueDate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="penaltyAmount">
+                    <mat-header-cell *matHeaderCellDef>Penalty</mat-header-cell>
+                    <mat-cell *matCellDef="let payment">{{ payment.penaltyAmount }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let payment">
+                        <button mat-raised-button color="primary" (click)="makePayment(payment)" [disabled]="loading">
+                            Pay Now
+                        </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noPayments>
+                <p>No pending payments for this loan.</p>
+            </ng-template>
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </mat-card-content>
+    </mat-card>
+</div> -->
+
+
+
+<header-component></header-component>
 <div class="payment-container">
     <h1>Make a Payment</h1>
     <p *ngIf="error" class="error">{{ error }}</p>

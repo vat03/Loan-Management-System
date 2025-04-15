@@ -52,6 +52,66 @@
 // }
 
 
+// import { Component, OnInit } from '@angular/core';
+// import { CustomerService } from '../services/customer.service';
+// import { AuthService } from '../../core/auth/auth.service';
+// import { LoanScheme, Loan } from '../models/customer.model';
+// import { CommonModule } from '@angular/common';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatTableModule } from '@angular/material/table';
+// import { MatButtonModule } from '@angular/material/button';
+// import { RouterModule, Router } from '@angular/router';
+
+// @Component({
+//   selector: 'app-view-loans',
+//   standalone: true,
+//   imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule, RouterModule],
+//   templateUrl: './view-loans.component.html',
+//   styleUrls: ['./view-loans.component.scss']
+// })
+// export class ViewLoansComponent implements OnInit {
+//   customerId: number | null;
+//   loanSchemes: LoanScheme[] = [];
+//   myLoans: Loan[] = [];
+//   error: string | null = null;
+//   schemeColumns: string[] = ['schemeName', 'interestRate', 'tenureMonths', 'action'];
+//   loanColumns: string[] = ['loanId', 'loanSchemeName', 'amount', 'statusName', 'applicationDate', 'dueDate'];
+
+//   constructor(
+//     private customerService: CustomerService,
+//     private authService: AuthService,
+//     private router: Router
+//   ) {
+//     this.customerId = this.authService.getCustomerId();
+//   }
+
+//   ngOnInit(): void {
+//     if (!this.customerId) {
+//       this.error = 'Please log in to view loans.';
+//       this.router.navigate(['/login']);
+//       return;
+//     }
+
+//     this.customerService.getLoanSchemes().subscribe({
+//       next: (schemes) => this.loanSchemes = schemes.filter(s => !s.isDeleted),
+//       error: (err) => {
+//         this.error = err.message;
+//         this.router.navigate(['/login']);
+//       }
+//     });
+
+//     this.customerService.getCustomerLoans(this.customerId).subscribe({
+//       next: (loans) => this.myLoans = loans,
+//       error: (err) => {
+//         this.error = err.message;
+//         this.router.navigate(['/login']);
+//       }
+//     });
+//   }
+// }
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../services/customer.service';
 import { AuthService } from '../../core/auth/auth.service';
@@ -61,11 +121,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
+import { HeaderComponent } from '../../shared/components/header/header.component';
 
 @Component({
   selector: 'app-view-loans',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatTableModule, MatButtonModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatTableModule,
+    MatButtonModule,
+    RouterModule,
+    HeaderComponent
+  ],
   templateUrl: './view-loans.component.html',
   styleUrls: ['./view-loans.component.scss']
 })
@@ -95,16 +163,14 @@ export class ViewLoansComponent implements OnInit {
     this.customerService.getLoanSchemes().subscribe({
       next: (schemes) => this.loanSchemes = schemes.filter(s => !s.isDeleted),
       error: (err) => {
-        this.error = err.message;
-        this.router.navigate(['/login']);
+        this.error = `Failed to load loan schemes: ${err.message}`;
       }
     });
 
     this.customerService.getCustomerLoans(this.customerId).subscribe({
       next: (loans) => this.myLoans = loans,
       error: (err) => {
-        this.error = err.message;
-        this.router.navigate(['/login']);
+        this.error = `Failed to load your loans: ${err.message}`;
       }
     });
   }

@@ -97,6 +97,107 @@
     </mat-card>
 </div> -->
 
+<!-- <div class="apply-container">
+    <h1>Apply for a Loan</h1>
+    <p *ngIf="error" class="error">{{ error }}</p>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Available Loan Schemes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="loanSchemes" *ngIf="loanSchemes.length; else noSchemes">
+                <ng-container matColumnDef="schemeName">
+                    <mat-header-cell *matHeaderCellDef>Scheme Name</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="interestRate">
+                    <mat-header-cell *matHeaderCellDef>Interest Rate (%)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tenureMonths">
+                    <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let scheme">
+                        <button mat-raised-button color="primary" (click)="selectScheme(scheme)">Select</button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <ng-template #noSchemes>
+                <p>No loan schemes available.</p>
+            </ng-template>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="selectedScheme" class="form-card">
+        <mat-card-header>
+            <mat-card-title>Loan Application for {{ selectedScheme.schemeName }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="applyForm" (ngSubmit)="apply()">
+                <mat-form-field appearance="fill">
+                    <mat-label>Loan Amount</mat-label>
+                    <input matInput type="number" formControlName="amount" required>
+                    <mat-error *ngIf="applyForm.get('amount')?.hasError('required')">
+                        Amount is required
+                    </mat-error>
+                    <mat-error *ngIf="applyForm.get('amount')?.hasError('min')">
+                        Amount must be at least 1000
+                    </mat-error>
+                </mat-form-field>
+
+                <h3>Required Documents</h3>
+                <div *ngFor="let form of documentForms; let i = index" class="document-form">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Document Name</mat-label>
+                        <input matInput formControlName="documentName" [formGroup]="form" required>
+                        <mat-error *ngIf="form.get('documentName')?.hasError('required')">
+                            Document name is required
+                        </mat-error>
+                    </mat-form-field>
+                    <input type="file" accept=".png" (change)="onFileChange($event, i)" required>
+                </div>
+
+                <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitDisabled">
+                    {{ loading ? 'Applying...' : 'Apply' }}
+                </button>
+            </form>
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="uploadedDocuments.length">
+        <mat-card-header>
+            <mat-card-title>Uploaded Documents</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-table [dataSource]="uploadedDocuments">
+                <ng-container matColumnDef="documentName">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.documentName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="documentTypeName">
+                    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.documentTypeName }}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let doc">{{ doc.status }}</mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="['documentName', 'documentTypeName', 'status']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['documentName', 'documentTypeName', 'status'];"></mat-row>
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+</div> -->
+
+
+
+<header-component></header-component>
 <div class="apply-container">
     <h1>Apply for a Loan</h1>
     <p *ngIf="error" class="error">{{ error }}</p>

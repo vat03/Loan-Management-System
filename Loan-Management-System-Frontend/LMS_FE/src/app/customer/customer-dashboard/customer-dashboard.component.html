@@ -60,6 +60,69 @@
     </div>
 </div> -->
 
+<!-- <div class="dashboard-container">
+    <h1 *ngIf="profile">Welcome, {{ profile.firstName }} {{ profile.lastName }}</h1>
+    <p *ngIf="error" class="error">{{ error }}</p>
+    <div class="card-grid">
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>Apply for Loan</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Choose from various loan schemes and apply easily.</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" routerLink="/customer/apply-loan">Apply Now</button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>View All Loans</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Explore all available loan schemes.</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" routerLink="/customer/view-loans">View Schemes</button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>View My Loans</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Check the status of your loan applications.</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" routerLink="/customer/view-loans">View My Loans</button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>Make Payment</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>Pay your loan installments securely.</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" routerLink="/customer/make-payment">Make Payment</button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card class="dashboard-card">
+            <mat-card-header>
+                <mat-card-title>Payment Details</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <p>View your payment history and pending installments.</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" routerLink="/customer/payment-details">View Payments</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div> -->
+
+<header-component></header-component>
 <div class="dashboard-container">
     <h1 *ngIf="profile">Welcome, {{ profile.firstName }} {{ profile.lastName }}</h1>
     <p *ngIf="error" class="error">{{ error }}</p>
