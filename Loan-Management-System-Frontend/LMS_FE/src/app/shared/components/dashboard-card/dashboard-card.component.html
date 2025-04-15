@@ -20,7 +20,7 @@
         <p>{{ count }} {{ title }}</p>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="add.emit()">Add</button>
+        <button *ngIf="showAddButton" mat-raised-button color="primary" (click)="add.emit()">Add</button>
         <button mat-raised-button color="accent" (click)="view.emit()">View</button>
     </mat-card-actions>
 </mat-card>

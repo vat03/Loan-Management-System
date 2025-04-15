@@ -32,6 +32,7 @@ import { CommonModule } from '@angular/common';
 export class DashboardCardComponent {
   @Input() title: string = '';
   @Input() count: number = 0;
+  @Input() showAddButton: boolean = true;
   @Output() add = new EventEmitter<void>();
   @Output() view = new EventEmitter<void>();
 }
