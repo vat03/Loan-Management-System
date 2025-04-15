@@ -63,11 +63,11 @@ public class LoanPaymentController {
 		return ResponseEntity.ok(payment);
 	}
 
-//	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
-//	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
-//		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
-//		return ResponseEntity.ok(amount);
-//	}
+	@GetMapping("/totalPaymentAmount/{loanPaymentId}/amount")
+	public ResponseEntity<BigDecimal> getTotalPaymentAmount(@PathVariable int loanPaymentId) {
+		BigDecimal amount = loanPaymentService.getPaymentAmount(loanPaymentId);
+		return ResponseEntity.ok(amount);
+	}
 
 	@PostMapping("/npa/approve/{loanId}")
 	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")

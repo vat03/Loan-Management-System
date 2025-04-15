@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aurionpro.lms.dto.LoanRequestDTO;
 import com.aurionpro.lms.dto.LoanResponseDTO;
+import com.aurionpro.lms.dto.LoanUpdateDTO;
 import com.aurionpro.lms.service.LoanService;
 
 import jakarta.validation.Valid;
@@ -33,13 +34,13 @@ public class LoanController {
 		return ResponseEntity.status(201).body(responseDTO);
 	}
 
-//	@PutMapping("/{id}/status")
-//	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
-//	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
-//			@Valid @RequestBody LoanUpdateDTO updateDTO) {
-//		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
-//		return ResponseEntity.ok(responseDTO);
-//	}
+	@PutMapping("/{id}/status")
+	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
+	public ResponseEntity<LoanResponseDTO> updateLoanStatus(@PathVariable int id,
+			@Valid @RequestBody LoanUpdateDTO updateDTO) {
+		LoanResponseDTO responseDTO = loanService.updateLoanStatus(id, updateDTO);
+		return ResponseEntity.ok(responseDTO);
+	}
 
 	@GetMapping("/getByLoanId/{id}")
 	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
