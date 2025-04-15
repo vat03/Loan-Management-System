@@ -32,3 +32,10 @@
 2025-04-15T11:22:12.668+05:30  INFO 25576 --- [Loan-Management-System] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
 2025-04-15T11:22:12.798+05:30  INFO 25576 --- [Loan-Management-System] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
 2025-04-15T11:22:12.825+05:30  INFO 25576 --- [Loan-Management-System] [restartedMain] com.aurionpro.lms.Application            : Started Application in 12.922 seconds (process running for 14.151)
+2025-04-15T13:17:46.659+05:30  INFO 25576 --- [Loan-Management-System] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-04-15T13:17:46.659+05:30  INFO 25576 --- [Loan-Management-System] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-04-15T13:17:46.668+05:30  INFO 25576 --- [Loan-Management-System] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+2025-04-15T13:18:19.048+05:30  WARN 25576 --- [Loan-Management-System] [http-nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.security.authentication.BadCredentialsException: Bad credentials]
+2025-04-15T13:18:44.978+05:30  WARN 25576 --- [Loan-Management-System] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.security.authorization.AuthorizationDeniedException: Access Denied]
+2025-04-15T13:18:46.295+05:30  WARN 25576 --- [Loan-Management-System] [http-nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.security.authorization.AuthorizationDeniedException: Access Denied]
+2025-04-15T13:19:02.533+05:30  WARN 25576 --- [Loan-Management-System] [http-nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.security.authorization.AuthorizationDeniedException: Access Denied]
