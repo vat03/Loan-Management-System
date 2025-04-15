@@ -65,6 +65,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
@@ -74,7 +75,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -118,5 +120,9 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }
