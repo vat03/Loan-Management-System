@@ -49,7 +49,7 @@ public class LoanController {
 	}
 
 	@GetMapping("/getByCustomerId/customer/{customerId}")
-	@PreAuthorize("hasRole('ROLE_LOAN_OFFICER')")
+	@PreAuthorize("hasAnyRole('ROLE_LOAN_OFFICER', 'ROLE_CUSTOMER')")
 	public ResponseEntity<List<LoanResponseDTO>> getLoansByCustomerId(@PathVariable int customerId) {
 		List<LoanResponseDTO> responseDTOs = loanService.getLoansByCustomerId(customerId);
 		return ResponseEntity.ok(responseDTOs);
