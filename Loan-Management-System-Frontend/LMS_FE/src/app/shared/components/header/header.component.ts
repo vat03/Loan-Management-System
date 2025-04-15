@@ -198,11 +198,17 @@ export class HeaderComponent implements OnInit {
     return this.role === 'ROLE_LOAN_OFFICER';
   }
 
+  isCustomer(): boolean {
+    return this.role === 'ROLE_CUSTOMER';
+  }
+
   navigateToProfile(): void {
     if (this.isAdmin()) {
       this.router.navigate(['/admin/profile']);
     } else if (this.isLoanOfficer()) {
-      this.router.navigate(['/loan-officer']);
+      this.router.navigate(['/loan-officer/profile']);
+    } else if (this.isCustomer()) {
+      this.router.navigate(['/customer/profile']);
     } else {
       this.router.navigate(['/profile']);
     }

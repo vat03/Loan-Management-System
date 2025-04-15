@@ -51,6 +51,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { ProfileComponent } from './shared/components/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -77,5 +78,11 @@ export const routes: Routes = [
     loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent)
   },
   { path: 'register', component: RegisterComponent },
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    data: { roles: ['ROLE_ADMIN', 'ROLE_LOAN_OFFICER', 'ROLE_CUSTOMER'] },
+    component: ProfileComponent
+  },
   { path: '**', redirectTo: '' }
 ];
