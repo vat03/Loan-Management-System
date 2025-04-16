@@ -337,7 +337,7 @@ export class CustomerService {
   constructor(private http: HttpClient) { }
 
   getProfile(customerId: number): Observable<Profile> {
-    return this.http.get<Profile>(`${this.apiUrl}/customers/${customerId}`).pipe(
+    return this.http.get<Profile>(`${this.apiUrl}/profile/customer/${customerId}`).pipe(
       tap(profile => console.log(`Fetched profile for customer ${customerId}:`, profile)),
       catchError(this.handleError)
     );

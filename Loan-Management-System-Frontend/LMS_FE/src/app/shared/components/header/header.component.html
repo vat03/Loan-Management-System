@@ -113,6 +113,11 @@
         <a mat-button routerLink="/loan-officer" *ngIf="isLoanOfficer()">Dashboard</a>
         <a mat-button routerLink="/loan-officer/documents" *ngIf="isLoanOfficer()">Documents</a>
         <a mat-button routerLink="/loan-officer/npa" *ngIf="isLoanOfficer()">NPA</a>
+        <!-- Customer Links -->
+        <a mat-button routerLink="/customer/dashboard" *ngIf="isCustomer()">Dashboard</a>
+        <a mat-button routerLink="/customer/view-loans" *ngIf="isCustomer()">Loan Schemes</a>
+        <a mat-button routerLink="/customer/make-payment" *ngIf="isCustomer()">Make Payment</a>
+        <a mat-button routerLink="/customer/payment-details" *ngIf="isCustomer()">Payment History</a>
         <!-- Profile Menu -->
         <button mat-icon-button [matMenuTriggerFor]="profileMenu" *ngIf="isLoggedIn()">
             <mat-icon>account_circle</mat-icon>

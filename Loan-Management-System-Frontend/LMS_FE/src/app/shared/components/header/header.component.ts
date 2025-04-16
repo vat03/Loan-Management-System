@@ -203,15 +203,16 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToProfile(): void {
-    if (this.isAdmin()) {
-      this.router.navigate(['/admin/profile']);
-    } else if (this.isLoanOfficer()) {
-      this.router.navigate(['/loan-officer/profile']);
-    } else if (this.isCustomer()) {
-      this.router.navigate(['/customer/profile']);
-    } else {
-      this.router.navigate(['/profile']);
-    }
+    // if (this.isAdmin()) {
+    //   this.router.navigate(['/admin/profile']);
+    // } else if (this.isLoanOfficer()) {
+    //   this.router.navigate(['/loan-officer/profile']);
+    // } else if (this.isCustomer()) {
+    //   this.router.navigate(['/customer/profile']);
+    // } else {
+    //   this.router.navigate(['/profile']);
+    // }
+    this.router.navigate(['/profile']);
   }
 
   logout(): void {
