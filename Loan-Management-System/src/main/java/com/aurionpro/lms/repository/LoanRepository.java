@@ -43,4 +43,6 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
     @Query("SELECT COUNT(l) > 0 FROM Loan l WHERE l.customer.id = :customerId AND l.status.id IN (1, 2, 3)")
     boolean existsByCustomerIdAndActiveStatus(
             @org.springframework.data.repository.query.Param("customerId") Integer customerId);
+    
+    List<Loan> findByLoanOfficerIdAndIsNpa(int loanOfficerId, boolean isNpa);
 }

@@ -1,17 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-loan-officer-dashboard',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './loan-officer-dashboard.component.html',
-//   styleUrl: './loan-officer-dashboard.component.scss'
-// })
-// export class LoanOfficerDashboardComponent {
-
-// }
-
-
 // import { Component, OnInit } from '@angular/core';
 // import { CommonModule } from '@angular/common';
 // import { MatTableModule } from '@angular/material/table';
@@ -19,132 +5,7 @@
 // import { MatButtonModule } from '@angular/material/button';
 // import { LoanOfficerService } from '../services/loan-officer.service';
 // import { AuthService } from '../../core/auth/auth.service';
-// import { LoanResponseDTO } from '../models/loan-officer.model';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-loan-officer-dashboard',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     MatTableModule,
-//     MatCardModule,
-//     MatButtonModule
-//   ],
-//   templateUrl: './loan-officer-dashboard.component.html',
-//   styleUrls: ['./loan-officer-dashboard.component.scss']
-// })
-// export class LoanOfficerDashboardComponent implements OnInit {
-//   loans: LoanResponseDTO[] = [];
-//   errorMessage: string | null = null;
-//   displayedColumns: string[] = ['loanId', 'customerId', 'amount', 'status', 'actions'];
-
-//   constructor(
-//     private loanOfficerService: LoanOfficerService,
-//     private authService: AuthService,
-//     private router: Router
-//   ) { }
-
-//   ngOnInit(): void {
-//     const loanOfficerId = this.authService.getLoanOfficerId();
-//     if (loanOfficerId) {
-//       this.loadLoans(loanOfficerId);
-//     } else {
-//       this.errorMessage = 'Loan Officer ID not found.';
-//     }
-//   }
-
-//   loadLoans(loanOfficerId: number): void {
-//     this.loanOfficerService.getAssignedLoans(loanOfficerId).subscribe({
-//       next: loans => this.loans = loans,
-//       error: err => this.errorMessage = 'Failed to load loans.'
-//     });
-//   }
-
-//   viewDocuments(loanId: number): void {
-//     this.router.navigate([`/loan-officer/documents/${loanId}`]);
-//   }
-// }
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { MatTableModule } from '@angular/material/table';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatButtonModule } from '@angular/material/button';
-// import { LoanOfficerService } from '../services/loan-officer.service';
-// import { AuthService } from '../../core/auth/auth.service';
-// import { LoanResponseDTO } from '../models/loan-officer.model';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-loan-officer-dashboard',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     MatTableModule,
-//     MatCardModule,
-//     MatButtonModule
-//   ],
-//   templateUrl: './loan-officer-dashboard.component.html',
-//   styleUrls: ['./loan-officer-dashboard.component.scss']
-// })
-// export class LoanOfficerDashboardComponent implements OnInit {
-//   loans: LoanResponseDTO[] = [];
-//   errorMessage: string | null = null;
-//   displayedColumns: string[] = ['loanId', 'customerId', 'amount', 'status', 'actions'];
-
-//   constructor(
-//     private loanOfficerService: LoanOfficerService,
-//     private authService: AuthService,
-//     private router: Router
-//   ) { }
-
-//   ngOnInit(): void {
-//     const loanOfficerId = this.authService.getLoanOfficerId();
-//     console.log('Dashboard - LoanOfficerId:', loanOfficerId);
-//     if (loanOfficerId) {
-//       this.loadLoans(loanOfficerId);
-//     } else {
-//       this.errorMessage = 'Loan Officer ID not found.';
-//       console.error('Dashboard - No loanOfficerId');
-//     }
-//   }
-
-//   loadLoans(loanOfficerId: number): void {
-//     this.loanOfficerService.getAssignedLoans(loanOfficerId).subscribe({
-//       next: loans => {
-//         console.log('Dashboard - Loans:', loans);
-//         this.loans = loans;
-//       },
-//       error: err => {
-//         console.error('Dashboard - Load loans error:', err);
-//         this.errorMessage = 'Failed to load loans.';
-//       }
-//     });
-//   }
-
-//   viewDocuments(loanId: number): void {
-//     this.router.navigate([`/loan-officer/documents/${loanId}`]);
-//   }
-// }
-
-
-
-
-
-
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { MatTableModule } from '@angular/material/table';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatButtonModule } from '@angular/material/button';
-// import { LoanOfficerService } from '../services/loan-officer.service';
-// import { AuthService } from '../../core/auth/auth.service';
-// import { LoanResponseDTO, DocumentResponseDTO } from '../models/loan-officer.model';
+// import { LoanResponseDTO, DocumentResponseDTO, CustomerResponseDTO } from '../models/loan-officer.model';
 // import { Router } from '@angular/router';
 // import { DashboardCardComponent } from '../../shared/components/dashboard-card/dashboard-card.component';
 
@@ -166,13 +27,16 @@
 //   npaLoans: LoanResponseDTO[] = [];
 //   pendingDocuments: DocumentResponseDTO[] = [];
 //   approvedLoans: LoanResponseDTO[] = [];
+//   customers: CustomerResponseDTO[] = [];
 //   errorMessage: string | null = null;
 //   showAssignedTable = false;
 //   showNpaTable = false;
 //   showPendingTable = false;
 //   showApprovedTable = false;
+//   showCustomersTable = false;
 //   displayedColumns: string[] = ['loanId', 'customerId', 'amount', 'statusName', 'actions'];
 //   docColumns: string[] = ['documentId', 'loanId', 'documentName', 'status', 'actions'];
+//   customerColumns: string[] = ['id', 'username', 'email'];
 
 //   constructor(
 //     private loanOfficerService: LoanOfficerService,
@@ -238,6 +102,20 @@
 //         this.errorMessage = 'Failed to load approved loans.';
 //       }
 //     });
+
+//     this.loanOfficerService.getCustomersByLoanOfficerId(loanOfficerId).subscribe({
+//       next: customers => {
+//         console.log('Dashboard - Customers:', customers);
+//         this.customers = customers;
+//         if (customers.length === 0 && !this.errorMessage) {
+//           this.errorMessage = 'No customers found.';
+//         }
+//       },
+//       error: err => {
+//         console.error('Dashboard - Load customers error:', err);
+//         this.errorMessage = 'Failed to load customers.';
+//       }
+//     });
 //   }
 
 //   viewDocuments(loanId: number): void {
@@ -259,9 +137,11 @@
 //   toggleApprovedTable(): void {
 //     this.showApprovedTable = !this.showApprovedTable;
 //   }
+
+//   toggleCustomersTable(): void {
+//     this.showCustomersTable = !this.showCustomersTable;
+//   }
 // }
-
-
 
 
 
@@ -300,11 +180,11 @@ export class LoanOfficerDashboardComponent implements OnInit {
   errorMessage: string | null = null;
   showAssignedTable = false;
   showNpaTable = false;
-  showPendingTable = false;
+  showPendingTable = true; // Default to show pending documents
   showApprovedTable = false;
   showCustomersTable = false;
   displayedColumns: string[] = ['loanId', 'customerId', 'amount', 'statusName', 'actions'];
-  docColumns: string[] = ['documentId', 'loanId', 'documentName', 'status', 'actions'];
+  docColumns: string[] = ['documentId', 'loanId', 'documentName', 'documentUrl', 'status', 'actions'];
   customerColumns: string[] = ['id', 'username', 'email'];
 
   constructor(
@@ -383,6 +263,34 @@ export class LoanOfficerDashboardComponent implements OnInit {
       error: err => {
         console.error('Dashboard - Load customers error:', err);
         this.errorMessage = 'Failed to load customers.';
+      }
+    });
+  }
+
+  approveDocument(documentId: number): void {
+    this.loanOfficerService.verifyDocument(documentId, { status: 'APPROVED' }).subscribe({
+      next: (doc) => {
+        this.pendingDocuments = this.pendingDocuments.map(d =>
+          d.documentId === documentId ? doc : d
+        );
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        this.errorMessage = `Failed to approve document: ${err.message}`;
+      }
+    });
+  }
+
+  rejectDocument(documentId: number): void {
+    this.loanOfficerService.verifyDocument(documentId, { status: 'REJECTED' }).subscribe({
+      next: (doc) => {
+        this.pendingDocuments = this.pendingDocuments.map(d =>
+          d.documentId === documentId ? doc : d
+        );
+        this.errorMessage = null;
+      },
+      error: (err) => {
+        this.errorMessage = `Failed to reject document: ${err.message}`;
       }
     });
   }

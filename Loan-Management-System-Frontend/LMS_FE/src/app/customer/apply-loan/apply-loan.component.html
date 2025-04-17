@@ -63,8 +63,7 @@
                     <input type="file" accept=".png" (change)="onFileChange($event, i)" required>
                 </div>
 
-                <button mat-raised-button color="primary" type="submit"
-                    [disabled]="applyForm.invalid || documentForms.some(f => f.invalid) || loading">
+                <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitDisabled">
                     {{ loading ? 'Applying...' : 'Apply' }}
                 </button>
             </form>
@@ -96,10 +95,13 @@
         </mat-card-content>
     </mat-card>
 </div> -->
+
 
 <!-- <div class="apply-container">
     <h1>Apply for a Loan</h1>
     <p *ngIf="error" class="error">{{ error }}</p>
+    <p *ngIf="success" class="success">{{ success }}</p>
+
     <mat-card>
         <mat-card-header>
             <mat-card-title>Available Loan Schemes</mat-card-title>
@@ -151,16 +153,28 @@
                 </mat-form-field>
 
                 <h3>Required Documents</h3>
-                <div *ngFor="let form of documentForms; let i = index" class="document-form">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Document Name</mat-label>
-                        <input matInput formControlName="documentName" [formGroup]="form" required>
-                        <mat-error *ngIf="form.get('documentName')?.hasError('required')">
-                            Document name is required
-                        </mat-error>
-                    </mat-form-field>
-                    <input type="file" accept=".png" (change)="onFileChange($event, i)" required>
+                <div *ngIf="requiredDocumentTypes.length; else noDocs">
+                    <div *ngFor="let form of documentForms; let i = index" class="document-form">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Document Name</mat-label>
+                            <input matInput formControlName="documentName" [formGroup]="form" required>
+                            <mat-error *ngIf="form.get('documentName')?.hasError('required')">
+                                Document name is required
+                            </mat-error>
+                        </mat-form-field>
+                        <input type="file" accept="image/png" (change)="onFileChange($event, i)" required>
+                        <button mat-raised-button color="primary" (click)="uploadDocument(i)"
+                            [disabled]="form.invalid || loading">
+                            Upload
+                        </button>
+                        <p *ngIf="uploadedDocuments[i]" class="uploaded">
+                            Uploaded: {{ uploadedDocuments[i].documentName }} ({{ uploadedDocuments[i].status }})
+                        </p>
+                    </div>
                 </div>
+                <ng-template #noDocs>
+                    <p>No documents required.</p>
+                </ng-template>
 
                 <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitDisabled">
                     {{ loading ? 'Applying...' : 'Apply' }}
@@ -197,101 +211,315 @@
 
 
 
-<!-- <header-component></header-component> -->
-<div class="apply-container">
-    <h1>Apply for a Loan</h1>
-    <p *ngIf="error" class="error">{{ error }}</p>
+
+<!-- <div class="apply-loan-container">
+  <h2>Apply for a Loan</h2>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Select Loan Scheme</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="applyForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Loan Scheme</mat-label>
+          <mat-select formControlName="schemeId">
+            <mat-option *ngFor="let scheme of loanSchemes" [value]="scheme.id">
+              {{ scheme.name }} ({{ scheme.interestRate }}% Interest)
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="applyForm.get('schemeId')?.hasError('required')">
+            Please select a loan scheme
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Loan Amount</mat-label>
+          <input matInput type="number" formControlName="amount">
+          <mat-error *ngIf="applyForm.get('amount')?.hasError('required')">
+            Loan amount is required
+          </mat-error>
+          <mat-error *ngIf="applyForm.get('amount')?.hasError('min')">
+            Amount must be at least 1000
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onSelectScheme()" [disabled]="!applyForm.get('schemeId')?.value">
+          Select
+        </button>
+      </form>
+
+      <div *ngIf="documentTypes.length > 0" class="document-types">
+        <h3>Required Documents</h3>
+        <ul>
+          <li *ngFor="let doc of documentTypes">{{ doc.name }}</li>
+        </ul>
+
+        <h3>Upload Documents</h3>
+        <form [formGroup]="documentForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Document Type</mat-label>
+            <mat-select formControlName="documentTypeId">
+              <mat-option *ngFor="let docType of documentTypes" [value]="docType.id">
+                {{ docType.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="documentForm.get('documentTypeId')?.hasError('required')">
+              Please select a document type
+            </mat-error>
+          </mat-form-field>
+
+          <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.png">
+          <mat-error *ngIf="documentForm.get('file')?.hasError('required')">
+            Please select a file
+          </mat-error>
+
+          <button mat-raised-button color="primary" (click)="uploadDocument()" [disabled]="documentForm.invalid">
+            Upload
+          </button>
+        </form>
+
+        <mat-table [dataSource]="uploadedDocuments">
+          <ng-container matColumnDef="documentType">
+            <mat-header-cell *matHeaderCellDef>Document Type</mat-header-cell>
+            <mat-cell *matCellDef="let doc">
+              {{ documentTypes.find(dt => dt.id === doc.documentTypeId)?.name || 'Unknown' }}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="fileName">
+            <mat-header-cell *matHeaderCellDef>File Name</mat-header-cell>
+            <mat-cell *matCellDef="let doc">{{ doc.documentUrl.split('/').pop() }}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+            <mat-cell *matCellDef="let doc">
+              <button mat-raised-button color="warn" (click)="removeDocument(doc.documentId)">
+                Remove
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedDocumentColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedDocumentColumns;"></mat-row>
+        </mat-table>
+        <div *ngIf="uploadedDocuments.data.length === 0" class="empty-message">No documents uploaded.</div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="applyLoan()" [disabled]="applyForm.invalid || documentTypes.length === 0 || uploadedDocuments.data.length === 0">
+        Apply
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div> -->
+
+<!-- <div class="apply-loan-container">
+    <h2>Apply for a Loan</h2>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Available Loan Schemes</mat-card-title>
+            <mat-card-title>Select Loan Scheme</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-table [dataSource]="loanSchemes" *ngIf="loanSchemes.length; else noSchemes">
-                <ng-container matColumnDef="schemeName">
-                    <mat-header-cell *matHeaderCellDef>Scheme Name</mat-header-cell>
-                    <mat-cell *matCellDef="let scheme">{{ scheme.schemeName }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="interestRate">
-                    <mat-header-cell *matHeaderCellDef>Interest Rate (%)</mat-header-cell>
-                    <mat-cell *matCellDef="let scheme">{{ scheme.interestRate }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="tenureMonths">
-                    <mat-header-cell *matHeaderCellDef>Tenure (Months)</mat-header-cell>
-                    <mat-cell *matCellDef="let scheme">{{ scheme.tenureMonths }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="action">
-                    <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                    <mat-cell *matCellDef="let scheme">
-                        <button mat-raised-button color="primary" (click)="selectScheme(scheme)">Select</button>
-                    </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <ng-template #noSchemes>
-                <p>No loan schemes available.</p>
-            </ng-template>
-        </mat-card-content>
-    </mat-card>
+            <form [formGroup]="applyForm">
+                <mat-form-field appearance="fill">
+                    <mat-label>Loan Scheme</mat-label>
+                    <mat-select formControlName="schemeId">
+                        <mat-option *ngFor="let scheme of loanSchemes" [value]="scheme.id">
+                            {{ scheme.name }} ({{ scheme.interestRate }}% Interest)
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="applyForm.get('schemeId')?.hasError('required')">
+                        Please select a loan scheme
+                    </mat-error>
+                </mat-form-field>
 
-    <mat-card *ngIf="selectedScheme" class="form-card">
-        <mat-card-header>
-            <mat-card-title>Loan Application for {{ selectedScheme.schemeName }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <form [formGroup]="applyForm" (ngSubmit)="apply()">
                 <mat-form-field appearance="fill">
                     <mat-label>Loan Amount</mat-label>
-                    <input matInput type="number" formControlName="amount" required>
+                    <input matInput type="number" formControlName="amount">
                     <mat-error *ngIf="applyForm.get('amount')?.hasError('required')">
-                        Amount is required
+                        Loan amount is required
                     </mat-error>
                     <mat-error *ngIf="applyForm.get('amount')?.hasError('min')">
                         Amount must be at least 1000
                     </mat-error>
                 </mat-form-field>
 
-                <h3>Required Documents</h3>
-                <div *ngFor="let form of documentForms; let i = index" class="document-form">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Document Name</mat-label>
-                        <input matInput formControlName="documentName" [formGroup]="form" required>
-                        <mat-error *ngIf="form.get('documentName')?.hasError('required')">
-                            Document name is required
-                        </mat-error>
-                    </mat-form-field>
-                    <input type="file" accept=".png" (change)="onFileChange($event, i)" required>
-                </div>
-
-                <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitDisabled">
-                    {{ loading ? 'Applying...' : 'Apply' }}
+                <button mat-raised-button color="primary" (click)="onSelectScheme()"
+                    [disabled]="!applyForm.get('schemeId')?.value">
+                    Select
                 </button>
             </form>
-            <mat-spinner *ngIf="loading"></mat-spinner>
-        </mat-card-content>
-    </mat-card>
 
-    <mat-card *ngIf="uploadedDocuments.length">
+            <div *ngIf="documentTypes.length > 0" class="document-types">
+                <h3>Required Documents</h3>
+                <ul>
+                    <li *ngFor="let doc of documentTypes">{{ doc.name }}</li>
+                </ul>
+
+                <h3>Upload Documents</h3>
+                <form [formGroup]="documentForm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Document Type</mat-label>
+                        <mat-select formControlName="documentTypeId">
+                            <mat-option *ngFor="let docType of documentTypes" [value]="docType.id">
+                                {{ docType.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="documentForm.get('documentTypeId')?.hasError('required')">
+                            Please select a document type
+                        </mat-error>
+                    </mat-form-field>
+
+                    <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.png">
+                    <mat-error *ngIf="documentForm.get('file')?.hasError('required')">
+                        Please select a file
+                    </mat-error>
+
+                    <button mat-raised-button color="primary" (click)="uploadDocument()"
+                        [disabled]="documentForm.invalid">
+                        Upload
+                    </button>
+                </form>
+
+                <mat-table [dataSource]="uploadedDocuments">
+                    <ng-container matColumnDef="documentType">
+                        <mat-header-cell *matHeaderCellDef>Document Type</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">
+                            {{ documentTypes.find(dt => dt.id === doc.documentTypeId)?.name || 'Unknown' }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="fileName">
+                        <mat-header-cell *matHeaderCellDef>File Name</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">{{ doc.documentUrl.split('/').pop() }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">
+                            <button mat-raised-button color="warn" (click)="removeDocument(doc.documentId)">
+                                Remove
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedDocumentColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedDocumentColumns;"></mat-row>
+                </mat-table>
+                <div *ngIf="uploadedDocuments.data.length === 0" class="empty-message">No documents uploaded.</div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="applyLoan()"
+                [disabled]="applyForm.invalid || documentTypes.length === 0 || uploadedDocuments.data.length === 0">
+                Apply
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div> -->
+
+
+
+
+
+
+<div class="apply-loan-container">
+    <h2>Apply for a Loan</h2>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <mat-card>
         <mat-card-header>
-            <mat-card-title>Uploaded Documents</mat-card-title>
+            <mat-card-title>Select Loan Scheme</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-table [dataSource]="uploadedDocuments">
-                <ng-container matColumnDef="documentName">
-                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-                    <mat-cell *matCellDef="let doc">{{ doc.documentName }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="documentTypeName">
-                    <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
-                    <mat-cell *matCellDef="let doc">{{ doc.documentTypeName }}</mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-                    <mat-cell *matCellDef="let doc">{{ doc.status }}</mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="['documentName', 'documentTypeName', 'status']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['documentName', 'documentTypeName', 'status'];"></mat-row>
-            </mat-table>
+            <form [formGroup]="applyForm">
+                <mat-form-field appearance="fill">
+                    <mat-label>Loan Scheme</mat-label>
+                    <mat-select formControlName="schemeId">
+                        <mat-option *ngFor="let scheme of loanSchemes" [value]="scheme.id">
+                            {{ scheme.name }} ({{ scheme.interestRate }}% Interest)
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="applyForm.get('schemeId')?.hasError('required')">
+                        Please select a loan scheme
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Loan Amount</mat-label>
+                    <input matInput type="number" formControlName="amount">
+                    <mat-error *ngIf="applyForm.get('amount')?.hasError('required')">
+                        Loan amount is required
+                    </mat-error>
+                    <mat-error *ngIf="applyForm.get('amount')?.hasError('min')">
+                        Amount must be at least 1000
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="onSelectScheme()"
+                    [disabled]="!applyForm.get('schemeId')?.value">
+                    Select
+                </button>
+            </form>
+
+            <div *ngIf="documentTypes.length > 0" class="document-types">
+                <h3>Required Documents</h3>
+                <ul>
+                    <li *ngFor="let doc of documentTypes">{{ doc.typeName }}</li>
+                </ul>
+
+                <h3>Upload Documents</h3>
+                <form [formGroup]="documentForm">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Document Type</mat-label>
+                        <mat-select formControlName="documentTypeId">
+                            <mat-option *ngFor="let docType of documentTypes" [value]="docType.id">
+                                {{ docType.typeName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="documentForm.get('documentTypeId')?.hasError('required')">
+                            Please select a document type
+                        </mat-error>
+                    </mat-form-field>
+
+                    <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.png">
+                    <mat-error *ngIf="documentForm.get('file')?.hasError('required')">
+                        Please select a file
+                    </mat-error>
+
+                    <button mat-raised-button color="primary" (click)="uploadDocument()"
+                        [disabled]="documentForm.invalid">
+                        Upload
+                    </button>
+                </form>
+
+                <mat-table [dataSource]="uploadedDocuments">
+                    <ng-container matColumnDef="documentType">
+                        <mat-header-cell *matHeaderCellDef>Document Type</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">{{ getDocumentTypeName(doc.documentTypeId) }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="fileName">
+                        <mat-header-cell *matHeaderCellDef>File Name</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">{{ doc.documentUrl.split('/').pop() }}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                        <mat-cell *matCellDef="let doc">
+                            <button mat-raised-button color="warn" (click)="removeDocument(doc.documentId)">
+                                Remove
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedDocumentColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedDocumentColumns;"></mat-row>
+                </mat-table>
+                <div *ngIf="uploadedDocuments.data.length === 0" class="empty-message">No documents uploaded.</div>
+            </div>
         </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="applyLoan()"
+                [disabled]="applyForm.invalid || documentTypes.length === 0 || uploadedDocuments.data.length === 0">
+                Apply
+            </button>
+        </mat-card-actions>
     </mat-card>
 </div>

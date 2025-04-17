@@ -155,12 +155,9 @@
 </div> -->
 
 
-
-
-<!-- <header-component></header-component> -->
 <div class="view-loans-container">
     <h1>Loan Schemes and My Loans</h1>
-    <p *ngIf="error" class="error">{{ error }}</p>
+    <!-- <p *ngIf="error" class="error">{{ error }}</p> -->
 
     <mat-card>
         <mat-card-header>
@@ -186,8 +183,8 @@
                         <button mat-raised-button color="primary" routerLink="/customer/apply-loan">Apply</button>
                     </mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="schemeColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: schemeColumns;"></mat-row>
+                <mat-header-row *matHeaderRowDef="loanSchemes"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: loanSchemes;"></mat-row>
             </mat-table>
             <ng-template #noSchemes>
                 <p>No loan schemes available.</p>
@@ -200,7 +197,7 @@
             <mat-card-title>My Loans</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <mat-table [dataSource]="myLoans" *ngIf="myLoans.length; else noLoans">
+            <mat-table [dataSource]="loans" *ngIf="loans.length; else noLoans">
                 <ng-container matColumnDef="loanId">
                     <mat-header-cell *matHeaderCellDef>Loan ID</mat-header-cell>
                     <mat-cell *matCellDef="let loan">{{ loan.loanId }}</mat-cell>
@@ -225,8 +222,8 @@
                     <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
                     <mat-cell *matCellDef="let loan">{{ loan.dueDate }}</mat-cell>
                 </ng-container>
-                <mat-header-row *matHeaderRowDef="loanColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: loanColumns;"></mat-row>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
             </mat-table>
             <ng-template #noLoans>
                 <p>You have no loans.</p>

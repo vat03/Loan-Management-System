@@ -60,15 +60,6 @@
 //             }
 //         }
 //     }
-
-//     app-dashboard-card {
-//         ::ng-deep mat-card-actions {
-//             .mat-raised-button:first-child {
-//                 display: none;
-//                 /* Hide Add button */
-//             }
-//         }
-//     }
 // }
 
 
@@ -104,7 +95,7 @@
 
     .table-card {
         width: 100%;
-        max-width: 800px;
+        max-width: 1000px;
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -124,6 +115,15 @@
 
             mat-table {
                 width: 100%;
+
+                mat-cell,
+                mat-header-cell {
+                    padding: 8px;
+                }
+
+                button {
+                    margin: 0 4px;
+                }
             }
 
             .empty-message {

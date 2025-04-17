@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aurionpro.lms.dto.LoanSchemeRequestDTO;
 import com.aurionpro.lms.dto.LoanSchemeResponseDTO;
 import com.aurionpro.lms.dto.LoanSchemeUpdateDTO;
+import com.aurionpro.lms.entity.DocumentType;
 import com.aurionpro.lms.service.LoanSchemeService;
 
 import jakarta.validation.Valid;
@@ -64,4 +65,11 @@ public class LoanSchemeController {
 		LoanSchemeResponseDTO responseDTO = loanSchemeService.updateLoanScheme(id, adminId, updateDTO);
 		return ResponseEntity.ok(responseDTO);
 	}
+
+	@GetMapping("{schemeId}/document-types")
+	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	public ResponseEntity<List<DocumentType>> getRequiredDocumentTypes(@PathVariable int schemeId) {
+		return ResponseEntity.ok(loanSchemeService.getRequiredDocumentTypes(schemeId));
+	}
+	
 }

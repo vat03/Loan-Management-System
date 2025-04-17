@@ -563,6 +563,13 @@ public class LoanSchemeServiceImpl implements LoanSchemeService {
 		return toResponseDTO(loanScheme);
 	}
 
+	@Override
+	public List<DocumentType> getRequiredDocumentTypes(int schemeId) {
+        LoanScheme loanScheme = loanSchemeRepository.findById(schemeId)
+                .orElseThrow(() -> new RuntimeException("Loan scheme not found"));
+        return loanScheme.getRequiredDocumentTypes();
+    }
+	
 	private LoanSchemeResponseDTO toResponseDTO(LoanScheme loanScheme) {
 		LoanSchemeResponseDTO dto = new LoanSchemeResponseDTO();
 		dto.setId(loanScheme.getId());

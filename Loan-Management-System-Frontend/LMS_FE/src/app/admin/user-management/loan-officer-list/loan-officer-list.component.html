@@ -27,7 +27,7 @@
 
 
 
-<div class="table-container">
+<!-- <div class="table-container">
     <h2>Loan Officers</h2>
     <mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="id">
@@ -46,9 +46,108 @@
             <mat-header-cell *matHeaderCellDef>Customers</mat-header-cell>
             <mat-cell *matCellDef="let officer">{{ officer.customerIds.length }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="report">
+            <mat-header-cell *matHeaderCellDef>Report</mat-header-cell>
+            <mat-cell *matCellDef="let officer">
+                <button mat-icon-button color="primary" (click)="downloadReport(officer.id)">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons
         aria-label="Select page of loan officers"></mat-paginator>
+</div> -->
+
+
+<!-- <div class="loan-officer-table-container">
+    <h2>Loan Officers</h2>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let officer">{{ officer.id }}</td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Username</th>
+            <td mat-cell *matCellDef="let officer">{{ officer.username }}</td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let officer">{{ officer.email }}</td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="customerCount">
+            <th mat-header-cell *matHeaderCellDef>Customers</th>
+            <td mat-cell *matCellDef="let officer">{{ officer.customerCount }}</td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="report">
+            <th mat-header-cell *matHeaderCellDef>Report</th>
+            <td mat-cell *matCellDef="let officer">
+                <button mat-icon-button color="primary" (click)="downloadReport(officer.id)">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div> -->
+
+
+<div class="table-container">
+    <h2>Loan Officers</h2>
+    <mat-table [dataSource]="dataSource">
+
+        <!-- ID -->
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+            <mat-cell *matCellDef="let officer">{{ officer.id }}</mat-cell>
+        </ng-container>
+
+        <!-- Username -->
+        <ng-container matColumnDef="username">
+            <mat-header-cell *matHeaderCellDef>Username</mat-header-cell>
+            <mat-cell *matCellDef="let officer">{{ officer.username }}</mat-cell>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+            <mat-cell *matCellDef="let officer">{{ officer.email }}</mat-cell>
+        </ng-container>
+
+        <!-- Customer Count -->
+        <ng-container matColumnDef="customerCount">
+            <mat-header-cell *matHeaderCellDef>Customers</mat-header-cell>
+            <mat-cell *matCellDef="let officer">{{ officer.customerIds.length }}</mat-cell>
+        </ng-container>
+
+        <!-- Report -->
+        <ng-container matColumnDef="report">
+            <mat-header-cell *matHeaderCellDef>Report</mat-header-cell>
+            <mat-cell *matCellDef="let officer">
+                <button mat-button color="primary" (click)="downloadReport(officer.id, officer.username)">
+                    Download
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons></mat-paginator>
 </div>
