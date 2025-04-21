@@ -25,6 +25,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
   console.log('AuthInterceptor - Request URL:', req.url, 'Token:', token ? 'Present' : 'Absent');
+  if (req.url.includes('/api/users/registerUser')) {
+    return next(req);
+  }
+  
   if (token) {
     req = req.clone({
       setHeaders: {
