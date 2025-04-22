@@ -64,6 +64,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -117,4 +118,12 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(ReportGenerationException.class)
+    public ResponseEntity<Map<String, String>> handleReportGenerationException(ReportGenerationException ex, WebRequest request) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "Bad Request");
+        errorResponse.put("message", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

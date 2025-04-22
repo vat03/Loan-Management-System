@@ -706,13 +706,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.aurionpro.lms.dto.AdminResponseDTO;
 import com.aurionpro.lms.dto.LoanOfficerRequestDTO;
 import com.aurionpro.lms.dto.LoanOfficerResponseDTO;
 import com.aurionpro.lms.entity.Admin;
 import com.aurionpro.lms.entity.Customer;
 import com.aurionpro.lms.entity.LoanOfficer;
-import com.aurionpro.lms.entity.LoanScheme;
 import com.aurionpro.lms.entity.Role;
 import com.aurionpro.lms.entity.User;
 import com.aurionpro.lms.exception.ResourceNotFoundException;

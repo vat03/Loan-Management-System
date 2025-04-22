@@ -16,13 +16,6 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 
-//	@PutMapping("/update/{userId}")
-//	public ResponseEntity<ProfileResponseDTO> updateProfile(@PathVariable int userId,
-//			@Valid @RequestBody ProfileUpdateRequestDTO requestDTO) {
-//		ProfileResponseDTO responseDTO = profileService.updateProfile(userId, requestDTO);
-//		return ResponseEntity.ok(responseDTO);
-//	}
-
 	@PutMapping("/update/customer/{customerId}")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
 	public ResponseEntity<ProfileResponseDTO> updateCustomerProfile(@PathVariable int customerId,
@@ -46,12 +39,6 @@ public class ProfileController {
 		ProfileResponseDTO responseDTO = profileService.updateAdminProfile(adminId, requestDTO);
 		return ResponseEntity.ok(responseDTO);
 	}
-
-//	@GetMapping("/user/{userId}")
-//	public ResponseEntity<ProfileResponseDTO> getProfileByUserId(@PathVariable int userId) {
-//		ProfileResponseDTO responseDTO = profileService.getProfileByUserId(userId);
-//		return ResponseEntity.ok(responseDTO);
-//	}
 
 	@GetMapping("/customer/{customerId}")
 	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
