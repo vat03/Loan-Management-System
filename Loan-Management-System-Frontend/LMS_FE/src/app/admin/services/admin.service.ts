@@ -64,7 +64,7 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   getLoanOfficers(): Observable<LoanOfficerDTO[]> {
-    return this.http.get<LoanOfficerDTO[]>(`${this.apiUrl}/admin/loan-officers`).pipe(
+    return this.http.get<LoanOfficerDTO[]>(`${this.apiUrl}/loan-officers/getAllLoanOfficers`).pipe(
       catchError(this.handleError)
     );
   }

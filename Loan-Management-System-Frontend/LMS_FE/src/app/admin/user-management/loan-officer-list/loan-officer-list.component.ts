@@ -527,6 +527,91 @@
 
 
 
+// import { Component, OnInit } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { MatTableModule } from '@angular/material/table';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatPaginatorModule } from '@angular/material/paginator';
+// import { MatTableDataSource } from '@angular/material/table';
+// import { AdminService } from '../../services/admin.service';
+// import { LoanOfficerDTO } from '../../models/admin.model';
+
+// @Component({
+//   selector: 'app-loan-officer-list',
+//   standalone: true,
+//   imports: [
+//     CommonModule,
+//     MatTableModule,
+//     MatCardModule,
+//     MatButtonModule,
+//     MatPaginatorModule
+//   ],
+//   templateUrl: './loan-officer-list.component.html',
+//   styleUrls: ['./loan-officer-list.component.scss']
+// })
+// export class LoanOfficerListComponent implements OnInit {
+//   loanOfficers: LoanOfficerDTO[] = [];
+//   dataSource = new MatTableDataSource<LoanOfficerDTO>([]);
+//   displayedColumns: string[] = ['id', 'username', 'email', 'firstName', 'lastName', 'actions'];
+//   errorMessage: string | null = null;
+
+//   constructor(private adminService: AdminService) { }
+
+//   ngOnInit(): void {
+//     this.loadLoanOfficers();
+//   }
+
+//   loadLoanOfficers(): void {
+//     this.adminService.getLoanOfficers().subscribe({
+//       next: (officers: LoanOfficerDTO[]) => {
+//         this.loanOfficers = officers;
+//         this.dataSource.data = officers;
+//         if (officers.length === 0) {
+//           this.errorMessage = 'No loan officers found.';
+//         }
+//       },
+//       error: (err: Error) => {
+//         this.errorMessage = `Failed to load loan officers: ${err.message}`;
+//       }
+//     });
+//   }
+
+//   deleteLoanOfficer(id: number): void {
+//     if (confirm('Are you sure you want to delete this loan officer?')) {
+//       this.adminService.deleteLoanOfficer(id).subscribe({
+//         next: () => {
+//           this.loanOfficers = this.loanOfficers.filter(officer => officer.id !== id);
+//           this.dataSource.data = this.loanOfficers;
+//           this.errorMessage = null;
+//         },
+//         error: (err: Error) => {
+//           this.errorMessage = `Failed to delete loan officer: ${err.message}`;
+//         }
+//       });
+//     }
+//   }
+
+//   downloadReport(officerId: number, username: string): void {
+//     this.adminService.downloadOfficerReport(officerId).subscribe({
+//       next: (blob: Blob) => {
+//         const url = window.URL.createObjectURL(blob);
+//         const a = document.createElement('a');
+//         a.href = url;
+//         a.download = `loan_officer_report_${username}.pdf`;
+//         a.click();
+//         window.URL.revokeObjectURL(url);
+//       },
+//       error: (err: Error) => {
+//         this.errorMessage = `Failed to download report: ${err.message}`;
+//       }
+//     });
+//   }
+// }
+
+
+
+
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -534,8 +619,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AdminService } from '../../services/admin.service';
-import { LoanOfficerDTO } from '../../models/admin.model';
+import { LoanOfficerService } from '../../../core/services/loan-officer.service';
+import { LoanOfficerResponse } from '../../models/loan-officer.model';
 
 @Component({
   selector: 'app-loan-officer-list',
@@ -551,20 +636,21 @@ import { LoanOfficerDTO } from '../../models/admin.model';
   styleUrls: ['./loan-officer-list.component.scss']
 })
 export class LoanOfficerListComponent implements OnInit {
-  loanOfficers: LoanOfficerDTO[] = [];
-  dataSource = new MatTableDataSource<LoanOfficerDTO>([]);
-  displayedColumns: string[] = ['id', 'username', 'email', 'firstName', 'lastName', 'actions'];
+  loanOfficers: LoanOfficerResponse[] = [];
+  dataSource = new MatTableDataSource<LoanOfficerResponse>([]);
+  displayedColumns: string[] = ['id', 'username', 'email', 'customerCount', 'report', 'actions'];
   errorMessage: string | null = null;
 
-  constructor(private adminService: AdminService) { }
+  constructor(private loanOfficerService: LoanOfficerService) { }
 
   ngOnInit(): void {
     this.loadLoanOfficers();
   }
 
   loadLoanOfficers(): void {
-    this.adminService.getLoanOfficers().subscribe({
-      next: (officers: LoanOfficerDTO[]) => {
+    this.errorMessage = null;
+    this.loanOfficerService.getAllLoanOfficers().subscribe({
+      next: (officers: LoanOfficerResponse[]) => {
         this.loanOfficers = officers;
         this.dataSource.data = officers;
         if (officers.length === 0) {
@@ -573,17 +659,18 @@ export class LoanOfficerListComponent implements OnInit {
       },
       error: (err: Error) => {
         this.errorMessage = `Failed to load loan officers: ${err.message}`;
+        this.dataSource.data = [];
       }
     });
   }
 
   deleteLoanOfficer(id: number): void {
     if (confirm('Are you sure you want to delete this loan officer?')) {
-      this.adminService.deleteLoanOfficer(id).subscribe({
+      this.loanOfficerService.deleteLoanOfficer(id).subscribe({
         next: () => {
           this.loanOfficers = this.loanOfficers.filter(officer => officer.id !== id);
           this.dataSource.data = this.loanOfficers;
-          this.errorMessage = null;
+          this.errorMessage = this.loanOfficers.length === 0 ? 'No loan officers found.' : null;
         },
         error: (err: Error) => {
           this.errorMessage = `Failed to delete loan officer: ${err.message}`;
@@ -593,7 +680,7 @@ export class LoanOfficerListComponent implements OnInit {
   }
 
   downloadReport(officerId: number, username: string): void {
-    this.adminService.downloadOfficerReport(officerId).subscribe({
+    this.loanOfficerService.downloadOfficerReport(officerId).subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

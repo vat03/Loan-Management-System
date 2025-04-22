@@ -90,6 +90,48 @@
     </div>
 </mat-toolbar> -->
 
+<!-- =============================================================================================== -->
+
+<!-- <mat-toolbar color="primary">
+    <div class="header-left">
+        <img src="/assets/logo.png" alt="LendEase Logo" class="logo" />
+        <span>LendEase</span>
+    </div>
+    <div class="header-middle">
+        <span *ngIf="isLoggedIn()">
+            Welcome, {{ greeting }}
+        </span>
+    </div>
+    <div class="header-right">
+        <a mat-button routerLink="/">Home</a>
+        <a mat-button routerLink="/login" *ngIf="!isLoggedIn()">Login</a>
+        <a mat-button routerLink="/register" *ngIf="!isLoggedIn()">Register</a>
+        <a mat-button routerLink="/admin/dashboard" *ngIf="isAdmin()">Dashboard</a>
+        <a mat-button routerLink="/admin/users" *ngIf="isAdmin()">Users</a>
+        <a mat-button routerLink="/admin/schemes" *ngIf="isAdmin()">Loan Schemes</a>
+        <a mat-button routerLink="/loan-officer" *ngIf="isLoanOfficer()">Dashboard</a>
+        <a mat-button routerLink="/loan-officer/documents" *ngIf="isLoanOfficer()">Documents</a>
+        <a mat-button routerLink="/loan-officer/npa" *ngIf="isLoanOfficer()">NPA</a>
+        <a mat-button routerLink="/customer/dashboard" *ngIf="isCustomer()">Dashboard</a>
+        <a mat-button routerLink="/customer/view-loans" *ngIf="isCustomer()">Loan Schemes</a>
+        <a mat-button routerLink="/customer/make-payment" *ngIf="isCustomer()">Make Payment</a>
+        <a mat-button routerLink="/customer/payment-details" *ngIf="isCustomer()">Payment History</a>
+        <button mat-icon-button [matMenuTriggerFor]="profileMenu" *ngIf="isLoggedIn()">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #profileMenu="matMenu">
+            <button mat-menu-item (click)="navigateToProfile()">Profile</button>
+            <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+    </div>
+</mat-toolbar> -->
+
+
+
+
+
+
+
 
 <mat-toolbar color="primary">
     <div class="header-left">
@@ -98,7 +140,7 @@
     </div>
     <div class="header-middle">
         <span *ngIf="isLoggedIn()">
-            Welcome, {{ role ? (role.replace('ROLE_', '') | lowercase) : 'User' }}
+            Welcome {{ greeting }}
         </span>
     </div>
     <div class="header-right">

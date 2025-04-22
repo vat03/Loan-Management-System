@@ -497,7 +497,7 @@ export class ProfileComponent implements OnInit {
     if (role === 'ROLE_ADMIN') {
       const adminId = this.authService.getAdminId();
       if (adminId) {
-        this.loadProfile(adminId);
+        this.loadAdminProfile(adminId);
       } else {
         this.errorMessage = 'Admin profile not found.';
       }
@@ -520,8 +520,8 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  loadProfile(adminId: number): void {
-    this.profileService.getProfile(adminId).subscribe({
+  loadAdminProfile(adminId: number): void {
+    this.profileService.getAdminProfile(adminId).subscribe({
       next: profile => {
         this.profile = profile;
         this.updateForm.patchValue({

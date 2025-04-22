@@ -1,7 +1,24 @@
-<div class="dashboard-container">
+<!-- <div class="dashboard-container">
     <app-dashboard-card title="Loan Officers" [count]="loanOfficerCount" (add)="openLoanOfficerForm()"
         (view)="viewLoanOfficers()"></app-dashboard-card>
     <app-dashboard-card title="Loan Schemes" [count]="loanSchemeCount" (add)="openLoanSchemeForm()"
         (view)="viewLoanSchemes()"></app-dashboard-card>
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div> -->
+
+
+<div class="dashboard-container">
+    <app-dashboard-card title="Loan Officers" [count]="loanOfficerCount" (add)="openLoanOfficerForm()"
+        (view)="viewLoanOfficers()"></app-dashboard-card>
+    <app-dashboard-card title="Loan Schemes" [count]="loanSchemeCount" (add)="openLoanSchemeForm()"
+        (view)="viewLoanSchemes()"></app-dashboard-card>
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+        <!-- <button *ngIf="errorMessage.includes('loan officers')" mat-button color="primary" (click)="openLoanOfficerForm()">
+            Add Loan Officer
+        </button>
+        <button *ngIf="errorMessage.includes('loan schemes')" mat-button color="primary" (click)="openLoanSchemeForm()">
+            Add Loan Scheme
+        </button> -->
+    </div>
 </div>

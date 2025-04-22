@@ -108,7 +108,7 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  getProfile(adminId: number): Observable<ProfileResponseDTO> {
+  getAdminProfile(adminId: number): Observable<ProfileResponseDTO> {
     const url = `${this.apiUrl}/admin/${adminId}`;
     console.log('Fetching admin profile from:', url);
     return this.http.get<ProfileResponseDTO>(url).pipe(
