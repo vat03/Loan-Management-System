@@ -48,4 +48,8 @@ public interface DocumentService {
 	List<DocumentResponseDTO> getDocumentsByLoanId(int loanId);
 
 	DocumentResponseDTO verifyDocument(int documentId, DocumentVerificationDTO verificationDTO);
+	
+	List<DocumentResponseDTO> getDocumentsByLoanIdAndStatus(int loanId, String status);
+	
+	List<DocumentResponseDTO> getDocumentsByLoanOfficerId(int loanOfficerId, String status);
 }
