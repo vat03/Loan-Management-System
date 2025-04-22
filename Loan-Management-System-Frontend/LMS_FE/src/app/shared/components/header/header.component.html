@@ -135,7 +135,8 @@
 
 <mat-toolbar color="primary">
     <div class="header-left">
-        <img src="/assets/logo.png" alt="LendEase Logo" class="logo" />
+        <!-- <img src="/assets/logo.png" alt="LendEase Logo" class="logo" /> -->
+        <img src="/assets/logo.png" alt="LendEase Logo" class="logo" (click)="navigateToHome()" />
         <span>LendEase</span>
     </div>
     <div class="header-middle">
@@ -144,9 +145,10 @@
         </span>
     </div>
     <div class="header-right">
-        <a mat-button routerLink="/">Home</a>
+        <div *ngIf="!isLoggedIn()"><a mat-button routerLink="/">Home</a></div>
+        <!-- <a mat-button routerLink="/">Home</a>
         <a mat-button routerLink="/login" *ngIf="!isLoggedIn()">Login</a>
-        <a mat-button routerLink="/register" *ngIf="!isLoggedIn()">Register</a>
+        <a mat-button routerLink="/register" *ngIf="!isLoggedIn()">Register</a> -->
         <!-- Admin Links -->
         <a mat-button routerLink="/admin/dashboard" *ngIf="isAdmin()">Dashboard</a>
         <a mat-button routerLink="/admin/users" *ngIf="isAdmin()">Users</a>

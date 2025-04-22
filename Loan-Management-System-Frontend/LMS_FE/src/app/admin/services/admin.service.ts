@@ -74,9 +74,10 @@ export class AdminService {
       catchError(this.handleError)
     );
   }
-
+  
+  // ${this.apiUrl}/admin/loan-officers/${officerId}/report
   downloadOfficerReport(officerId: number): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/admin/loan-officers/${officerId}/report`, {
+    return this.http.get(`http://localhost:8080/api/reports/loan-officer/${officerId}`, {
       responseType: 'blob'
     }).pipe(
       catchError(this.handleError)

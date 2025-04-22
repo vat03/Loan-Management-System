@@ -235,6 +235,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/']);
+  }
+
   logout(): void {
     this.authService.logout();
     this.role = null;
